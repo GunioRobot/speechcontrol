@@ -35,7 +35,7 @@ namespace SpeechControl {
         class Main : public QMainWindow {
             Q_OBJECT
         public:
-            Main();
+            explicit Main();
             ~Main();
 
         private slots:
@@ -49,6 +49,8 @@ namespace SpeechControl {
             void doSwitchBooks();
             void doSaveProgress();
             void doSaveProgressAs();
+
+            void on_pushButtonTestMic_clicked();
 
         private:
             Ui::MainWindow* m_ui;

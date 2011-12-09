@@ -21,10 +21,12 @@
  
 #include "windows_main.hpp"
 #include "user.hpp"
+#include "microphone.hpp"
 #include "ui_main.h"
 #include "core.hpp"
-#include <QVariant>
 #include <QMenu>
+#include <QUuid>
+#include <QVariant>
 #include <QMainWindow>
 #include <QMessageBox>
 
@@ -97,4 +99,12 @@ void Main::doSaveProgressAs() {
 
 void Main::loadUser(const User &p_user)
 {
+}
+
+void Main::on_pushButtonTestMic_clicked()
+{
+    const int l_micIndx = m_ui->comboBoxMicrophones->currentIndex();
+    const QString l_micUuid = m_ui->comboBoxMicrophones->itemData(l_micIndx).toString();
+    Microphone* l_mic = Microphone::getMicrophone(QUuid(l_micUuid));
+    l_mic->test();
 }
