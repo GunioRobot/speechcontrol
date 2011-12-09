@@ -20,28 +20,60 @@
  */
  
 #include "windows_main.hpp"
+#include "user.hpp"
 #include "ui_main.h"
+#include "core.hpp"
+#include <QVariant>
 #include <QMainWindow>
+#include <QMessageBox>
 
-namespace SpeechControl {
-    namespace Windows {
-        Main::Main() : m_ui(new Ui::MainWindow) {
-           m_ui->setupUi(this);
-           m_ui->retranslateUi(this);
+using namespace SpeechControl::Windows;
+Main::Main() : m_ui(new Ui::MainWindow) {
+   m_ui->setupUi(this);
+   m_ui->retranslateUi(this);
 
-           connect(m_ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
-           m_ui->tabWidget->setCurrentIndex(0);
-        }
+   buildMenus();
+   connect(m_ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
+}
 
-        void Main::tabChanged(const int& p_index){
-            switch (p_index){
-                case 0:
-                break;
-            }
-        }
+void Main::on_radioButtonDictation_toggled(bool checked) {
+    Core::instance()->setConfiguration("Options/Dictation",checked);
+}
 
-        Main::~Main() {
-            delete m_ui;
-        }
+void Main::tabChanged(const int& p_index){
+    switch (p_index){
+        case 0:
+            m_ui->checkBoxAutoStart->setChecked(Core::instance()->getConfiguration("Options/AutoStart",QVariant(false)).toBool());
+            m_ui->radioButtonDictation->setChecked(Core::instance()->getConfiguration("Options/Dictation",QVariant(false)).toBool());
+            m_ui->radioButtonControl->setChecked(Core::instance()->getConfiguration("Options/Control",QVariant(false)).toBool());
+        break;
     }
+}
+
+Main::~Main() {
+    delete m_ui;
+}
+
+void Main::on_radioButtonControl_toggled(bool checked)
+{
+    Core::instance()->setConfiguration("Options/Control",checked);
+}
+
+void Main::on_checkBoxAutoStart_toggled(bool checked)
+{
+    Core::instance()->setConfiguration("Options/AutoStart",checked);
+}
+
+void Main::toggleTraining(bool active)
+{
+    m_ui->progressBarVolume->setEnabled(active);
+    m_ui->progressBarAccurate->setEnabled(active);
+}
+
+void Main::buildMenus()
+{
+}
+
+void Main::loadUser(const User &p_user)
+{
 }

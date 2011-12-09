@@ -26,6 +26,7 @@
 #include <QObject>
 
 class QVariant;
+class QSettings;
 
 namespace SpeechControl {
   struct Core;
@@ -39,14 +40,19 @@ namespace SpeechControl {
     void stopped();
 
   public:
-    Core();
-    QVariant getConfiguration(const QString&, QVariant&) const;
+    Core(int,char**);
+    virtual ~Core();
+    QVariant getConfiguration(const QString&, QVariant) const;
     void setConfiguration(const QString&, const QVariant&);
     static Core* instance();
 
   public slots:
     void start();
     void stop();
+
+  private:
+    QSettings* m_settings;
+    static Core* s_inst;
     
   };
 }

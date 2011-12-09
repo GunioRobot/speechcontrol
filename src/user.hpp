@@ -19,11 +19,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "core.hpp"
-#include <QApplication>
+#ifndef USER_HPP
+#define USER_HPP
 
-int main( int argc, char** argv ) {
-    SpeechControl::Core l_core(argc,argv);
-    l_core.start();
-    return QApplication::instance()->exec();
+#include <QObject>
+
+class QFile;
+class QUrl;
+class QUuid;
+
+namespace SpeechControl {
+    class User : public QObject {
+        Q_OBJECT
+
+    public:
+        explicit User(QObject *parent = 0);
+        virtual ~User();
+        static User* loadFromString(QFile& );
+        static User* loadFromUrl(QUrl&);
+        static User* loadFromUuid(QUuid& );
+
+    signals:
+
+    public slots:
+
+    };
 }
+
+#endif // USER_HPP

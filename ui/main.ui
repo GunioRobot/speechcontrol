@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
+ <author>Jacky Alcine &lt;jacky.alcine@thesii.org&gt;</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>403</width>
-    <height>334</height>
+    <width>434</width>
+    <height>323</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>403</width>
-    <height>334</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>403</width>
-    <height>334</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>SpeechControl</string>
@@ -35,8 +24,8 @@
      <rect>
       <x>0</x>
       <y>3</y>
-      <width>405</width>
-      <height>333</height>
+      <width>441</width>
+      <height>329</height>
      </rect>
     </property>
     <property name="sizePolicy">
@@ -45,18 +34,6 @@
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
-    <property name="minimumSize">
-     <size>
-      <width>405</width>
-      <height>333</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>405</width>
-      <height>333</height>
-     </size>
-    </property>
     <property name="tabPosition">
      <enum>QTabWidget::North</enum>
     </property>
@@ -64,7 +41,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <property name="elideMode">
      <enum>Qt::ElideMiddle</enum>
@@ -82,10 +59,10 @@
      <widget class="QWidget" name="verticalLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>401</width>
-        <height>305</height>
+        <x>4</x>
+        <y>4</y>
+        <width>429</width>
+        <height>307</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
@@ -146,14 +123,14 @@
               <set>Qt::AlignHCenter|Qt::AlignTop</set>
              </property>
              <item row="1" column="1">
-              <widget class="QRadioButton" name="radioButton">
+              <widget class="QRadioButton" name="radioButtonDictation">
                <property name="text">
                 <string>Dictation</string>
                </property>
               </widget>
              </item>
              <item row="3" column="1">
-              <widget class="QCheckBox" name="checkBox_3">
+              <widget class="QCheckBox" name="checkBoxAutoStart">
                <property name="text">
                 <string>Auto-Start</string>
                </property>
@@ -167,7 +144,7 @@
               </widget>
              </item>
              <item row="2" column="1">
-              <widget class="QRadioButton" name="radioButton_2">
+              <widget class="QRadioButton" name="radioButtonControl">
                <property name="text">
                 <string>Desktop Control</string>
                </property>
@@ -268,13 +245,6 @@
           <enum>QLayout::SetMinAndMaxSize</enum>
          </property>
          <item>
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>More Books</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -291,7 +261,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="pushButtonAdvanced">
            <property name="minimumSize">
             <size>
              <width>80</width>
@@ -305,7 +275,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Advanced</string>
+            <string>Advanced...</string>
            </property>
           </widget>
          </item>
@@ -321,10 +291,10 @@
      <widget class="QWidget" name="verticalLayoutWidget_4">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>4</x>
         <y>0</y>
-        <width>401</width>
-        <height>305</height>
+        <width>425</width>
+        <height>289</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -400,28 +370,28 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_8">
+          <widget class="QPushButton" name="pushButtonContinue">
            <property name="text">
             <string>Continue</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_7">
+          <widget class="QPushButton" name="pushButtonPause">
            <property name="text">
             <string>Pause</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_5">
+          <widget class="QPushButton" name="pushButtonSkip">
            <property name="text">
             <string>Skip Word</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_6">
+          <widget class="QPushButton" name="pushButtonUndo">
            <property name="text">
             <string>Undo</string>
            </property>
@@ -446,7 +416,7 @@
         </layout>
        </item>
        <item>
-        <layout class="QFormLayout" name="formLayout_3">
+        <layout class="QFormLayout" name="formLayoutRanges">
          <property name="fieldGrowthPolicy">
           <enum>QFormLayout::ExpandingFieldsGrow</enum>
          </property>
@@ -458,7 +428,7 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QProgressBar" name="progressBar">
+          <widget class="QProgressBar" name="progressBarVolume">
            <property name="value">
             <number>24</number>
            </property>
@@ -472,7 +442,7 @@
           </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QProgressBar" name="progressBar_2">
+          <widget class="QProgressBar" name="progressBarAccurate">
            <property name="value">
             <number>24</number>
            </property>
@@ -496,9 +466,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_9">
+          <widget class="QPushButton" name="pushButtonBooks">
            <property name="text">
-            <string>Books</string>
+            <string>Books...</string>
            </property>
           </widget>
          </item>
@@ -514,29 +484,13 @@
      <widget class="QWidget" name="verticalLayoutWidget_7">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>12</x>
         <y>4</y>
-        <width>401</width>
-        <height>301</height>
+        <width>417</width>
+        <height>297</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_8">
-       <item>
-        <spacer name="verticalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>10</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_13">
          <item>
@@ -545,20 +499,23 @@
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
+            <enum>QSizePolicy::MinimumExpanding</enum>
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>20</width>
+             <width>10</width>
              <height>20</height>
             </size>
            </property>
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="labelUserName">
            <property name="text">
             <string>TextLabel</string>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -576,7 +533,7 @@
           </spacer>
          </item>
          <item>
-          <widget class="QLabel" name="label_9">
+          <widget class="QLabel" name="labelUserIcon">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>64</horstretch>
@@ -600,15 +557,34 @@
         </layout>
        </item>
        <item>
+        <spacer name="verticalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_14">
          <item>
           <spacer name="horizontalSpacer_19">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>30</width>
              <height>20</height>
             </size>
            </property>
@@ -627,7 +603,7 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QComboBox" name="comboBox_2"/>
+            <widget class="QComboBox" name="comboBoxLang"/>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_11">
@@ -637,7 +613,7 @@
             </widget>
            </item>
            <item row="1" column="1">
-            <widget class="QComboBox" name="comboBox_3"/>
+            <widget class="QComboBox" name="comboBoxDialect"/>
            </item>
            <item row="2" column="0">
             <widget class="QLabel" name="label_12">
@@ -649,14 +625,14 @@
            <item row="2" column="1">
             <layout class="QHBoxLayout" name="horizontalLayout_17">
              <item>
-              <widget class="QLabel" name="label_13">
+              <widget class="QLabel" name="labelCurrentAccurary">
                <property name="text">
                 <string>%p Accuracy</string>
                </property>
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_12">
+              <widget class="QPushButton" name="pushButtonTest">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -683,9 +659,12 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Preferred</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>30</width>
              <height>20</height>
             </size>
            </property>
@@ -699,7 +678,7 @@
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::MinimumExpanding</enum>
+          <enum>QSizePolicy::Preferred</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -725,30 +704,23 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_13">
+          <widget class="QPushButton" name="pushButtonBackup">
            <property name="text">
-            <string>Backup</string>
+            <string>Backup...</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_14">
+          <widget class="QPushButton" name="pushButtonUsers">
            <property name="text">
-            <string>Restore</string>
+            <string>Users...</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_15">
+          <widget class="QPushButton" name="pushButtonDicts">
            <property name="text">
-            <string>Switch Users</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_16">
-           <property name="text">
-            <string>Dictionary</string>
+            <string>Dictionary...</string>
            </property>
           </widget>
          </item>
@@ -780,76 +752,85 @@
      <widget class="QWidget" name="verticalLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>4</y>
-        <width>401</width>
+        <x>4</x>
+        <y>0</y>
+        <width>393</width>
         <height>301</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
+          <widget class="QGroupBox" name="groupBox">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>150</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Information</string>
+           </property>
+           <widget class="QLabel" name="label_8">
+            <property name="geometry">
+             <rect>
+              <x>8</x>
+              <y>16</y>
+              <width>369</width>
+              <height>129</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>TextLabel</string>
+            </property>
+           </widget>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
            <item>
-            <widget class="QGroupBox" name="groupBox">
+            <spacer name="horizontalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButtonPlgnSettings">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>200</width>
+               <width>0</width>
                <height>0</height>
               </size>
              </property>
-             <property name="title">
-              <string>Information</string>
+             <property name="text">
+              <string>Settings</string>
              </property>
             </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <spacer name="horizontalSpacer_4">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_3">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>Settings</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
            </item>
           </layout>
          </item>
          <item>
-          <widget class="QListWidget" name="listWidget_2">
+          <widget class="QListWidget" name="listWidgetPlugins">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
              <horstretch>0</horstretch>
@@ -858,52 +839,9 @@
            </property>
            <property name="minimumSize">
             <size>
-             <width>200</width>
+             <width>0</width>
              <height>0</height>
             </size>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <spacer name="verticalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Minimum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>1</width>
-           <height>1</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_4">
-         <item>
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::MinimumExpanding</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item>
-          <widget class="QPushButton" name="pushButton_4">
-           <property name="text">
-            <string>Apply Changes</string>
            </property>
           </widget>
          </item>
@@ -919,10 +857,10 @@
      <widget class="QWidget" name="verticalLayoutWidget_6">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>401</width>
-        <height>305</height>
+        <x>4</x>
+        <y>4</y>
+        <width>429</width>
+        <height>293</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -931,10 +869,13 @@
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::MinimumExpanding</enum>
+         </property>
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>30</height>
           </size>
          </property>
         </spacer>
@@ -951,7 +892,7 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>80</width>
+             <width>40</width>
              <height>20</height>
             </size>
            </property>
@@ -979,10 +920,16 @@
             </widget>
            </item>
            <item row="0" column="1">
-            <widget class="QComboBox" name="comboBox">
+            <widget class="QComboBox" name="comboBoxMicrophones">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="minimumSize">
               <size>
-               <width>200</width>
+               <width>150</width>
                <height>0</height>
               </size>
              </property>
@@ -995,10 +942,10 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="1">
-            <widget class="QProgressBar" name="progressBar_3">
-             <property name="value">
-              <number>24</number>
+           <item row="1" column="1">
+            <widget class="QSlider" name="horizontalSliderVolume">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
              </property>
             </widget>
            </item>
@@ -1009,10 +956,10 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="QSlider" name="horizontalSlider">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
+           <item row="2" column="1">
+            <widget class="QProgressBar" name="progressBarNoise">
+             <property name="value">
+              <number>24</number>
              </property>
             </widget>
            </item>
@@ -1028,7 +975,7 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>80</width>
+             <width>40</width>
              <height>20</height>
             </size>
            </property>
@@ -1047,20 +994,13 @@
          <property name="sizeHint" stdset="0">
           <size>
            <width>20</width>
-           <height>40</height>
+           <height>30</height>
           </size>
          </property>
         </spacer>
        </item>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_12">
-         <item>
-          <widget class="QPushButton" name="pushButton_10">
-           <property name="text">
-            <string>Test Microphone</string>
-           </property>
-          </widget>
-         </item>
          <item>
           <spacer name="horizontalSpacer_12">
            <property name="orientation">
@@ -1075,9 +1015,9 @@
           </spacer>
          </item>
          <item>
-          <widget class="QPushButton" name="pushButton_11">
+          <widget class="QPushButton" name="pushButtonTestMic">
            <property name="text">
-            <string>Apply Changes</string>
+            <string>Test Microphone</string>
            </property>
           </widget>
          </item>
@@ -1093,52 +1033,85 @@
      <attribute name="whatsThis">
       <string>This panel has information regarding SpeechControl and how you can help out.</string>
      </attribute>
-     <widget class="QLabel" name="label_14">
+     <widget class="QWidget" name="gridLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>12</y>
-        <width>141</width>
-        <height>141</height>
+        <x>0</x>
+        <y>4</y>
+        <width>437</width>
+        <height>297</height>
        </rect>
       </property>
-      <property name="text">
-       <string/>
-      </property>
-      <property name="pixmap">
-       <pixmap resource="res.qrc">:/logo/sii</pixmap>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_15">
-      <property name="geometry">
-       <rect>
-        <x>12</x>
-        <y>164</y>
-        <width>373</width>
-        <height>105</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>28</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>SpeechControl</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetMaximumSize</enum>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="minimumSize">
+          <size>
+           <width>64</width>
+           <height>64</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>256</width>
+           <height>256</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="res.qrc">:/logo/sii</pixmap>
+         </property>
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="font">
+          <font>
+           <pointsize>28</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>SpeechControl</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
   </widget>
  </widget>
+ <layoutdefault spacing="2" margin="2"/>
  <resources>
   <include location="res.qrc"/>
  </resources>
  <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>4</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>4</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>

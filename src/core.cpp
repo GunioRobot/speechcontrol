@@ -21,12 +21,22 @@
 
 #include "core.hpp"
 #include "windows_main.hpp"
+#include <QSettings>
 #include <QApplication>
 
 using namespace SpeechControl;
 using SpeechControl::Core;
 
-Core::Core() : QObject(QApplication::instance()){
+Core* Core::s_inst = 0;
+
+// @todo Generate default settings.
+Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
+    s_inst = this;
+    m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
+}
+
+Core::~Core () {
+    m_settings->sync();
 }
 
 void Core::start() {
@@ -35,3 +45,15 @@ void Core::start() {
 }
 
 void Core::stop() { }
+
+QVariant Core::getConfiguration(const QString &p_pth, QVariant p_vrt) const {
+    return m_settings->value(p_pth,p_vrt);
+}
+
+void Core::setConfiguration(const QString &p_pth, const QVariant &p_vrt) {
+    m_settings->setValue(p_pth,p_vrt);
+}
+
+Core * SpeechControl::Core::instance(){
+    return s_inst;
+}

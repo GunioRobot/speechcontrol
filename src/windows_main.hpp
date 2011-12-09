@@ -30,6 +30,7 @@ namespace Ui {
 }
 
 namespace SpeechControl {
+    class User;
     namespace Windows {
         class Main : public QMainWindow {
             Q_OBJECT
@@ -39,6 +40,12 @@ namespace SpeechControl {
 
         private slots:
             void tabChanged(const int& );
+            void on_radioButtonDictation_toggled(bool checked);
+            void on_radioButtonControl_toggled(bool checked);
+            void on_checkBoxAutoStart_toggled(bool checked);
+            void toggleTraining(bool);
+            void buildMenus();
+            void loadUser(const User&);
 
         private:
             Ui::MainWindow* m_ui;
