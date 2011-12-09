@@ -8,6 +8,7 @@ file(GLOB SPCHCNTRL_UIQRESC "ui/*.qrc")
 
 find_package(Qt4 4.7.4 COMPONENTS
   QtCore
+  QtXml
   QtGui
   REQUIRED)
 

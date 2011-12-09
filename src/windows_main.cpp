@@ -24,6 +24,7 @@
 #include "ui_main.h"
 #include "core.hpp"
 #include <QVariant>
+#include <QMenu>
 #include <QMainWindow>
 #include <QMessageBox>
 
@@ -33,6 +34,7 @@ Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->retranslateUi(this);
 
    buildMenus();
+   toggleTraining(!User::hasAny());
    connect(m_ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
 }
 
@@ -66,12 +68,31 @@ void Main::on_checkBoxAutoStart_toggled(bool checked)
 
 void Main::toggleTraining(bool active)
 {
+    m_ui->tabTraining->setVisible(active);
+    m_ui->tabTraining->setEnabled(active);
     m_ui->progressBarVolume->setEnabled(active);
     m_ui->progressBarAccurate->setEnabled(active);
 }
 
 void Main::buildMenus()
 {
+    QMenu* l_menu = new QMenu(this);
+    l_menu->addAction(QIcon::fromTheme("document-open"),"Open..",this,SLOT(doSwitchBooks(void)),QKeySequence::Open);
+    l_menu->addAction(QIcon::fromTheme("document-save"),"Save..",this,SLOT(doSaveProgress(void)),QKeySequence::Save);
+    l_menu->addAction(QIcon::fromTheme("document-save-as"),"Save As..",this,SLOT(doSaveProgressAs(void)),QKeySequence::SaveAs);
+    m_ui->pushButtonBooks->setMenu(l_menu);
+}
+
+void Main::doSwitchBooks() {
+
+}
+
+void Main::doSaveProgress() {
+
+}
+
+void Main::doSaveProgressAs() {
+
 }
 
 void Main::loadUser(const User &p_user)

@@ -27,6 +27,7 @@
 class QFile;
 class QUrl;
 class QUuid;
+class QDomDocument;
 
 namespace SpeechControl {
     class User : public QObject {
@@ -40,9 +41,18 @@ namespace SpeechControl {
         static User* loadFromUuid(QUuid& );
 
     signals:
+        void loaded();
+        void saved();
 
     public slots:
+        void save();
+        void load(QUrl&);
+        void load(QUuid&);
+        static const bool hasAny();
 
+    private:
+        void load(QFile&);
+        QDomDocument* m_dom;
     };
 }
 

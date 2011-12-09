@@ -46,6 +46,9 @@ namespace SpeechControl {
             void toggleTraining(bool);
             void buildMenus();
             void loadUser(const User&);
+            void doSwitchBooks();
+            void doSaveProgress();
+            void doSaveProgressAs();
 
         private:
             Ui::MainWindow* m_ui;
