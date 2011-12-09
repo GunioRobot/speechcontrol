@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="logo">
+    <file alias="sii">SIIbutton.png</file>
+    <file alias="sc">sc.png</file>
+  </qresource>
+</RCC>

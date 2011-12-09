@@ -20,7 +20,11 @@
  */
 
 #include "core.hpp"
+#include <QApplication>
 
 int main( int argc, char** argv ) {
-  return 0;
+    QApplication l_app(argc,argv);
+    SpeechControl::Core* m_core = new SpeechControl::Core;
+    m_core->start();
+    return l_app.exec();
 }

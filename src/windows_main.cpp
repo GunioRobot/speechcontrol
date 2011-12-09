@@ -18,37 +18,30 @@
  * Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-
-
-#ifndef CORE_HPP
-#define CORE_HPP
-
-#include <QObject>
-
-class QVariant;
+ 
+#include "windows_main.hpp"
+#include "ui_main.h"
+#include <QMainWindow>
 
 namespace SpeechControl {
-  struct Core;
+    namespace Windows {
+        Main::Main() : m_ui(new Ui::MainWindow) {
+           m_ui->setupUi(this);
+           m_ui->retranslateUi(this);
 
-  class Core : public QObject {
-    Q_OBJECT
-    Q_DISABLE_COPY(Core)
+           connect(m_ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
+           m_ui->tabWidget->setCurrentIndex(0);
+        }
 
-  signals:
-    void started();
-    void stopped();
+        void Main::tabChanged(const int& p_index){
+            switch (p_index){
+                case 0:
+                break;
+            }
+        }
 
-  public:
-    Core();
-    QVariant getConfiguration(const QString&, QVariant&) const;
-    void setConfiguration(const QString&, const QVariant&);
-    static Core* instance();
-
-  public slots:
-    void start();
-    void stop();
-    
-  };
+        Main::~Main() {
+            delete m_ui;
+        }
+    }
 }
-
-#endif // CORE_HPP

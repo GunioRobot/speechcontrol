@@ -20,6 +20,18 @@
  */
 
 #include "core.hpp"
+#include "windows_main.hpp"
+#include <QApplication>
 
 using namespace SpeechControl;
 using SpeechControl::Core;
+
+Core::Core() : QObject(QApplication::instance()){
+}
+
+void Core::start() {
+    Windows::Main* m_mw = new Windows::Main;
+    m_mw->show();
+}
+
+void Core::stop() { }
