@@ -20,9 +20,8 @@
  */
 
 #include "microphone.hpp"
-#include <phonon/AudioCaptureDevice>
 
-using namespace SpeechControl;
+using SpeechControl::Microphone;
 
 Microphone::Microphone(QObject *parent) :
     QObject(parent)
