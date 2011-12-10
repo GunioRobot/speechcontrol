@@ -30,6 +30,7 @@ class QDomElement;
 class QUuid;
 
 namespace SpeechControl {
+    class User;
     class Phrase;
     class Session;
 
@@ -40,29 +41,33 @@ namespace SpeechControl {
         Q_OBJECT
 
     public:
-        explicit Phrase(QObject* parent = 0);
-        Phrase(const QUuid&, const QFile& );
         virtual ~Phrase();
         Session* parentSession();
         QUuid uuid();
         QFile* audio();
+        static Phrase* create(const Session*, const QDomElement* );
 
     private:
-        QDomElement* m_elem;
+        explicit Phrase(QObject* parent = 0);
+        const QDomElement* m_elem;
+        const Session* m_sess;
     };
 
     class Session : public QObject {
         Q_OBJECT
+        Q_DISABLE_COPY(Session)
     public:
-        explicit Session(QObject *parent = 0);
         virtual ~Session();
         PhraseList phrases() const;
         Phrase* phrase(const QUuid&) const;
         void addPhrase(const Phrase&);
         operator<<(const Phrase&);
         operator<<(const PhraseList&);
+        static Session* create(const User*);
 
     private:
+        explicit Session(QObject *parent = 0);
+        User* m_usr;
         QDomDocument* m_dom;
         PhraseList m_phrsLst;
     };
