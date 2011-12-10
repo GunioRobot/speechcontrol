@@ -24,21 +24,28 @@
 
 #include <QObject>
 
-class QFile;
 class QUrl;
+class QFile;
 class QUuid;
 class QDomDocument;
 
 namespace SpeechControl {
+    class User;
+    class Session;
+    class SessionList;
+
     class User : public QObject {
         Q_OBJECT
 
     public:
         explicit User(QObject *parent = 0);
         virtual ~User();
+        SessionList sessions() const;
+        Session* createSession();
         static User* loadFromString(QFile& );
         static User* loadFromUrl(QUrl&);
         static User* loadFromUuid(QUuid& );
+        static const bool hasAny();
 
     signals:
         void loaded();
@@ -48,7 +55,6 @@ namespace SpeechControl {
         void save();
         void load(QUrl&);
         void load(QUuid&);
-        static const bool hasAny();
 
     private:
         void load(QFile&);

@@ -28,6 +28,7 @@
 class QDomDocument;
 class QDomElement;
 class QUuid;
+class QFile;
 
 namespace SpeechControl {
     class User;
@@ -61,8 +62,8 @@ namespace SpeechControl {
         PhraseList phrases() const;
         Phrase* phrase(const QUuid&) const;
         void addPhrase(const Phrase&);
-        operator<<(const Phrase&);
-        operator<<(const PhraseList&);
+        Session& operator<<(const Phrase&);
+        Session& operator<<(const PhraseList&);
         static Session* create(const User*);
 
     private:
