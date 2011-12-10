@@ -49,6 +49,14 @@ namespace SpeechControl {
             void doSwitchBooks();
             void doSaveProgress();
             void doSaveProgressAs();
+            void doRestoreBackup();
+            void doMakeBackup();
+            void doShowBackups();
+            void doSwitchUsers();
+            void doCreateUserWizard();
+            void doAddWord();
+            void doRemoveWord();
+            void doViewWord();
 
             void on_pushButtonTestMic_clicked();
 

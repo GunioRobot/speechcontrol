@@ -38,6 +38,9 @@ Main::Main() : m_ui(new Ui::MainWindow) {
    buildMenus();
    toggleTraining(!User::hasAny());
    connect(m_ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
+   connect(m_ui->pushButtonBackup,SIGNAL(clicked()),this,SLOT(doMakeBackup()));
+   connect(m_ui->pushButtonBooks,SIGNAL(clicked()),this,SLOT(doSwitchBooks()));
+   connect(m_ui->pushButtonUsers,SIGNAL(clicked()),this,SLOT(doSwitchUsers()));
 }
 
 void Main::on_radioButtonDictation_toggled(bool checked) {
@@ -78,24 +81,52 @@ void Main::toggleTraining(bool active)
 
 void Main::buildMenus()
 {
-    QMenu* l_menu = new QMenu(this);
-    l_menu->addAction(QIcon::fromTheme("document-open"),"Open..",this,SLOT(doSwitchBooks(void)),QKeySequence::Open);
-    l_menu->addAction(QIcon::fromTheme("document-save"),"Save..",this,SLOT(doSaveProgress(void)),QKeySequence::Save);
-    l_menu->addAction(QIcon::fromTheme("document-save-as"),"Save As..",this,SLOT(doSaveProgressAs(void)),QKeySequence::SaveAs);
-    m_ui->pushButtonBooks->setMenu(l_menu);
+    QMenu* l_menuBooks = new QMenu(this);
+    QMenu* l_menuBackup = new QMenu(this);
+    QMenu* l_menuUsers = new QMenu(this);
+    QMenu* l_menuDictionary = new QMenu(this);
+
+    l_menuBooks->addAction(QIcon::fromTheme("document-open"),"Open..",this,SLOT(doSwitchBooks(void)),QKeySequence::Open);
+    l_menuBooks->addAction(QIcon::fromTheme("document-save"),"Save",this,SLOT(doSaveProgress(void)),QKeySequence::Save);
+    l_menuBooks->addAction(QIcon::fromTheme("document-save-as"),"Save As..",this,SLOT(doSaveProgressAs(void)),QKeySequence::SaveAs);
+
+    l_menuBackup->addAction(QIcon::fromTheme("archive-extract"),"Restore",this,SLOT(doRestoreBackup(void)));
+    l_menuBackup->addAction(QIcon::fromTheme("archive-insert"),"Backup",this,SLOT(doMakeBackup(void)));
+    l_menuBackup->addSeparator();
+    l_menuBackup->addAction(QIcon::fromTheme("document-preview-archive"),"Manager..",this,SLOT(doShowBackups(void)));
+
+    l_menuUsers->addAction(QIcon::fromTheme("system-switch-user"),"Switch..",this,SLOT(doSwitchUsers(void)));
+    l_menuUsers->addSeparator();
+    l_menuUsers->addAction(QIcon::fromTheme("user-group-properties"),"Manage Users",this,SLOT(doCreateUserWizard(void)));
+
+    l_menuDictionary->addAction(QIcon::fromTheme("list-add"),"Add Words",this,SLOT(doAddWord(void)));
+    l_menuDictionary->addAction(QIcon::fromTheme("list-remove"),"Remove Words",this,SLOT(doRemoveWord(void)));
+    l_menuDictionary->addSeparator();
+    l_menuDictionary->addAction(QIcon::fromTheme("view-list-details"),"View Dictionaries",this,SLOT(doViewWord(void)));
+
+    m_ui->pushButtonBooks->setMenu(l_menuBooks);
+    m_ui->pushButtonBackup->setMenu(l_menuBackup);
+    m_ui->pushButtonDicts->setMenu(l_menuDictionary);
+    m_ui->pushButtonUsers->setMenu(l_menuUsers);
 }
 
 void Main::doSwitchBooks() {
 
 }
-
 void Main::doSaveProgress() {
 
 }
-
 void Main::doSaveProgressAs() {
 
 }
+void Main::doRestoreBackup() { }
+void Main::doMakeBackup() { }
+void Main::doShowBackups() { }
+void Main::doSwitchUsers() { }
+void Main::doCreateUserWizard() { }
+void Main::doAddWord() { }
+void Main::doRemoveWord() { }
+void Main::doViewWord() { }
 
 void Main::loadUser(const User &p_user)
 {
