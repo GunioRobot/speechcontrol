@@ -20,28 +20,17 @@
  */
 
 #include "user.hpp"
+#include <QtXml>
 #include <QFile>
 #include <QUuid>
 #include <QUrl>
 
 using namespace SpeechControl;
 
-User::User(QObject *parent) : QObject(parent){
-}
-
-User* User::loadFromString(QFile &p_file) {
-}
-
-User* User::loadFromUrl(QUrl &p_url) {
-}
-
-User* User::loadFromUuid(QUuid &p_uuid) {
+User::User(QObject *parent) : QObject(parent), m_dom(new QDomDocument){
 }
 
 void User::save(){
-}
-
-void User::load(QUrl &p_url) {
 }
 
 void User::load(QUuid &p_uuid) {

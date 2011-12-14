@@ -42,9 +42,7 @@ namespace SpeechControl {
         virtual ~User();
         SessionList sessions() const;
         Session* createSession();
-        static User* loadFromString(QFile& );
-        static User* loadFromUrl(QUrl&);
-        static User* loadFromUuid(QUuid& );
+        void load(QUuid&);
         static const bool hasAny();
 
     signals:
@@ -52,12 +50,9 @@ namespace SpeechControl {
         void saved();
 
     public slots:
-        void save();
-        void load(QUrl&);
-        void load(QUuid&);
+        void save();       
 
     private:
-        void load(QFile&);
         QDomDocument* m_dom;
     };
 }
