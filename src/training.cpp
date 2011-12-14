@@ -27,3 +27,18 @@ Session::Session(QObject *parent) :
     QObject(parent)
 {
 }
+
+Session::~Session()
+{
+
+}
+
+Phrase::Phrase(QObject *parent) :
+    QObject(parent)
+{
+}
+
+Phrase::~Phrase()
+{
+
+}

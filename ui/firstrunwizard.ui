@@ -6,12 +6,18 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>434</width>
-    <height>358</height>
+    <width>432</width>
+    <height>356</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Wizard</string>
+  </property>
+  <property name="wizardStyle">
+   <enum>QWizard::ModernStyle</enum>
+  </property>
+  <property name="options">
+   <set>QWizard::ExtendedWatermarkPixmap|QWizard::HaveHelpButton|QWizard::IndependentPages|QWizard::NoBackButtonOnStartPage</set>
   </property>
   <widget class="QWizardPage" name="wizardPageIntroduction">
    <property name="title">
@@ -56,7 +62,7 @@ p, li { white-space: pre-wrap; }
       <x>0</x>
       <y>0</y>
       <width>411</width>
-      <height>201</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="text">
@@ -76,7 +82,7 @@ p, li { white-space: pre-wrap; }
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>200</y>
+      <y>180</y>
       <width>401</width>
       <height>41</height>
      </rect>
@@ -86,7 +92,111 @@ p, li { white-space: pre-wrap; }
     </property>
    </widget>
   </widget>
-  <widget class="QWizardPage" name="wizardPage"/>
+  <widget class="QWizardPage" name="wizardPageConfig">
+   <property name="title">
+    <string>Configuration</string>
+   </property>
+   <property name="subTitle">
+    <string>Dictation, Desktop Control and other features</string>
+   </property>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>0</y>
+      <width>391</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>This page allows you to enable specific features of SpeechControl.
+Click each panel to learn more about each feature.</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QToolBox" name="toolBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>40</y>
+      <width>401</width>
+      <height>181</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="pageDictate">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>401</width>
+       <height>123</height>
+      </rect>
+     </property>
+     <attribute name="label">
+      <string>Dictation</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="pageSpeechControl">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>401</width>
+       <height>123</height>
+      </rect>
+     </property>
+     <attribute name="label">
+      <string>Desktop Control</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QWizardPage" name="wizardPageComplete">
+   <property name="title">
+    <string>Completion</string>
+   </property>
+   <property name="subTitle">
+    <string>SpeechControl is ready to roll.</string>
+   </property>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>60</y>
+      <width>391</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;SpeechControl has been configured for your system.&lt;/span&gt;&lt;br /&gt;After this dialog closes, prerequisties methods will take place and get it working with your system.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCommandLinkButton" name="btnStartTraining">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>140</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start Training</string>
+    </property>
+   </widget>
+  </widget>
  </widget>
  <resources/>
  <connections/>

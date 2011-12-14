@@ -29,11 +29,15 @@ class QVariant;
 class QSettings;
 
 namespace SpeechControl {
+namespace Windows {
+  struct Main;
+}
   struct Core;
 
-  class Core : public QObject {
+  class Core : public QObject {    
     Q_OBJECT
     Q_DISABLE_COPY(Core)
+      friend class Windows::Main;
 
   signals:
     void started();

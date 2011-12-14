@@ -23,11 +23,15 @@
 #include "user.hpp"
 #include "microphone.hpp"
 #include "ui_main.h"
+#include "firstrunwizard.hpp"
 #include "core.hpp"
 #include <QMenu>
 #include <QUuid>
+#include <QDebug>
 #include <QVariant>
 #include <QMainWindow>
+#include <QSettings>
+#include <QFile>
 #include <QMessageBox>
 
 using namespace SpeechControl::Windows;

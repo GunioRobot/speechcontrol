@@ -20,7 +20,10 @@
  */
 
 #include "core.hpp"
+#include "firstrunwizard.hpp"
 #include "windows_main.hpp"
+#include <QFile>
+#include <QDebug>
 #include <QSettings>
 #include <QApplication>
 
@@ -29,7 +32,8 @@ using SpeechControl::Core;
 
 Core* Core::s_inst = 0;
 
-// @todo Generate default settings.
+/// @todo Generate default settings.
+/// @todo Invoke first-run wizard.
 Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     s_inst = this;
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
