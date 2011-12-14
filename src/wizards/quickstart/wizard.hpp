@@ -19,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef WIZARD_HPP
-#define WIZARD_HPP
+#ifndef QS_WIZARD_HPP
+#define QS_WIZARD_HPP
 
 #include <QWizard>
 
@@ -35,11 +35,11 @@ class QuickStart : public QWizard
 {
     Q_OBJECT
     enum Pages {
-        Page_Introduction = 0,
-        Page_ConfigureMicrophone,
-        Page_VoxForgeOptIn,
-        Page_Confirmation,
-        Page_Conclusion
+        IntroductionPage = 0,
+        ConfigureMicrophonePage,
+        VoxForgeOptInPage,
+        ConfirmationPage,
+        ConclusionPage
     };
 
 public:

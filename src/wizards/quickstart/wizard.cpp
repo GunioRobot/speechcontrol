@@ -24,8 +24,6 @@
 
 using namespace SpeechControl::Wizards;
 
-using namespace SpeechControl::Wizards;
-
 QuickStart::QuickStart(QWidget *parent) :
     QWizard(parent),
     ui(new Ui::QuickStartWizard)

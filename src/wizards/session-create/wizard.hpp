@@ -34,6 +34,14 @@ class SessionCreate : public QWizard
 {
     Q_OBJECT
 
+    enum Pages {
+        IntroductionPage = 0,
+        BookSelectionPage,
+        // Adding unique info to the session?
+        //MetadtaInformationPage
+        ConclusionPage
+    };
+
 public:
     explicit SessionCreate(QWidget *parent = 0);
     ~SessionCreate();

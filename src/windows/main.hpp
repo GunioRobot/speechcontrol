@@ -42,8 +42,12 @@ namespace SpeechControl {
             void tabChanged(const int& );
             void on_actionOptions_triggered();
             void on_actionWizardQuickStart_triggered();
-
             void on_actionWizardMic_triggered();
+            void on_actionAboutQt_triggered();
+            void on_actionAbout_SpeechControl_triggered();
+            void on_actionSessionManage_triggered();
+            void on_actionUserManage_triggered();
+            void on_actionBookManage_triggered();
 
         private:
             Ui::MainWindow* m_ui;

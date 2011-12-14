@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QVariant>
 #include <QSettings>
+#include <QMessageBox>
 
 #include "settings.hpp"
 #include "user.hpp"
@@ -31,8 +32,15 @@
 #include "ui_main.h"
 #include "core.hpp"
 #include "windows/main.hpp"
+#include "windows/bookmanager.hpp"
+#include "windows/usermanager.hpp"
+#include "windows/sessionmanager.hpp"
+#include "wizards/micsetup/wizard.hpp"
+#include "wizards/quickstart/wizard.hpp"
 
+using namespace SpeechControl;
 using namespace SpeechControl::Windows;
+
 Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
@@ -57,10 +65,41 @@ void SpeechControl::Windows::Main::on_actionOptions_triggered()
 
 void SpeechControl::Windows::Main::on_actionWizardQuickStart_triggered()
 {
-
+    Wizards::QuickStart* l_wiz = new Wizards::QuickStart(this);
+    l_wiz->exec();
 }
 
 void SpeechControl::Windows::Main::on_actionWizardMic_triggered()
 {
+    Wizards::MicrophoneSetup* l_wiz = new Wizards::MicrophoneSetup(this);
+    l_wiz->exec();
+}
 
+void SpeechControl::Windows::Main::on_actionAboutQt_triggered()
+{
+    QApplication::aboutQt();
+}
+
+/// @todo Implement About dialog using QMessageBox.
+void SpeechControl::Windows::Main::on_actionAbout_SpeechControl_triggered()
+{    
+}
+
+void SpeechControl::Windows::Main::on_actionSessionManage_triggered()
+{
+    SessionManager* l_sessWin = new SessionManager(this);
+    l_sessWin->exec();
+
+}
+
+void SpeechControl::Windows::Main::on_actionUserManage_triggered()
+{
+    UserManager* l_usrWin = new UserManager(this);
+    l_usrWin->exec();
+}
+
+void SpeechControl::Windows::Main::on_actionBookManage_triggered()
+{
+    BookManager* l_bkWin = new BookManager(this);
+    l_bkWin->exec();
 }

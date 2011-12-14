@@ -44,7 +44,6 @@ public:
 private slots:
     void on_tabWidgetWizards_currentChanged(int index);
     void on_buttonBox_accepted();
-
 private:
     Ui::Settings *ui;
 };

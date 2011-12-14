@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>426</width>
-    <height>328</height>
+    <width>424</width>
+    <height>326</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,9 +20,9 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>5</x>
      <y>295</y>
-     <width>411</width>
+     <width>416</width>
      <height>32</height>
     </rect>
    </property>
@@ -30,15 +30,18 @@
     <enum>Qt::Horizontal</enum>
    </property>
    <property name="standardButtons">
-    <set>QDialogButtonBox::Apply|QDialogButtonBox::Close|QDialogButtonBox::Reset</set>
+    <set>QDialogButtonBox::Close|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+   </property>
+   <property name="centerButtons">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QTabWidget" name="tabWidgetWizards">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>5</x>
      <y>10</y>
-     <width>411</width>
+     <width>416</width>
      <height>286</height>
     </rect>
    </property>
@@ -105,12 +108,15 @@
           <rect>
            <x>5</x>
            <y>20</y>
-           <width>206</width>
-           <height>46</height>
+           <width>261</width>
+           <height>51</height>
           </rect>
          </property>
          <property name="text">
-          <string>TextLabel</string>
+          <string>VoxForge represents the online collection of open source speech recognition acoustic models used by speech recognizers.</string>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
          </property>
         </widget>
         <widget class="QCheckBox" name="checkBoxVoxForge">
@@ -184,52 +190,33 @@
     <attribute name="title">
      <string>Plug-ins</string>
     </attribute>
-    <widget class="QWidget" name="layoutWidget">
+    <widget class="QWidget" name="gridLayoutWidget_3">
      <property name="geometry">
       <rect>
        <x>0</x>
        <y>0</y>
        <width>406</width>
-       <height>273</height>
+       <height>256</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3">
-      <item>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="0" column="0">
        <widget class="QGroupBox" name="groupBox">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
         <property name="minimumSize">
          <size>
-          <width>0</width>
-          <height>150</height>
+          <width>150</width>
+          <height>0</height>
          </size>
         </property>
         <property name="title">
-         <string>Information</string>
+         <string>Description</string>
         </property>
-        <widget class="QLabel" name="label_8">
-         <property name="geometry">
-          <rect>
-           <x>3</x>
-           <y>16</y>
-           <width>361</width>
-           <height>71</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>TextLabel</string>
-         </property>
-        </widget>
        </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item row="1" column="1">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <spacer name="horizontalSpacer_4">
+         <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -242,41 +229,16 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButtonPlgnSettings">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
+         <widget class="QPushButton" name="pushButton_5">
           <property name="text">
-           <string>Settings</string>
+           <string>PushButton</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
-      <item>
-       <widget class="QListWidget" name="listWidgetPlugins">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-       </widget>
+      <item row="0" column="1">
+       <widget class="QListWidget" name="listWidget"/>
       </item>
      </layout>
     </widget>

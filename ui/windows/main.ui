@@ -33,7 +33,7 @@
    <string>SpeechControl</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="res.qrc">
+   <iconset resource="../res.qrc">
     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -170,9 +170,7 @@
     <property name="title">
      <string>Help</string>
     </property>
-    <addaction name="actionVoxForge_Licensing"/>
-    <addaction name="separator"/>
-    <addaction name="actionAbout_Qt"/>
+    <addaction name="actionAboutQt"/>
     <addaction name="actionAbout_SpeechControl"/>
    </widget>
    <widget class="QMenu" name="menuUsers">
@@ -181,8 +179,9 @@
     </property>
     <addaction name="actionSwitch"/>
     <addaction name="actionBackup"/>
-    <addaction name="separator"/>
     <addaction name="actionCreate"/>
+    <addaction name="separator"/>
+    <addaction name="actionUserManage"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -203,10 +202,17 @@
     <property name="title">
      <string>Books</string>
     </property>
-    <addaction name="actionUserImport"/>
-    <addaction name="actionUserExport"/>
+    <widget class="QMenu" name="menuImport">
+     <property name="title">
+      <string>Import</string>
+     </property>
+     <addaction name="actionImportFromFile"/>
+     <addaction name="actionImportFromWeb"/>
+    </widget>
+    <addaction name="menuImport"/>
+    <addaction name="actionBookExport"/>
     <addaction name="separator"/>
-    <addaction name="actionUserManage"/>
+    <addaction name="actionBookManage"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuUsers"/>
@@ -223,19 +229,14 @@
     <string>Switches the current session in use.</string>
    </property>
   </action>
-  <action name="actionAbout_Qt">
+  <action name="actionAboutQt">
    <property name="text">
-    <string>About Qt</string>
+    <string>About Qt..</string>
    </property>
   </action>
   <action name="actionAbout_SpeechControl">
    <property name="text">
-    <string>About SpeechControl</string>
-   </property>
-  </action>
-  <action name="actionVoxForge_Licensing">
-   <property name="text">
-    <string>VoxForge Licensing...</string>
+    <string>About SpeechControl..</string>
    </property>
   </action>
   <action name="actionCreate">
@@ -295,25 +296,35 @@
     <string>Manage</string>
    </property>
   </action>
-  <action name="actionUserImport">
-   <property name="text">
-    <string>Import</string>
-   </property>
-  </action>
-  <action name="actionUserExport">
+  <action name="actionBookExport">
    <property name="text">
     <string>Export</string>
    </property>
   </action>
-  <action name="actionUserManage">
+  <action name="actionBookManage">
    <property name="text">
     <string>Manage</string>
+   </property>
+  </action>
+  <action name="actionImportFromFile">
+   <property name="text">
+    <string>From File..</string>
+   </property>
+  </action>
+  <action name="actionImportFromWeb">
+   <property name="text">
+    <string>From Web..</string>
+   </property>
+  </action>
+  <action name="actionUserManage">
+   <property name="text">
+    <string>Manage..</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="2" margin="2"/>
  <resources>
-  <include location="res.qrc"/>
+  <include location="../res.qrc"/>
  </resources>
  <connections>
   <connection>
