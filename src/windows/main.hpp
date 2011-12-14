@@ -40,25 +40,10 @@ namespace SpeechControl {
 
         private slots:
             void tabChanged(const int& );
-            void on_radioButtonDictation_toggled(bool checked);
-            void on_radioButtonControl_toggled(bool checked);
-            void on_checkBoxAutoStart_toggled(bool checked);
-            void toggleTraining(bool);
-            void buildMenus();
-            void loadUser(const User&);
-            void doSwitchBooks();
-            void doSaveProgress();
-            void doSaveProgressAs();
-            void doRestoreBackup();
-            void doMakeBackup();
-            void doShowBackups();
-            void doSwitchUsers();
-            void doCreateUserWizard();
-            void doAddWord();
-            void doRemoveWord();
-            void doViewWord();
+            void on_actionOptions_triggered();
+            void on_actionWizardQuickStart_triggered();
 
-            void on_pushButtonTestMic_clicked();
+            void on_actionWizardMic_triggered();
 
         private:
             Ui::MainWindow* m_ui;

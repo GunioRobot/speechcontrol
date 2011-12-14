@@ -19,48 +19,25 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef USERMANAGER_HPP
+#define USERMANAGER_HPP
 
-#ifndef CORE_HPP
-#define CORE_HPP
+#include <QDialog>
 
-#include <QObject>
-#include <QVariant>
-
-class QSettings;
-
-namespace SpeechControl {
-namespace Windows {
-  struct Main;
+namespace Ui {
+    class UserManager;
 }
-  struct Core;
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+class UserManager : public QDialog
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
 
-  signals:
-    void started();
-    void stopped();
+public:
+    explicit UserManager(QWidget *parent = 0);
+    ~UserManager();
 
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
+private:
+    Ui::UserManager *ui;
+};
 
-  public slots:
-    void start();
-    void stop();
-
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
-}
-
-#endif // CORE_HPP
+#endif // USERMANAGER_HPP

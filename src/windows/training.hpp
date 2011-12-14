@@ -19,48 +19,25 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef TRAINING_HPP
+#define TRAINING_HPP
 
-#ifndef CORE_HPP
-#define CORE_HPP
+#include <QDialog>
 
-#include <QObject>
-#include <QVariant>
-
-class QSettings;
-
-namespace SpeechControl {
-namespace Windows {
-  struct Main;
+namespace Ui {
+    class Training;
 }
-  struct Core;
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+class Training : public QDialog
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
 
-  signals:
-    void started();
-    void stopped();
+public:
+    explicit Training(QWidget *parent = 0);
+    ~Training();
 
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
+private:
+    Ui::Training *ui;
+};
 
-  public slots:
-    void start();
-    void stop();
-
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
-}
-
-#endif // CORE_HPP
+#endif // TRAINING_HPP

@@ -19,48 +19,39 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef WIZARD_HPP
+#define WIZARD_HPP
 
-#ifndef CORE_HPP
-#define CORE_HPP
+#include <QWizard>
 
-#include <QObject>
-#include <QVariant>
+namespace Ui {
+    class VoxForge;
+}
 
-class QSettings;
 
 namespace SpeechControl {
-namespace Windows {
-  struct Main;
-}
-  struct Core;
+namespace Wizards {
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+class VoxForge : public QWizard
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
+    enum {
+        IntroductionPage = 0,
+        SessionSelectionPage,
+        UserInformationPage,
+        UploadDestinationPage,
+        LicenseConfirmationPage,
+        UploadPage,
+        ConclusionPage
+    };
 
-  signals:
-    void started();
-    void stopped();
+public:
+    explicit VoxForge(QWidget *parent = 0);
+    ~VoxForge();
 
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
+private:
+    Ui::VoxForge *ui;
+};
 
-  public slots:
-    void start();
-    void stop();
-
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
-}
-
-#endif // CORE_HPP
+}}
+#endif // WIZARD_HPP

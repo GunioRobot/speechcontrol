@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VoxForgeOptIn</class>
+ <widget class="QWizardPage" name="VoxForgeOptIn">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>398</width>
+    <height>298</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>WizardPage</string>
+  </property>
+  <property name="title">
+   <string>Opt-In to VoxForge</string>
+  </property>
+  <property name="subTitle">
+   <string>Choose to submit your work to &lt;a href=&quot;http://voxforge.org&quot;&gt;VoxForge&lt;/a&gt;.</string>
+  </property>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

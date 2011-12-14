@@ -19,48 +19,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "wizards/quickstart/optin.hpp"
+#include "ui_optin.h"
 
-#ifndef CORE_HPP
-#define CORE_HPP
+using namespace SpeechControl::Wizards::Pages;
 
-#include <QObject>
-#include <QVariant>
-
-class QSettings;
-
-namespace SpeechControl {
-namespace Windows {
-  struct Main;
-}
-  struct Core;
-
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
-    Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
-
-  signals:
-    void started();
-    void stopped();
-
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
-
-  public slots:
-    void start();
-    void stop();
-
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
+VoxForgeOptIn::VoxForgeOptIn(QWidget *parent) :
+    QWizardPage(parent),
+    ui(new Ui::VoxForgeOptIn)
+{
+    ui->setupUi(this);
 }
 
-#endif // CORE_HPP
+VoxForgeOptIn::~VoxForgeOptIn()
+{
+    delete ui;
+}

@@ -19,13 +19,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "core.hpp"
-#include "firstrunwizard.hpp"
-#include "windows_main.hpp"
 #include <QFile>
 #include <QDebug>
 #include <QSettings>
 #include <QApplication>
+
+#include "core.hpp"
+#include "windows/main.hpp"
 
 using namespace SpeechControl;
 using SpeechControl::Core;
@@ -36,7 +36,17 @@ Core* Core::s_inst = 0;
 /// @todo Invoke first-run wizard.
 Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     s_inst = this;
+    QApplication* l_app = qobject_cast<QApplication*>(QApplication::instance());
+    l_app->setApplicationName("SpeechControl");
+    l_app->setOrganizationDomain("thesii.org");
+    l_app->setOrganizationName("Synthetic Intellect Institute");
+    l_app->setApplicationVersion("0.1b");
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
+    QFile* l_settings = new QFile(m_settings->fileName());
+    if (!l_settings->exists())
+        l_settings->write("");
+    qDebug() << l_settings->fileName() << l_settings->exists();
+    l_settings->close();
 }
 
 Core::~Core () {
@@ -50,11 +60,11 @@ void Core::start() {
 
 void Core::stop() { }
 
-QVariant Core::getConfiguration(const QString &p_pth, QVariant p_vrt) const {
+QVariant Core::getConfig(const QString &p_pth, QVariant p_vrt) const {
     return m_settings->value(p_pth,p_vrt);
 }
 
-void Core::setConfiguration(const QString &p_pth, const QVariant &p_vrt) {
+void Core::setConfig(const QString &p_pth, const QVariant &p_vrt) {
     m_settings->setValue(p_pth,p_vrt);
 }
 

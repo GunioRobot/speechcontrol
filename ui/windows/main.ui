@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <author>Jacky Alcine &lt;jacky.alcine@thesii.org&gt;</author>
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>428</width>
+    <height>318</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>428</width>
+    <height>318</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>428</width>
+    <height>318</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>SpeechControl</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="res.qrc">
+    <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>428</width>
+     <height>318</height>
+    </size>
+   </property>
+   <widget class="QTabWidget" name="tabWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>421</width>
+      <height>265</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::West</enum>
+    </property>
+    <property name="tabShape">
+     <enum>QTabWidget::Triangular</enum>
+    </property>
+    <property name="currentIndex">
+     <number>0</number>
+    </property>
+    <property name="elideMode">
+     <enum>Qt::ElideMiddle</enum>
+    </property>
+    <property name="documentMode">
+     <bool>true</bool>
+    </property>
+    <property name="movable">
+     <bool>false</bool>
+    </property>
+    <widget class="QWidget" name="tabHome">
+     <property name="minimumSize">
+      <size>
+       <width>429</width>
+       <height>291</height>
+      </size>
+     </property>
+     <attribute name="title">
+      <string>Home</string>
+     </attribute>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>8</x>
+        <y>4</y>
+        <width>385</width>
+        <height>193</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TODO: Determine content to go here.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tabUser">
+     <attribute name="title">
+      <string>My Training Info</string>
+     </attribute>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>4</x>
+        <y>8</y>
+        <width>389</width>
+        <height>245</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TODO: Determine content to go here.</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tabVoxForge">
+     <attribute name="title">
+      <string>VoxForge</string>
+     </attribute>
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>4</x>
+        <y>8</y>
+        <width>389</width>
+        <height>257</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>TODO: Determine content to go here.</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>428</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionWizardMic"/>
+    <addaction name="actionWizardQuickStart"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionVoxForge_Licensing"/>
+    <addaction name="separator"/>
+    <addaction name="actionAbout_Qt"/>
+    <addaction name="actionAbout_SpeechControl"/>
+   </widget>
+   <widget class="QMenu" name="menuUsers">
+    <property name="title">
+     <string>Users</string>
+    </property>
+    <addaction name="actionSwitch"/>
+    <addaction name="actionBackup"/>
+    <addaction name="separator"/>
+    <addaction name="actionCreate"/>
+   </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionOptions"/>
+   </widget>
+   <widget class="QMenu" name="menuSessions">
+    <property name="title">
+     <string>Sessions</string>
+    </property>
+    <addaction name="actionSessionCreate"/>
+    <addaction name="actionSessionResume"/>
+    <addaction name="separator"/>
+    <addaction name="actionSessionManage"/>
+   </widget>
+   <widget class="QMenu" name="menuBooks">
+    <property name="title">
+     <string>Books</string>
+    </property>
+    <addaction name="actionUserImport"/>
+    <addaction name="actionUserExport"/>
+    <addaction name="separator"/>
+    <addaction name="actionUserManage"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuUsers"/>
+   <addaction name="menuSessions"/>
+   <addaction name="menuBooks"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <action name="actionSwitch">
+   <property name="text">
+    <string>Switch</string>
+   </property>
+   <property name="statusTip">
+    <string>Switches the current session in use.</string>
+   </property>
+  </action>
+  <action name="actionAbout_Qt">
+   <property name="text">
+    <string>About Qt</string>
+   </property>
+  </action>
+  <action name="actionAbout_SpeechControl">
+   <property name="text">
+    <string>About SpeechControl</string>
+   </property>
+  </action>
+  <action name="actionVoxForge_Licensing">
+   <property name="text">
+    <string>VoxForge Licensing...</string>
+   </property>
+  </action>
+  <action name="actionCreate">
+   <property name="text">
+    <string>Create</string>
+   </property>
+  </action>
+  <action name="actionBackup">
+   <property name="text">
+    <string>Backup</string>
+   </property>
+   <property name="statusTip">
+    <string>Opens the backup wizard.</string>
+   </property>
+  </action>
+  <action name="actionOptions">
+   <property name="text">
+    <string>Options..</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="statusTip">
+    <string>Exits SpeechControl.</string>
+   </property>
+  </action>
+  <action name="actionWizardMic">
+   <property name="text">
+    <string>Setup Microphone...</string>
+   </property>
+   <property name="statusTip">
+    <string>Begin the microphone configuration wizard.</string>
+   </property>
+  </action>
+  <action name="actionWizardQuickStart">
+   <property name="text">
+    <string>Quick Start</string>
+   </property>
+   <property name="statusTip">
+    <string>Begins the quick setup wizard for SpeechControl.</string>
+   </property>
+  </action>
+  <action name="actionSessionCreate">
+   <property name="text">
+    <string>Create</string>
+   </property>
+  </action>
+  <action name="actionSessionResume">
+   <property name="text">
+    <string>Resume</string>
+   </property>
+  </action>
+  <action name="actionSessionManage">
+   <property name="text">
+    <string>Manage</string>
+   </property>
+  </action>
+  <action name="actionUserImport">
+   <property name="text">
+    <string>Import</string>
+   </property>
+  </action>
+  <action name="actionUserExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
+  <action name="actionUserManage">
+   <property name="text">
+    <string>Manage</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="2" margin="2"/>
+ <resources>
+  <include location="res.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>actionExit</sender>
+   <signal>activated()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>213</x>
+     <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>4</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>4</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>false</bool>
+  </property>
+ </designerdata>
+</ui>

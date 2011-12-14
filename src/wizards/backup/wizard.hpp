@@ -19,48 +19,45 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef WIZARD_HPP
+#define WIZARD_HPP
 
-#ifndef CORE_HPP
-#define CORE_HPP
+#include <QWizard>
 
-#include <QObject>
-#include <QVariant>
-
-class QSettings;
+namespace Ui {
+    class Backup;
+}
 
 namespace SpeechControl {
-namespace Windows {
-  struct Main;
-}
-  struct Core;
+namespace Wizards {
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+class Backup : public QWizard
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
+    enum Pages {
+        IntroductionPage = 0,
+        BackupModePage,
 
-  signals:
-    void started();
-    void stopped();
+        // for backups
+        SessionSelectionPage,
+        MetadataAdditionPage,
+        BackupInvokationPage,
 
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
+        // for restores
+        BackupSelectionPage,
+        ConfirmationPage,
+        RestoreInvokationPage,
 
-  public slots:
-    void start();
-    void stop();
+        ConclusionPage
+    };
 
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
-}
+public:
+    explicit Backup(QWidget *parent = 0);
+    ~Backup();
 
-#endif // CORE_HPP
+private:
+    Ui::Backup *ui;
+};
+
+}}
+#endif // WIZARD_HPP

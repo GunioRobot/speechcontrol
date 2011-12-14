@@ -20,6 +20,7 @@
  */
 
 #include "microphone.hpp"
+#include <QUuid>
 
 using SpeechControl::Microphone;
 
@@ -28,6 +29,7 @@ Microphone::Microphone(QObject *parent) :
 {
 }
 
+/// @todo Obtain a Microphone from a listing of mics by linking them by a UUID.
 Microphone * Microphone::getMicrophone(const QUuid &)
 {
 }

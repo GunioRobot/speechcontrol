@@ -23,6 +23,7 @@
 #define USER_HPP
 
 #include <QObject>
+#include "training.hpp"
 
 class QUrl;
 class QFile;
@@ -31,19 +32,22 @@ class QDomDocument;
 
 namespace SpeechControl {
     class User;
-    class Session;
-    class SessionList;
 
+    /// @todo Create a global listing
     class User : public QObject {
         Q_OBJECT
+        Q_DISABLE_COPY(User)
 
     public:
         explicit User(QObject *parent = 0);
         virtual ~User();
         SessionList sessions() const;
         Session* createSession();
-        void load(QUuid&);
+        void load(const QUuid&);
+        const QUuid uuid() const;
         static const bool hasAny();
+        static User* obtain(const QUuid&);
+        static User* create();
 
     signals:
         void loaded();
@@ -53,7 +57,10 @@ namespace SpeechControl {
         void save();       
 
     private:
+        User(const QUuid&, QObject* parent = 0);
+        static QUrl path(const QUuid&);
         QDomDocument* m_dom;
+        SessionList m_sessLst;
     };
 }
 

@@ -23,11 +23,13 @@
 #define TRAINING_HPP
 
 #include <QList>
+#include <QMap>
 #include <QObject>
 
 class QDomDocument;
 class QDomElement;
 class QUuid;
+class QUrl;
 class QFile;
 
 namespace SpeechControl {
@@ -35,40 +37,52 @@ namespace SpeechControl {
     class Phrase;
     class Session;
 
-    typedef QList<Phrase*> PhraseList;
+    typedef QMap<QUuid, Phrase*> PhraseList;
     typedef QList<Session*> SessionList;
 
     class Phrase : public QObject {
         Q_OBJECT
+        Q_DISABLE_COPY(Phrase)
+        friend class Session;
 
     public:
         virtual ~Phrase();
-        Session* parentSession();
-        QUuid uuid();
-        QFile* audio();
-        static Phrase* create(const Session*, const QDomElement* );
+        Session* parentSession() const;
+        QUuid uuid() const;
+        QFile* audio() const;
+        static Phrase* create(Session*);
 
     private:
-        explicit Phrase(QObject* parent = 0);
-        const QDomElement* m_elem;
-        const Session* m_sess;
+        explicit Phrase(Session*, QDomElement* );
+        QDomElement* m_elem;
+        Session* m_sess;
     };
 
     class Session : public QObject {
         Q_OBJECT
         Q_DISABLE_COPY(Session)
+        friend class Phrase;
+        friend class User;
+
     public:
         virtual ~Session();
         PhraseList phrases() const;
         Phrase* phrase(const QUuid&) const;
-        void addPhrase(const Phrase&);
-        Session& operator<<(const Phrase&);
-        Session& operator<<(const PhraseList&);
+        void load(const QUuid&);
+        void save();
+        void addPhrase(Phrase*);
+        const QUuid uuid() const;
+        User* user() const;
+        Session& operator<<(Phrase*);
+        Session& operator<<(PhraseList&);
         static Session* create(const User*);
+        static Session* obtain(const QUuid&);
+        static const bool exists(const QUuid&);
 
     private:
-        explicit Session(QObject *parent = 0);
-        User* m_usr;
+        Session(const QUuid& );
+        static QUrl getPath(const QUuid&);
+        QUrl audioPath();
         QDomDocument* m_dom;
         PhraseList m_phrsLst;
     };

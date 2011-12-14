@@ -19,29 +19,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "firstrunwizard.hpp"
-#include "ui_firstrunwizard.h"
+#include "wizards/voxforge/wizard.hpp"
+#include "ui_voxforge.h"
 
-using SpeechControl::Windows::FirstRunWizard;
+using namespace SpeechControl::Wizards;
 
-FirstRunWizard::FirstRunWizard(QWidget *parent) :
+VoxForge::VoxForge(QWidget *parent) :
     QWizard(parent),
-    ui(new Ui::FirstRunWizard)
+    ui(new Ui::VoxForge)
 {
     ui->setupUi(this);
 }
 
-FirstRunWizard::~FirstRunWizard()
+VoxForge::~VoxForge()
 {
     delete ui;
-}
-
-void FirstRunWizard::on_btnStartTraining_clicked()
-{
-
-}
-
-void SpeechControl::Windows::FirstRunWizard::on_FirstRunWizard_finished(int result)
-{
-
 }

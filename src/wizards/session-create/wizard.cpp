@@ -19,35 +19,19 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef FIRSTRUNWIZARD_HPP
-#define FIRSTRUNWIZARD_HPP
+#include "wizards/session-create/wizard.hpp"
+#include "ui_session-create.h"
 
-#include <QWizard>
+using namespace SpeechControl::Wizards;
 
-namespace Ui {
-    class FirstRunWizard;
+SessionCreate::SessionCreate(QWidget *parent) :
+    QWizard(parent),
+    ui(new Ui::SessionCreate)
+{
+    ui->setupUi(this);
 }
 
-namespace SpeechControl {
-namespace Windows {
-
-class FirstRunWizard : public QWizard
+SessionCreate::~SessionCreate()
 {
-    Q_OBJECT
-
-public:
-    explicit FirstRunWizard(QWidget *parent = 0);
-    ~FirstRunWizard();
-
-private slots:
-    void on_btnStartTraining_clicked();
-
-    void on_FirstRunWizard_finished(int result);
-
-private:
-    Ui::FirstRunWizard *ui;
-};
-
-}}
-
-#endif // FIRSTRUNWIZARD_HPP
+    delete ui;
+}

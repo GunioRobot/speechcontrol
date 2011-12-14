@@ -19,48 +19,17 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "windows/bookmanager.hpp"
+#include "ui_bookmanager.h"
 
-#ifndef CORE_HPP
-#define CORE_HPP
-
-#include <QObject>
-#include <QVariant>
-
-class QSettings;
-
-namespace SpeechControl {
-namespace Windows {
-  struct Main;
-}
-  struct Core;
-
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
-    Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
-
-  signals:
-    void started();
-    void stopped();
-
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
-
-  public slots:
-    void start();
-    void stop();
-
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
+BookManager::BookManager(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::BookManager)
+{
+    ui->setupUi(this);
 }
 
-#endif // CORE_HPP
+BookManager::~BookManager()
+{
+    delete ui;
+}

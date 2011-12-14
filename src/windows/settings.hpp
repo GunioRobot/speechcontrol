@@ -20,47 +20,35 @@
  */
 
 
-#ifndef CORE_HPP
-#define CORE_HPP
+#ifndef SETTINGS_HPP
+#define SETTINGS_HPP
 
-#include <QObject>
-#include <QVariant>
+#include <QDialog>
 
-class QSettings;
+namespace Ui {
+    class Settings;
+}
 
 namespace SpeechControl {
 namespace Windows {
-  struct Main;
-}
-  struct Core;
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+
+class Settings : public QDialog
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
 
-  signals:
-    void started();
-    void stopped();
+public:
+    explicit Settings(QWidget *parent = 0);
+    ~Settings();
 
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant(QString::null)) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
+private slots:
+    void on_tabWidgetWizards_currentChanged(int index);
+    void on_buttonBox_accepted();
 
-  public slots:
-    void start();
-    void stop();
+private:
+    Ui::Settings *ui;
+};
 
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
-}
+}}
 
-#endif // CORE_HPP
+#endif // SETTINGS_HPP
