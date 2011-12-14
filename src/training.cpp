@@ -20,6 +20,7 @@
  */
 
 #include "training.hpp"
+#include <QUuid>
 
 using namespace SpeechControl;
 
@@ -41,4 +42,43 @@ Phrase::Phrase(QObject *parent) :
 Phrase::~Phrase()
 {
 
+}
+
+Session * Phrase::parentSession()
+{
+}
+
+QUuid Phrase::uuid()
+{
+}
+
+QFile * Phrase::audio()
+{
+}
+
+Phrase * Phrase::create(const Session *, const QDomElement *)
+{
+}
+
+PhraseList Session::phrases() const
+{
+}
+
+Phrase * Session::phrase(const QUuid &) const
+{
+}
+
+void Session::addPhrase(const Phrase &)
+{
+}
+
+Session & Session::operator <<(const Phrase &)
+{
+}
+Session & Session::operator <<(const PhraseList &)
+{
+}
+
+Session * Session::create(const User *)
+{
 }
