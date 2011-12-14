@@ -1,1 +1,20 @@
- 
+Installing
+=================
+
+1. Building
+Commands for building SpeechControl are boilerplate-like.
+
+$ mkdir build
+$ cd build
+$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr
+$ make
+# make install
+
+After that, you can invoke 'speechcontrol' from the command line.
+
+2. Needed Libraries
+SpeechControl needs Qt and PocketSphinx's development files to build.
+
+$ apt-get install cmake libqt4-dev libpocketsphinx-dev
+
+That'll fix any dependencies.
