@@ -19,7 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/quickstart/optin.hpp"
+#include "wizards/voxforge/optin.hpp"
 #include "ui_optin.h"
 
 using namespace SpeechControl::Wizards::Pages;
