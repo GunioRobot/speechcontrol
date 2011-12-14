@@ -20,6 +20,7 @@
  */
 
 #include "wizards/quickstart/wizard.hpp"
+#include "wizards/quickstart/micsetup.hpp"
 #include "wizards/intro.hpp"
 #include "ui_quickstart.h"
 
@@ -34,6 +35,8 @@ QuickStart::QuickStart(QWidget *parent) :
             new Pages::Introduction((QStringList() << ""
                                        << "This wizard will guide you through the process "
                                      << "of configuring SpeechControl for your needs.").join("")));
+    setPage(QuickStart::ConfigureMicrophonePage,
+            new Wizards::Pages::MicrophoneConfiguration);
 }
 
 QuickStart::~QuickStart()

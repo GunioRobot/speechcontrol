@@ -18,39 +18,38 @@
  * Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef P_MICSETUP_HPP
-#define P_PMICSETUP_HPP
+
+#ifndef MS_MICSELECT_HPP
+#define MS_MICSELECT_HPP
 
 #include <QWizardPage>
 
 namespace Ui {
-    class MicrophoneConfiguration;
+    class MicrophoneSelection;
 }
 
 namespace SpeechControl {
+    class Microphone;
 namespace Wizards {
 namespace Pages {
 
-class MicrophoneConfiguration : public QWizardPage
+class MicrophoneSelection : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    explicit MicrophoneConfiguration(QWidget *parent = 0);
-    ~MicrophoneConfiguration();
+    explicit MicrophoneSelection(QWidget *parent = 0);
+    ~MicrophoneSelection();
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
     virtual bool isComplete();
 
-private slots:
-    void on_pushButton_clicked();
-
 private:
-    Ui::MicrophoneConfiguration *ui;
-    bool m_config;
+    Ui::MicrophoneSelection *ui;
+    bool m_complete;
+    Microphone* m_mic;
 };
 
 }}}
-
-#endif // MICSETUP_HPP
+#endif // MICSELECT_HPP

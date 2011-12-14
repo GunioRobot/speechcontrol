@@ -19,28 +19,44 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/micsetup/wizard.hpp"
+#include "microphone.hpp"
 #include "wizards/micsetup/micselect.hpp"
-#include "wizards/intro.hpp"
-#include "ui_micsetup.h"
+#include "ui_micselect.h"
 
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Wizards::Pages;
+using SpeechControl::Wizards::Pages::MicrophoneSelection;
 
-MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
-    QWizard(parent),
-    ui(new Ui::MicrophoneSetup)
+MicrophoneSelection::MicrophoneSelection(QWidget *parent) :
+    QWizardPage(parent),
+    ui(new Ui::MicrophoneSelection)
 {
     ui->setupUi(this);
-
-    setPage(MicrophoneSetup::IntroductionPage,
-            new Pages::Introduction((QStringList() << ""
-                                     << "This wizard will help you configure your microphone "
-                                     << "for optimal performance in SpeechControl."
-                                     ).join("")));
-    setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
 }
 
-MicrophoneSetup::~MicrophoneSetup()
+MicrophoneSelection::~MicrophoneSelection()
 {
     delete ui;
+}
+
+/// @todo Fill the combo box with all of the mics.
+void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
+{
+    cleanupPage();
+}
+
+bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
+{
+    return ui->progressBarFeedback->isEnabled();
+}
+
+void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
+{
+    ui->comboBoxMicrophones->clear();
+    ui->progressBarFeedback->setValue(0);
+    ui->progressBarFeedback->setFormat("inactive");
+}
+
+bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
+{
+    return m_complete;
 }
