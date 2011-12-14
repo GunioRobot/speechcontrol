@@ -16,7 +16,7 @@ class Introduction : public QWizardPage
     Q_OBJECT
 
 public:
-    explicit Introduction(QWidget *parent = 0);
+    explicit Introduction(const QString&);
     ~Introduction();
 
 private:

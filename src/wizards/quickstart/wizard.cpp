@@ -20,6 +20,7 @@
  */
 
 #include "wizards/quickstart/wizard.hpp"
+#include "wizards/intro.hpp"
 #include "ui_quickstart.h"
 
 using namespace SpeechControl::Wizards;
@@ -29,6 +30,10 @@ QuickStart::QuickStart(QWidget *parent) :
     ui(new Ui::QuickStartWizard)
 {
     ui->setupUi(this);
+    setPage(QuickStart::IntroductionPage,
+            new Pages::Introduction((QStringList() << ""
+                                       << "This wizard will guide you through the process "
+                                     << "of configuring SpeechControl for your needs.").join("")));
 }
 
 QuickStart::~QuickStart()

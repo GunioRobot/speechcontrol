@@ -3,11 +3,12 @@
 
 using namespace SpeechControl::Wizards::Pages;
 
-Introduction::Introduction(QWidget *parent) :
-    QWizardPage(parent),
+Introduction::Introduction(const QString& summary) :
+                           QWizardPage(),
     ui(new Ui::Introduction)
 {
     ui->setupUi(this);
+    ui->labelSummary->setText(summary);
 }
 
 Introduction::~Introduction()
