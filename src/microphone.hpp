@@ -22,11 +22,15 @@
 #ifndef MICROPHONE_HPP
 #define MICROPHONE_HPP
 
+#include <QUuid>
+#include <QObject>
 #include <QObject>
 
-class QUuid;
-
 namespace SpeechControl {
+    class Microphone;
+
+    typedef QList<Microphone*> MicrophoneList;
+
     class Microphone : public QObject {
         Q_OBJECT
         Q_ENUMS(TestResults)
@@ -41,7 +45,8 @@ namespace SpeechControl {
 
         explicit Microphone(QObject *parent = 0);
         static Microphone* getMicrophone(const QUuid& );
-        static Microphone* primaryMicrophone(const QUuid& );
+        static Microphone* primaryMicrophone();
+        static MicrophoneList allMicrophones();
         const bool active() const;
         const QString friendlyName() const;
         const TestResults test();

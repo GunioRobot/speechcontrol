@@ -23,6 +23,7 @@
 #include <QDebug>
 #include <QSettings>
 #include <QApplication>
+#include <QtGStreamer/QGst/Init>
 
 #include "core.hpp"
 #include "windows/main.hpp"
@@ -36,6 +37,7 @@ Core* Core::s_inst = 0;
 /// @todo Invoke first-run wizard.
 Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     s_inst = this;
+    //QGst::init(&argc, &argv);
     QApplication* l_app = qobject_cast<QApplication*>(QApplication::instance());
     l_app->setApplicationName("SpeechControl");
     l_app->setOrganizationDomain("thesii.org");

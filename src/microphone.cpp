@@ -19,9 +19,14 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "microphone.hpp"
 #include <QUuid>
+#include <QtGStreamer/QGst/ChildProxy>
+#include <QtGStreamer/QGst/Element>
+#include <QtGStreamer/QGst/ElementFactory>
+#include <QtGStreamer/QGst/PropertyProbe>
+#include "microphone.hpp"
 
+using namespace SpeechControl;
 using SpeechControl::Microphone;
 
 Microphone::Microphone(QObject *parent) :
@@ -34,7 +39,7 @@ Microphone * Microphone::getMicrophone(const QUuid &)
 {
 }
 
-Microphone * Microphone::primaryMicrophone(const QUuid &)
+Microphone* Microphone::primaryMicrophone()
 {
 }
 
@@ -48,4 +53,23 @@ const QString Microphone::friendlyName() const
 
 const Microphone::TestResults Microphone::test()
 {
+}
+
+MicrophoneList Microphone::allMicrophones()
+{
+    //QGlib::connect(propertyProbe, "probe-needed", this, &Recorder::probeForDevices, QGlib::PassSender);
+    QGst::ElementPtr src = QGst::ElementFactory::make("autoaudiosrc");
+    QGst::PropertyProbePtr propertyProbe;
+    src->setState(QGst::StateReady);
+    QGst::ChildProxyPtr childProxy = src.dynamicCast<QGst::ChildProxy>();
+    QList<QGlib::Value> devices = propertyProbe->probeAndGetValues("device");
+    src->setState(QGst::StateNull);
+    if (propertyProbe && propertyProbe->propertySupportsProbe("device")) {
+        QList<QGlib::Value> devices = propertyProbe->probeAndGetValues("device");
+        Q_FOREACH(const QGlib::Value & device, devices) {
+            propertyProbe->setProperty("device", device);
+            QString deviceName = propertyProbe->property("device-name").toString();
+            qDebug() << deviceName;
+        }
+    }
 }
