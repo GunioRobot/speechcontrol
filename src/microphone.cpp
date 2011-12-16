@@ -20,27 +20,68 @@
  */
 
 #include <QUuid>
-#include <QtGStreamer/QGst/ChildProxy>
-#include <QtGStreamer/QGst/Element>
-#include <QtGStreamer/QGst/ElementFactory>
-#include <QtGStreamer/QGst/PropertyProbe>
+#include <QMessageBox>
 #include "microphone.hpp"
 
 using namespace SpeechControl;
 using SpeechControl::Microphone;
 
-Microphone::Microphone(QObject *parent) :
-    QObject(parent)
+MicrophoneMap Microphone::s_lst;
+QGst::ElementPtr Microphone::s_src;
+QGst::PropertyProbePtr Microphone::s_propProbe;
+QGst::ChildProxyPtr Microphone::s_chldPrxy;
+
+Microphone::Microphone(QGlib::Value device ) :
+    m_device(device), m_uuid(QUuid::createUuid())
 {
+    s_lst.insert(m_uuid,const_cast<Microphone*>(this));
 }
 
-/// @todo Obtain a Microphone from a listing of mics by linking them by a UUID.
-Microphone * Microphone::getMicrophone(const QUuid &)
-{
+/// @todo Have the system detect when new microphones are added + removed to the system.
+void Microphone::init() {
+    //QGlib::connect(propertyProbe, "probe-needed", this, &Recorder::probeForDevices, QGlib::PassSender);
+    findMicrophones();
 }
 
-Microphone* Microphone::primaryMicrophone()
+void Microphone::findMicrophones() {
+    const QString l_audioSrc("autoaudiosrc");
+    s_src = QGst::ElementFactory::make(l_audioSrc);
+    if (s_src) {
+        s_src->setState(QGst::StateReady);
+        s_chldPrxy = s_src.dynamicCast<QGst::ChildProxy>();
+
+        if (s_chldPrxy)
+            s_propProbe = s_chldPrxy->childByIndex(0).dynamicCast<QGst::PropertyProbe>();
+
+        if (s_propProbe){
+            QList<QGlib::Value> devices = s_propProbe->probeAndGetValues("device");
+            s_src->setState(QGst::StateNull);
+
+            if (s_propProbe && s_propProbe->propertySupportsProbe("device")) {
+                Q_FOREACH(QGlib::Value device, devices) {
+                    s_propProbe->setProperty("device", device);
+                    new Microphone(device);
+                }
+            }
+        }
+    } else {
+        qDebug() << tr("Failed to create element \"%1\". Make sure you have "
+                       "gstreamer-plugins-good installed").arg(l_audioSrc);
+    }
+}
+
+Microphone * Microphone::getMicrophone(const QUuid &l_uuid)
 {
+    if (s_lst.contains(l_uuid))
+        return s_lst.value(l_uuid);
+
+    return 0;
+}
+
+/// @todo How do you determine which microphone is the default one?
+Microphone* Microphone::defaultMicrophone()
+{
+
 }
 
 const bool Microphone::active() const
@@ -49,27 +90,19 @@ const bool Microphone::active() const
 
 const QString Microphone::friendlyName() const
 {
+    return m_device.toString();
 }
 
-const Microphone::TestResults Microphone::test()
+const Microphone::TestResults Microphone::test() const
 {
+}
+
+const QUuid Microphone::uuid() const
+{
+    return m_uuid;
 }
 
 MicrophoneList Microphone::allMicrophones()
-{
-    //QGlib::connect(propertyProbe, "probe-needed", this, &Recorder::probeForDevices, QGlib::PassSender);
-    QGst::ElementPtr src = QGst::ElementFactory::make("autoaudiosrc");
-    QGst::PropertyProbePtr propertyProbe;
-    src->setState(QGst::StateReady);
-    QGst::ChildProxyPtr childProxy = src.dynamicCast<QGst::ChildProxy>();
-    QList<QGlib::Value> devices = propertyProbe->probeAndGetValues("device");
-    src->setState(QGst::StateNull);
-    if (propertyProbe && propertyProbe->propertySupportsProbe("device")) {
-        QList<QGlib::Value> devices = propertyProbe->probeAndGetValues("device");
-        Q_FOREACH(const QGlib::Value & device, devices) {
-            propertyProbe->setProperty("device", device);
-            QString deviceName = propertyProbe->property("device-name").toString();
-            qDebug() << deviceName;
-        }
-    }
+{    
+    return s_lst.values();
 }

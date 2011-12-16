@@ -10,6 +10,18 @@
     <height>237</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>334</width>
+    <height>237</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>334</width>
+    <height>237</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
@@ -39,6 +51,9 @@
     </rect>
    </property>
    <layout class="QFormLayout" name="formLayout">
+    <property name="fieldGrowthPolicy">
+     <enum>QFormLayout::ExpandingFieldsGrow</enum>
+    </property>
     <property name="formAlignment">
      <set>Qt::AlignCenter</set>
     </property>

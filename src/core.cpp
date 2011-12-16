@@ -23,9 +23,11 @@
 #include <QDebug>
 #include <QSettings>
 #include <QApplication>
+#include <QMessageBox>
 #include <QtGStreamer/QGst/Init>
 
 #include "core.hpp"
+#include "microphone.hpp"
 #include "windows/main.hpp"
 
 using namespace SpeechControl;
@@ -35,20 +37,34 @@ Core* Core::s_inst = 0;
 
 /// @todo Generate default settings.
 /// @todo Invoke first-run wizard.
+/// @todo Pass command-line arguments to QGst *after* QApplication gets them.
 Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     s_inst = this;
-    //QGst::init(&argc, &argv);
+
+    // start application.    
     QApplication* l_app = qobject_cast<QApplication*>(QApplication::instance());
     l_app->setApplicationName("SpeechControl");
     l_app->setOrganizationDomain("thesii.org");
     l_app->setOrganizationName("Synthetic Intellect Institute");
     l_app->setApplicationVersion("0.1b");
+
+
+    // build settings
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
     QFile* l_settings = new QFile(m_settings->fileName());
     if (!l_settings->exists())
         l_settings->write("");
     qDebug() << l_settings->fileName() << l_settings->exists();
     l_settings->close();
+
+    QGst::init();
+    Microphone::init();
+
+    // check for microphones
+    if (Microphone::allMicrophones().empty()){
+        QMessageBox::information(0,tr("No Microphones Found"),tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
+                                 tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."));
+    }
 }
 
 Core::~Core () {

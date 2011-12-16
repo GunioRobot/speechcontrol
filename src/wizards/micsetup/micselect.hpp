@@ -43,7 +43,10 @@ public:
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
-    virtual bool isComplete();
+    virtual bool isComplete();    
+
+private slots:
+    void on_comboBoxMicrophones_activated(int index);
 
 private:
     Ui::MicrophoneSelection *ui;

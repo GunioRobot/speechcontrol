@@ -33,10 +33,8 @@ MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
     ui->setupUi(this);
 
     setPage(MicrophoneSetup::IntroductionPage,
-            new Pages::Introduction((QStringList() << ""
-                                     << "This wizard will help you configure your microphone "
-                                     << "for optimal performance in SpeechControl."
-                                     ).join("")));
+            new Pages::Introduction(tr("This wizard will help you configure your microphone ") +
+                                     tr("for optimal performance in SpeechControl.")));
     setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
 }
 

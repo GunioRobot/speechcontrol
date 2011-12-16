@@ -89,7 +89,6 @@ void SpeechControl::Windows::Main::on_actionSessionManage_triggered()
 {
     SessionManager* l_sessWin = new SessionManager(this);
     l_sessWin->exec();
-
 }
 
 void SpeechControl::Windows::Main::on_actionUserManage_triggered()

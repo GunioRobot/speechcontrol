@@ -32,9 +32,8 @@ QuickStart::QuickStart(QWidget *parent) :
 {
     ui->setupUi(this);
     setPage(QuickStart::IntroductionPage,
-            new Pages::Introduction((QStringList() << ""
-                                       << "This wizard will guide you through the process "
-                                     << "of configuring SpeechControl for your needs.").join("")));
+            new Pages::Introduction(tr("This wizard will guide you through the process ")+
+                                     tr("of configuring SpeechControl for your needs.")));
     setPage(QuickStart::ConfigureMicrophonePage,
             new Wizards::Pages::MicrophoneConfiguration);
 }

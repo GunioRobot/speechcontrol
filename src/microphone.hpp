@@ -22,17 +22,28 @@
 #ifndef MICROPHONE_HPP
 #define MICROPHONE_HPP
 
+#include <QMap>
+#include <QList>
 #include <QUuid>
 #include <QObject>
-#include <QObject>
+#include <QGlib/Value>
+#include <QGst/ChildProxy>
+#include <QGst/Element>
+#include <QGst/ElementFactory>
+#include <QGst/PropertyProbe>
 
 namespace SpeechControl {
     class Microphone;
 
     typedef QList<Microphone*> MicrophoneList;
+    typedef QMap<QUuid, Microphone*> MicrophoneMap;
 
     class Microphone : public QObject {
+        friend class Core;
         Q_OBJECT
+        Q_PROPERTY(const bool Active READ active)
+        Q_PROPERTY(const QString Name READ friendlyName)
+        Q_PROPERTY(const QUuid Uuid READ uuid)
         Q_ENUMS(TestResults)
 
     public:
@@ -43,16 +54,24 @@ namespace SpeechControl {
             UnknownError
         };
 
-        explicit Microphone(QObject *parent = 0);
+        explicit Microphone(QGlib::Value = 0);
         static Microphone* getMicrophone(const QUuid& );
-        static Microphone* primaryMicrophone();
+        static Microphone* defaultMicrophone();
         static MicrophoneList allMicrophones();
         const bool active() const;
+        const QUuid uuid() const;
         const QString friendlyName() const;
-        const TestResults test();
+        const TestResults test() const;
 
-    public slots:
-
+    private:
+        static void init();
+        static void findMicrophones();
+        static MicrophoneMap s_lst;
+        static QGst::ElementPtr s_src;
+        static QGst::PropertyProbePtr s_propProbe;
+        static QGst::ChildProxyPtr s_chldPrxy;
+        QGlib::Value m_device;
+        QUuid m_uuid;
     };
 }
 
