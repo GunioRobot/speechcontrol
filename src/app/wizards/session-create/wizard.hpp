@@ -19,37 +19,37 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef QS_WIZARD_HPP
-#define QS_WIZARD_HPP
+#ifndef WIZARD_HPP
+#define WIZARD_HPP
 
 #include <QWizard>
 
 namespace Ui {
-    class QuickStartWizard;
+    class SessionCreate;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 
-class QuickStart : public QWizard
+class SessionCreate : public QWizard
 {
     Q_OBJECT
+
     enum Pages {
         IntroductionPage = 0,
-        ConfigureMicrophonePage,
-        VoxForgeOptInPage,
-        ConfirmationPage,
+        BookSelectionPage,
+        // Adding unique info to the session?
+        //MetadtaInformationPage
         ConclusionPage
     };
 
 public:
-    explicit QuickStart(QWidget *parent = 0);
-    ~QuickStart();
+    explicit SessionCreate(QWidget *parent = 0);
+    ~SessionCreate();
 
 private:
-    Ui::QuickStartWizard *ui;
+    Ui::SessionCreate *ui;
 };
-
 }}
 
 #endif // WIZARD_HPP

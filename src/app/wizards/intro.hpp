@@ -19,35 +19,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef MS_WIZARD_HPP
-#define MS_WIZARD_HPP
+#ifndef INTRO_HPP
+#define INTRO_HPP
 
-#include <QWizard>
+#include <QWizardPage>
 
 namespace Ui {
-    class MicrophoneSetup;
+    class Introduction;
 }
 
 namespace SpeechControl {
 namespace Wizards {
+namespace Pages {
 
-class MicrophoneSetup : public QWizard
+class Introduction : public QWizardPage
 {
     Q_OBJECT
-    enum {
-        IntroductionPage = 0,
-        SelectionPage,
-        ConfigurationPage,
-        ConclusionPage
-    };
 
 public:
-    explicit MicrophoneSetup(QWidget *parent = 0);
-    ~MicrophoneSetup();
+    explicit Introduction(const QString&);
+    ~Introduction();
 
 private:
-    Ui::MicrophoneSetup *ui;
+    Ui::Introduction *ui;
 };
 
-}}
-#endif // WIZARD_HPP
+}}}
+
+#endif // INTRO_HPP

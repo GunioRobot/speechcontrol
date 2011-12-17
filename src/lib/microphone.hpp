@@ -26,11 +26,17 @@
 #include <QList>
 #include <QUuid>
 #include <QObject>
+
 #include <QGlib/Value>
-#include <QGst/ChildProxy>
+
+#include <QGst/Bin>
 #include <QGst/Element>
+#include <QGst/Pipeline>
+#include <QGst/ChildProxy>
 #include <QGst/ElementFactory>
 #include <QGst/PropertyProbe>
+#include <QGst/StreamVolume>
+
 
 namespace SpeechControl {
     class Microphone;
@@ -39,39 +45,60 @@ namespace SpeechControl {
     typedef QMap<QUuid, Microphone*> MicrophoneMap;
 
     class Microphone : public QObject {
-        friend class Core;
         Q_OBJECT
         Q_PROPERTY(const bool Active READ active)
         Q_PROPERTY(const QString Name READ friendlyName)
         Q_PROPERTY(const QUuid Uuid READ uuid)
-        Q_ENUMS(TestResults)
+        Q_PROPERTY(const QByteArray* Data READ data)
+        Q_PROPERTY(const double Volume READ volume WRITE setVolume)
+        Q_PROPERTY(const bool Muted READ isMuted WRITE mute)
 
     public:
-        enum TestResults {
-            Failure = 0,
-            CouldntOpen,
-            NothingHeard,
-            UnknownError
+        enum TestResult {
+            Failure = 0x1,
+            CouldntOpen = 0x2,
+            NothingHeard = 0x4,
+            UnknownError = 0x8
         };
+
+        Q_DECLARE_FLAGS(TestResults, TestResult)
 
         explicit Microphone(QGlib::Value = 0);
         static Microphone* getMicrophone(const QUuid& );
         static Microphone* defaultMicrophone();
         static MicrophoneList allMicrophones();
+        static void init();
         const bool active() const;
+        const QByteArray* data() const;
         const QUuid uuid() const;
         const QString friendlyName() const;
         const TestResults test() const;
+        const double volume() const;
+        const bool isMuted() const;
+
+        void setVolume(const double& );
+        void mute(const bool& );
+
+    public slots:
+        void startRecording();
+        void stopRecording();
 
     private:
-        static void init();
         static void findMicrophones();
         static MicrophoneMap s_lst;
         static QGst::ElementPtr s_src;
         static QGst::PropertyProbePtr s_propProbe;
         static QGst::ChildProxyPtr s_chldPrxy;
+
+        void obtain();
+        void release();
         QGlib::Value m_device;
         QUuid m_uuid;
+        QGst::BinPtr m_micSrcBin;
+        QGst::BinPtr m_memoryBin;
+        QGst::PipelinePtr m_pipeline;
+        QGst::StreamVolumePtr m_volume;
+        QByteArray m_data;
     };
 }
 

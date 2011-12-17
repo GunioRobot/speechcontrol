@@ -18,37 +18,23 @@
  * Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef WIZARD_HPP
-#define WIZARD_HPP
 
-#include <QWizard>
+#include "wizards/base.hpp"
+#include "ui_base.h"
 
-namespace Ui {
-    class SessionCreate;
+#include <QDebug>
+#include <QWizardPage>
+
+using SpeechControl::Wizards::WizardBase;
+
+WizardBase::WizardBase(QWidget *parent) :
+    QWizard(parent),
+    ui(new Ui::WizardBase)
+{
+    ui->setupUi(this);
 }
 
-namespace SpeechControl {
-namespace Wizards {
-
-class SessionCreate : public QWizard
+WizardBase::~WizardBase()
 {
-    Q_OBJECT
-
-    enum Pages {
-        IntroductionPage = 0,
-        BookSelectionPage,
-        // Adding unique info to the session?
-        //MetadtaInformationPage
-        ConclusionPage
-    };
-
-public:
-    explicit SessionCreate(QWidget *parent = 0);
-    ~SessionCreate();
-
-private:
-    Ui::SessionCreate *ui;
-};
-}}
-
-#endif // WIZARD_HPP
+    delete ui;
+}

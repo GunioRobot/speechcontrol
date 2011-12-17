@@ -42,7 +42,6 @@ MicrophoneSelection::~MicrophoneSelection()
 /// @todo Fill the combo box with all of the mics.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
 {
-    cleanupPage();
     MicrophoneList l_allMics = Microphone::allMicrophones();
     if (l_allMics.empty()){
         /// @todo Add error saying no mics found.
@@ -60,7 +59,6 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 
 void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
 {
-    m_mic->deleteLater();
     ui->comboBoxMicrophones->clear();
     ui->progressBarFeedback->setValue(0);
     ui->progressBarFeedback->setFormat("inactive");

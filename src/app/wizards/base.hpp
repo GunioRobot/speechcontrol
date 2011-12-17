@@ -19,19 +19,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/voxforge/wizard.hpp"
-#include "ui_voxforge.h"
+#ifndef BASE_HPP
+#define BASE_HPP
 
-using namespace SpeechControl::Wizards;
+#include <QWizard>
 
-VoxForge::VoxForge(QWidget *parent) :
-    QWizard(parent),
-    ui(new Ui::VoxForge)
-{
-    ui->setupUi(this);
+namespace Ui {
+    class WizardBase;
 }
 
-VoxForge::~VoxForge()
+namespace SpeechControl {
+namespace Wizards {
+
+/// @todo Allow automatic insertion of introduction page.
+class WizardBase : public QWizard
 {
-    delete ui;
-}
+    Q_OBJECT
+
+public:
+    explicit WizardBase(QWidget *parent = 0);
+    ~WizardBase();
+
+private:
+    Ui::WizardBase *ui;
+};
+
+}}
+
+#endif // BASE_HPP

@@ -26,8 +26,9 @@
 #include <QMessageBox>
 #include <QtGStreamer/QGst/Init>
 
+#include <microphone.hpp>
+
 #include "core.hpp"
-#include "microphone.hpp"
 #include "windows/main.hpp"
 
 using namespace SpeechControl;
@@ -64,6 +65,10 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     if (Microphone::allMicrophones().empty()){
         QMessageBox::information(0,tr("No Microphones Found"),tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
                                  tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."));
+    } else {
+        Microphone* l_mic = Microphone::defaultMicrophone();
+        l_mic->startRecording();
+        l_mic->stopRecording();
     }
 }
 

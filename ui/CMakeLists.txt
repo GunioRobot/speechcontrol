@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 2.8)
+
+file(GLOB SPCHCNTRL_UIQRESC "*.qrc")
+file(GLOB SPCHCNTRL_UIFORMS "*/*.ui"
+                            "*/*/*.ui")
+
+QT4_WRAP_UI(SPCHCNTRL_APP_HEADERS ${SPCHCNTRL_UIFORMS})
+QT4_ADD_RESOURCES(SPCHCNTRL_APP_SOURCES ${SPCHCNTRL_UIQRESC})

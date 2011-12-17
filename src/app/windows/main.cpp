@@ -35,8 +35,6 @@
 #include "windows/bookmanager.hpp"
 #include "windows/usermanager.hpp"
 #include "windows/sessionmanager.hpp"
-#include "wizards/micsetup/wizard.hpp"
-#include "wizards/quickstart/wizard.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -65,14 +63,10 @@ void SpeechControl::Windows::Main::on_actionOptions_triggered()
 
 void SpeechControl::Windows::Main::on_actionWizardQuickStart_triggered()
 {
-    Wizards::QuickStart* l_wiz = new Wizards::QuickStart(this);
-    l_wiz->exec();
 }
 
 void SpeechControl::Windows::Main::on_actionWizardMic_triggered()
 {
-    Wizards::MicrophoneSetup* l_wiz = new Wizards::MicrophoneSetup(this);
-    l_wiz->exec();
 }
 
 void SpeechControl::Windows::Main::on_actionAboutQt_triggered()

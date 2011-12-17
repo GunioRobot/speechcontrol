@@ -19,31 +19,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef OPTIN_HPP
-#define OPTIN_HPP
+#include "wizards/intro.hpp"
+#include "ui_intro.h"
 
-#include <QWizardPage>
+using namespace SpeechControl::Wizards::Pages;
 
-namespace Ui {
-    class VoxForgeOptIn;
+Introduction::Introduction(const QString& summary) :
+                           QWizardPage(),
+    ui(new Ui::Introduction)
+{
+    ui->setupUi(this);
+    ui->labelSummary->setText(summary);
 }
 
-namespace SpeechControl {
-namespace Wizards {
-namespace Pages {
-
-class VoxForgeOptIn : public QWizardPage
+Introduction::~Introduction()
 {
-    Q_OBJECT
-
-public:
-    explicit VoxForgeOptIn(QWidget *parent = 0);
-    ~VoxForgeOptIn();
-
-private:
-    Ui::VoxForgeOptIn *ui;
-};
-
-}}}
-
-#endif // OPTIN_HPP
+    delete ui;
+}

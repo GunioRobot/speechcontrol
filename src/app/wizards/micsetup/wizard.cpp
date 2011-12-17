@@ -19,19 +19,21 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/voxforge/optin.hpp"
-#include "ui_optin.h"
+#include "wizards/micsetup/wizard.hpp"
+#include "wizards/micsetup/micselect.hpp"
+#include "wizards/intro.hpp"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Wizards;
 
-VoxForgeOptIn::VoxForgeOptIn(QWidget *parent) :
-    QWizardPage(parent),
-    ui(new Ui::VoxForgeOptIn)
+MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
+    WizardBase(parent)
 {
-    ui->setupUi(this);
+    setPage(MicrophoneSetup::IntroductionPage,
+            new Pages::Introduction(tr("This wizard will help you configure your microphone ") +
+                                     tr("for optimal performance in SpeechControl.")));
+    setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
 }
 
-VoxForgeOptIn::~VoxForgeOptIn()
+MicrophoneSetup::~MicrophoneSetup()
 {
-    delete ui;
 }

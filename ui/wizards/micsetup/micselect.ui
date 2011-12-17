@@ -2,108 +2,139 @@
 <ui version="4.0">
  <class>MicrophoneSelection</class>
  <widget class="QWizardPage" name="MicrophoneSelection">
+  <property name="windowModality">
+   <enum>Qt::WindowModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>334</width>
-    <height>237</height>
+    <width>322</width>
+    <height>202</height>
    </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>334</width>
-    <height>237</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>334</width>
-    <height>237</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
-  <widget class="QLabel" name="label">
+  <property name="title">
+   <string>Microphone Selection</string>
+  </property>
+  <property name="subTitle">
+   <string>Select a microphone for usage.</string>
+  </property>
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>311</width>
-     <height>41</height>
+     <x>0</x>
+     <y>0</y>
+     <width>321</width>
+     <height>201</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Please select your preferred micrphone from the drop-list below. </string>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QWidget" name="formLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>50</y>
-     <width>311</width>
-     <height>80</height>
-    </rect>
-   </property>
-   <layout class="QFormLayout" name="formLayout">
-    <property name="fieldGrowthPolicy">
-     <enum>QFormLayout::ExpandingFieldsGrow</enum>
-    </property>
-    <property name="formAlignment">
-     <set>Qt::AlignCenter</set>
-    </property>
-    <item row="0" column="0">
-     <widget class="QLabel" name="labelMics">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="label">
+      <property name="minimumSize">
+       <size>
+        <width>311</width>
+        <height>41</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>311</width>
+        <height>53</height>
+       </size>
+      </property>
       <property name="text">
-       <string>Microphone</string>
+       <string>Please select your preferred micrphone from the drop-list below. </string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="comboBoxMicrophones">
+    <item>
+     <layout class="QFormLayout" name="formLayout">
+      <property name="fieldGrowthPolicy">
+       <enum>QFormLayout::ExpandingFieldsGrow</enum>
+      </property>
+      <property name="formAlignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelMics">
+        <property name="minimumSize">
+         <size>
+          <width>68</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>68</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Microphone</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxMicrophones">
+        <property name="minimumSize">
+         <size>
+          <width>150</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QLabel" name="label_3">
       <property name="minimumSize">
        <size>
-        <width>150</width>
-        <height>0</height>
+        <width>311</width>
+        <height>31</height>
        </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>311</width>
+        <height>31</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>If your microphone is operational, the progress bar below will react to feedback.</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QProgressBar" name="progressBarFeedback">
+      <property name="minimumSize">
+       <size>
+        <width>311</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>311</width>
+        <height>23</height>
+       </size>
+      </property>
+      <property name="value">
+       <number>24</number>
       </property>
      </widget>
     </item>
    </layout>
-  </widget>
-  <widget class="QLabel" name="label_3">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>140</y>
-     <width>311</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>If your microphone is operational, the progress bar below will react to feedback.</string>
-   </property>
-   <property name="wordWrap">
-    <bool>true</bool>
-   </property>
-  </widget>
-  <widget class="QProgressBar" name="progressBarFeedback">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>180</y>
-     <width>311</width>
-     <height>41</height>
-    </rect>
-   </property>
-   <property name="value">
-    <number>24</number>
-   </property>
   </widget>
  </widget>
  <resources/>

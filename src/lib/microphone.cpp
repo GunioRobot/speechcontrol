@@ -19,9 +19,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "microphone.hpp"
+
 #include <QUuid>
 #include <QMessageBox>
-#include "microphone.hpp"
+#include <QGlib/Error>
 
 using namespace SpeechControl;
 using SpeechControl::Microphone;
@@ -35,6 +37,7 @@ Microphone::Microphone(QGlib::Value device ) :
     m_device(device), m_uuid(QUuid::createUuid())
 {
     s_lst.insert(m_uuid,const_cast<Microphone*>(this));
+    obtain();
 }
 
 /// @todo Have the system detect when new microphones are added + removed to the system.
@@ -81,7 +84,10 @@ Microphone * Microphone::getMicrophone(const QUuid &l_uuid)
 /// @todo How do you determine which microphone is the default one?
 Microphone* Microphone::defaultMicrophone()
 {
+    if (!s_lst.empty())
+        return s_lst.values().first();
 
+    return 0;
 }
 
 const bool Microphone::active() const
@@ -105,4 +111,66 @@ const QUuid Microphone::uuid() const
 MicrophoneList Microphone::allMicrophones()
 {    
     return s_lst.values();
+}
+
+/// @todo Determine the approriate audio format for recording.
+/// @todo Implement a means of initating recording to memory.
+void SpeechControl::Microphone::startRecording()
+{
+    m_data.clear();
+
+    // Get that device (in Pokemon style voice)
+    try {
+        m_micSrcBin = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
+                                           "audioresample ! audiorate ! speexenc ! queue");
+    } catch (const QGlib::Error & error) {
+        qCritical() << "Failed to create audio source bin:" << error;
+        return;
+    }
+
+    m_memoryBin = QGst::Bin::fromDescription("appsink name=\"appsink\" ");
+
+    // lock it down and get it ready.
+    QGst::ElementPtr l_src = m_micSrcBin->getElementByName("audiosrc");
+    l_src->setState(QGst::StateReady);
+    QGst::ChildProxyPtr l_chldPrxy = l_src.dynamicCast<QGst::ChildProxy>();
+    if (l_chldPrxy && l_chldPrxy->childrenCount() > 0) {
+        QGst::ObjectPtr l_realSrc = l_chldPrxy->childByIndex(0);
+        l_realSrc->setProperty("device", m_device);
+    }
+
+    m_pipeline = QGst::Pipeline::create();
+    m_pipeline->add(m_micSrcBin,m_memoryBin);
+}
+
+const QByteArray* Microphone::data() const {
+    return &m_data;
+}
+
+/// @todo Ensure that the audio's been flushed.
+void SpeechControl::Microphone::stopRecording()
+{
+    QGst::ElementPtr l_src = m_micSrcBin->getElementByName("audiosrc");
+    l_src->setState(QGst::StateNull);
+    m_micSrcBin.clear();
+}
+
+const double SpeechControl::Microphone::volume() const
+{
+}
+
+const bool SpeechControl::Microphone::isMuted() const
+{
+}
+
+void SpeechControl::Microphone::setVolume(const double &)
+{
+}
+
+void SpeechControl::Microphone::mute(const bool &)
+{
+}
+
+void SpeechControl::Microphone::obtain()
+{
 }
