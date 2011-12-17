@@ -139,6 +139,7 @@ void SpeechControl::Microphone::startRecording()
         l_realSrc->setProperty("device", m_device);
     }
 
+    // build that pipeline!
     m_pipeline = QGst::Pipeline::create();
     m_pipeline->add(m_micSrcBin,m_memoryBin);
 }

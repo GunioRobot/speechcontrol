@@ -32,7 +32,7 @@ set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 
 ## done here to pick up the files in Qt Creator.
-file(GLOB SPCHCNTRL_UIQRESC "*.qrc")
+file(GLOB SPCHCNTRL_UIQRESC "ui/*.qrc")
 file(GLOB SPCHCNTRL_UIFORMS "ui/*/*.ui"
                             "ui/*/*/*.ui")
 
@@ -41,5 +41,4 @@ file(GLOB SPCHCNTRL_UIFORMS "ui/*/*.ui"
 include_directories(${SPCHCNTRL_INCLUDE_DIRS})
 
 ## sub-projects
-add_subdirectory(ui)
 add_subdirectory(src)

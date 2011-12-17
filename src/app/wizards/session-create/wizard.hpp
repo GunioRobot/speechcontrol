@@ -22,16 +22,12 @@
 #ifndef WIZARD_HPP
 #define WIZARD_HPP
 
-#include <QWizard>
-
-namespace Ui {
-    class SessionCreate;
-}
+#include "wizards/base.hpp"
 
 namespace SpeechControl {
 namespace Wizards {
 
-class SessionCreate : public QWizard
+class SessionCreate : public WizardBase
 {
     Q_OBJECT
 
@@ -46,10 +42,8 @@ class SessionCreate : public QWizard
 public:
     explicit SessionCreate(QWidget *parent = 0);
     ~SessionCreate();
-
-private:
-    Ui::SessionCreate *ui;
 };
+
 }}
 
 #endif // WIZARD_HPP

@@ -19,19 +19,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/backup/wizard.hpp"
-#include "ui_backup.h"
+#include "wizard.hpp"
 
 using namespace SpeechControl::Wizards;
 
 Backup::Backup(QWidget *parent) :
-    QWizard(parent),
-    ui(new Ui::Backup)
+    WizardBase(parent)
 {
-    ui->setupUi(this);
 }
 
 Backup::~Backup()
 {
-    delete ui;
 }

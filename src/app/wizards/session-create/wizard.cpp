@@ -19,19 +19,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/session-create/wizard.hpp"
-#include "ui_session-create.h"
+#include "wizard.hpp"
 
 using namespace SpeechControl::Wizards;
 
 SessionCreate::SessionCreate(QWidget *parent) :
-    QWizard(parent),
-    ui(new Ui::SessionCreate)
+    WizardBase(parent)
 {
-    ui->setupUi(this);
 }
 
 SessionCreate::~SessionCreate()
 {
-    delete ui;
 }

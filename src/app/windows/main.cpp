@@ -32,12 +32,15 @@
 #include "ui_main.h"
 #include "core.hpp"
 #include "windows/main.hpp"
-#include "windows/bookmanager.hpp"
-#include "windows/usermanager.hpp"
-#include "windows/sessionmanager.hpp"
+#include "windows/managers/books.hpp"
+#include "windows/managers/user.hpp"
+#include "windows/managers/session.hpp"
+#include "wizards/quickstart/wizard.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
+using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Managers;
 
 Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
@@ -63,6 +66,8 @@ void SpeechControl::Windows::Main::on_actionOptions_triggered()
 
 void SpeechControl::Windows::Main::on_actionWizardQuickStart_triggered()
 {
+    QuickStart* l_wiz = new QuickStart(this);
+    l_wiz->exec();
 }
 
 void SpeechControl::Windows::Main::on_actionWizardMic_triggered()
@@ -87,12 +92,12 @@ void SpeechControl::Windows::Main::on_actionSessionManage_triggered()
 
 void SpeechControl::Windows::Main::on_actionUserManage_triggered()
 {
-    UserManager* l_usrWin = new UserManager(this);
+    UsersManager* l_usrWin = new UsersManager(this);
     l_usrWin->exec();
 }
 
 void SpeechControl::Windows::Main::on_actionBookManage_triggered()
 {
-    BookManager* l_bkWin = new BookManager(this);
+    BooksManager* l_bkWin = new BooksManager(this);
     l_bkWin->exec();
 }

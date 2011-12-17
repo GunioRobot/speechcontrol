@@ -38,7 +38,7 @@ class WizardBase : public QWizard
 
 public:
     explicit WizardBase(QWidget *parent = 0);
-    ~WizardBase();
+    virtual ~WizardBase();
 
 private:
     Ui::WizardBase *ui;

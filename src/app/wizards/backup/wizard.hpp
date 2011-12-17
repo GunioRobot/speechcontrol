@@ -22,16 +22,12 @@
 #ifndef WIZARD_HPP
 #define WIZARD_HPP
 
-#include <QWizard>
-
-namespace Ui {
-    class Backup;
-}
+#include "wizards/base.hpp"
 
 namespace SpeechControl {
 namespace Wizards {
 
-class Backup : public QWizard
+class Backup : public WizardBase
 {
     Q_OBJECT
     enum Pages {
@@ -55,8 +51,6 @@ public:
     explicit Backup(QWidget *parent = 0);
     ~Backup();
 
-private:
-    Ui::Backup *ui;
 };
 
 }}

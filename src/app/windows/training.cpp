@@ -19,8 +19,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "windows/training.hpp"
+#include "training.hpp"
 #include "ui_training.h"
+
+using SpeechControl::Windows::Training;
 
 Training::Training(QWidget *parent) :
     QDialog(parent),

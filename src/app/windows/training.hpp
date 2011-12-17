@@ -28,6 +28,9 @@ namespace Ui {
     class Training;
 }
 
+namespace SpeechControl {
+namespace Windows {
+
 class Training : public QDialog
 {
     Q_OBJECT
@@ -39,5 +42,7 @@ public:
 private:
     Ui::Training *ui;
 };
+
+}}
 
 #endif // TRAINING_HPP
