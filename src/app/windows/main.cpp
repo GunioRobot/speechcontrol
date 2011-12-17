@@ -31,10 +31,10 @@
 #include "microphone.hpp"
 #include "ui_main.h"
 #include "core.hpp"
-#include "windows/main.hpp"
-#include "windows/managers/books.hpp"
-#include "windows/managers/user.hpp"
-#include "windows/managers/session.hpp"
+#include "main.hpp"
+#include "managers/books.hpp"
+#include "managers/user.hpp"
+#include "managers/session.hpp"
 #include "wizards/quickstart/wizard.hpp"
 
 using namespace SpeechControl;
