@@ -33,7 +33,6 @@ class QUrl;
 class QFile;
 
 namespace SpeechControl {
-    class User;
     class Phrase;
     class Session;
 
@@ -62,7 +61,6 @@ namespace SpeechControl {
         Q_OBJECT
         Q_DISABLE_COPY(Session)
         friend class Phrase;
-        friend class User;
 
     public:
         virtual ~Session();
@@ -72,11 +70,11 @@ namespace SpeechControl {
         void save();
         void addPhrase(Phrase*);
         const QUuid uuid() const;
-        User* user() const;
         Session& operator<<(Phrase*);
         Session& operator<<(PhraseList&);
-        static Session* create(const User*);
+        static Session* create();
         static Session* obtain(const QUuid&);
+        static SessionList allSessions();
         static const bool exists(const QUuid&);
 
     private:

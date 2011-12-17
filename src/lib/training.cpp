@@ -65,7 +65,7 @@ Session & Session::operator <<(PhraseList &l_lst)
         this->addPhrase(l_phrs);
 }
 
-Session * Session::create(const User *)
+Session * Session::create()
 {
     QUuid l_uuid = QUuid::createUuid();
     QDir l_dir;
@@ -107,14 +107,44 @@ void Session::load(const QUuid &p_uuid)
     const QUrl l_path = getPath(p_uuid);
     QFile* l_file = new QFile(l_path.toLocalFile());
 
-    if (!m_dom)
-        m_dom = new QDomDocument;
+    if (l_file->open(QIODevice::ReadOnly)){
+        if (!m_dom)
+            m_dom = new QDomDocument;
 
-    m_dom->setContent(l_file);
+        m_dom->setContent(l_file);
+
+        // get phrases
+        QDomNodeList l_elems = m_dom->documentElement().firstChildElement("Phrases").childNodes();
+
+        for (int i = 0; i < l_elems.count(); ++i){
+            QDomElement l_elem = l_elems.at(i).toElement();
+            Phrase* l_phrs = new Phrase(this,&l_elem);
+            m_phrsLst.insert(l_phrs->uuid(),l_phrs);
+        }
+    }
 }
 
 void Session::save()
 {
+    const QUrl l_path = getPath(this->uuid());
+    QFile* l_file = new QFile(l_path.toLocalFile());
+    if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
+        QTextStream l_strm(l_file);
+        m_dom->save(l_strm,4);
+    }
+}
+
+SessionList Session::allSessions()
+{
+    SessionList l_lst;
+    QDir l_dir(QDir::homePath() + "./speechcontrol/sessions/");
+    l_dir.setFilter(QDir::Dirs);
+    QStringList l_results = l_dir.entryList(QStringList() << "*");
+    Q_FOREACH(const QString& l_uuid, l_results){
+        l_lst << Session::obtain(QUuid(l_uuid));
+    }
+
+    return l_lst;
 }
 
 /// @todo What to clean-up?
