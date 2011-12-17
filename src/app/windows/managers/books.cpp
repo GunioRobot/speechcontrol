@@ -20,7 +20,7 @@
  */
 
 #include "books.hpp"
-#include "ui_bookmanager.h"
+#include "ui_book.h"
 
 using SpeechControl::Windows::Managers::BooksManager;
 

@@ -20,7 +20,7 @@
  */
 
 #include "session.hpp"
-#include "ui_sessionmanager.h"
+#include "ui_session.h"
 
 using SpeechControl::Windows::Managers::SessionManager;
 

@@ -19,19 +19,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "user.hpp"
-#include "ui_usermanager.h"
+#ifndef BCKP_MODESELECT_HPP
+#define BCKP_MODESELECT_HPP
 
-using SpeechControl::Windows::Managers::UsersManager;
+#include <QWizardPage>
 
-UsersManager::UsersManager(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::UserManager)
-{
-    ui->setupUi(this);
+namespace Ui {
+    class BackupSelection;
 }
 
-UsersManager::~UsersManager()
+namespace SpeechControl {
+namespace Wizards {
+namespace Pages {
+
+class BackupSelection : public QWizardPage
 {
-    delete ui;
-}
+    Q_OBJECT
+
+public:
+    explicit BackupSelection(QWidget *parent = 0);
+    ~BackupSelection();
+
+private:
+    Ui::BackupSelection *ui;
+};
+
+}}}
+
+#endif // BCKP_MODESELECT_HPP

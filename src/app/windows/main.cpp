@@ -27,13 +27,11 @@
 #include <QMessageBox>
 
 #include "settings.hpp"
-#include "user.hpp"
 #include "microphone.hpp"
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
 #include "managers/books.hpp"
-#include "managers/user.hpp"
 #include "managers/session.hpp"
 #include "wizards/quickstart/wizard.hpp"
 
@@ -46,12 +44,8 @@ Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
 
-   connect(m_ui->tabWidget,SIGNAL(currentChanged(int)),this,SLOT(tabChanged(int)));
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
-}
-
-void Main::tabChanged(const int& p_index){
 }
 
 Main::~Main() {
@@ -88,12 +82,6 @@ void SpeechControl::Windows::Main::on_actionSessionManage_triggered()
 {
     SessionManager* l_sessWin = new SessionManager(this);
     l_sessWin->exec();
-}
-
-void SpeechControl::Windows::Main::on_actionUserManage_triggered()
-{
-    UsersManager* l_usrWin = new UsersManager(this);
-    l_usrWin->exec();
 }
 
 void SpeechControl::Windows::Main::on_actionBookManage_triggered()

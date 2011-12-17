@@ -34,7 +34,8 @@ set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 ## done here to pick up the files in Qt Creator.
 file(GLOB SPCHCNTRL_UIQRESC "ui/*.qrc")
 file(GLOB SPCHCNTRL_UIFORMS "ui/*/*.ui"
-                            "ui/*/*/*.ui")
+                            "ui/*/*/*.ui"
+                            "ui/*/*/*/*.ui")
 
 
 ## includes

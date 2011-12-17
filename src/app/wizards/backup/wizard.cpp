@@ -20,12 +20,16 @@
  */
 
 #include "wizard.hpp"
+#include "wizards/intro.hpp"
 
 using namespace SpeechControl::Wizards;
 
 Backup::Backup(QWidget *parent) :
     WizardBase(parent)
 {
+    setPage(Backup::IntroductionPage,
+            new Pages::Introduction(tr("This wizard allows you to restore or back-up your session "
+                                       "information with ease.")));
 }
 
 Backup::~Backup()
