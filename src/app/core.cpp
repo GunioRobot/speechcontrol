@@ -23,15 +23,20 @@
 #include <QDebug>
 #include <QSettings>
 #include <QApplication>
+#include <QErrorMessage>
 #include <QMessageBox>
-#include <QtGStreamer/QGst/Init>
+#include <QGst/Init>
 
+#include <training.hpp>
 #include <microphone.hpp>
 
 #include "core.hpp"
 #include "windows/main.hpp"
+#include "wizards/quickstart/wizard.hpp"
 
 using namespace SpeechControl;
+using namespace SpeechControl::Wizards;
+
 using SpeechControl::Core;
 
 Core* Core::s_inst = 0;
@@ -47,24 +52,21 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     l_app->setApplicationName("SpeechControl");
     l_app->setOrganizationDomain("thesii.org");
     l_app->setOrganizationName("Synthetic Intellect Institute");
-    l_app->setApplicationVersion("0.1b");
+    l_app->setApplicationVersion("0.0b");
 
 
     // build settings
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
-    QFile* l_settings = new QFile(m_settings->fileName());
-    if (!l_settings->exists())
-        l_settings->write("");
-    qDebug() << l_settings->fileName() << l_settings->exists();
-    l_settings->close();
-
-    QGst::init();
-    Microphone::init();
 
     // check for microphones
+    QGst::init();
+    Microphone::init();
     if (Microphone::allMicrophones().empty()){
-        QMessageBox::information(0,tr("No Microphones Found"),tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
-                                 tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."));
+        QErrorMessage* l_msg = new QErrorMessage;
+        l_msg->setWindowTitle("No Microphones Found");
+        l_msg->showMessage(tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
+                                 tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."),
+                                   "NoMicrophonesFoundOnStart");
     } else {
         Microphone* l_mic = Microphone::defaultMicrophone();
         l_mic->startRecording();
@@ -77,8 +79,17 @@ Core::~Core () {
 }
 
 void Core::start() {
-    Windows::Main* m_mw = new Windows::Main;
-    m_mw->show();
+    Windows::Main* l_mw = new Windows::Main;
+
+    if (Session::allSessions().empty()){
+        QMessageBox::information(l_mw,tr("Welcome to SpeechControl"),
+                                 tr("This seems to be the first time you've run SpeechControl on this system."
+                                    "A wizard allowing you to start SpeechControl will appear."));
+        QuickStart* l_win = new QuickStart(l_mw);
+        l_win->exec();
+    }
+
+    l_mw->show();
 }
 
 void Core::stop() { }
