@@ -40,12 +40,9 @@ namespace SpeechControl {
 
         private slots:
             void on_actionOptions_triggered();
-            void on_actionWizardQuickStart_triggered();
-            void on_actionWizardMic_triggered();
             void on_actionAboutQt_triggered();
             void on_actionAbout_SpeechControl_triggered();
-            void on_actionSessionManage_triggered();
-            void on_actionBookManage_triggered();
+            void on_pushButtonStartTrain_clicked();
 
         private:
             Ui::MainWindow* m_ui;

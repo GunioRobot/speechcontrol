@@ -26,8 +26,9 @@
 #include <QSettings>
 #include <QMessageBox>
 
+#include <training.hpp>
+
 #include "settings.hpp"
-#include "microphone.hpp"
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
@@ -40,12 +41,16 @@ using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
+using SpeechControl::Session;
+
 Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
 
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
+
+   m_ui->labelSessionCount->setText(tr("You have <b>%1</b> sessions.").arg(Session::allSessions().count()));
 }
 
 Main::~Main() {
@@ -58,16 +63,6 @@ void SpeechControl::Windows::Main::on_actionOptions_triggered()
     l_settings->exec();
 }
 
-void SpeechControl::Windows::Main::on_actionWizardQuickStart_triggered()
-{
-    QuickStart* l_wiz = new QuickStart(this);
-    l_wiz->exec();
-}
-
-void SpeechControl::Windows::Main::on_actionWizardMic_triggered()
-{
-}
-
 void SpeechControl::Windows::Main::on_actionAboutQt_triggered()
 {
     QApplication::aboutQt();
@@ -78,14 +73,7 @@ void SpeechControl::Windows::Main::on_actionAbout_SpeechControl_triggered()
 {    
 }
 
-void SpeechControl::Windows::Main::on_actionSessionManage_triggered()
+void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()
 {
-    SessionManager* l_sessWin = new SessionManager(this);
-    l_sessWin->exec();
-}
-
-void SpeechControl::Windows::Main::on_actionBookManage_triggered()
-{
-    BooksManager* l_bkWin = new BooksManager(this);
-    l_bkWin->exec();
+    Session* l_session = SessionManager::doSelectSession();
 }
