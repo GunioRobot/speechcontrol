@@ -29,6 +29,7 @@ namespace Ui {
 }
 
 namespace SpeechControl {
+    class Session;
 namespace Windows {
 namespace Managers {
 
@@ -39,6 +40,7 @@ class SessionManager : public QDialog
 public:
     explicit SessionManager(QWidget *parent = 0);
     ~SessionManager();
+    static Session* doSelectSession();
 
 private:
     Ui::SessionManager *ui;

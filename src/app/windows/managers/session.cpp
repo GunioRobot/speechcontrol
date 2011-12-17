@@ -20,9 +20,13 @@
  */
 
 #include "session.hpp"
+#include "widgets/session.hpp"
+#include "training.hpp"
 #include "ui_session.h"
 
+using namespace SpeechControl;
 using SpeechControl::Windows::Managers::SessionManager;
+using SpeechControl::Widgets::SessionWidget;
 
 SessionManager::SessionManager(QWidget *parent) :
     QDialog(parent),
@@ -34,4 +38,9 @@ SessionManager::SessionManager(QWidget *parent) :
 SessionManager::~SessionManager()
 {
     delete ui;
+}
+
+/// @todo Implement a means of selecting @see Session objects from a list (using SessionWidget)
+Session* SessionManager::doSelectSession()
+{
 }
