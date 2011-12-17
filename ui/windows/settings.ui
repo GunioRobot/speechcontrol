@@ -45,6 +45,12 @@
      <height>286</height>
     </rect>
    </property>
+   <property name="tabPosition">
+    <enum>QTabWidget::North</enum>
+   </property>
+   <property name="tabShape">
+    <enum>QTabWidget::Rounded</enum>
+   </property>
    <property name="currentIndex">
     <number>0</number>
    </property>
@@ -55,10 +61,10 @@
     <widget class="QWidget" name="gridLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>5</x>
-       <y>5</y>
-       <width>396</width>
-       <height>221</height>
+       <x>0</x>
+       <y>0</y>
+       <width>406</width>
+       <height>256</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -70,9 +76,9 @@
         <widget class="QCheckBox" name="checkBoxDesktopControl">
          <property name="geometry">
           <rect>
-           <x>5</x>
-           <y>65</y>
-           <width>186</width>
+           <x>30</x>
+           <y>70</y>
+           <width>131</width>
            <height>19</height>
           </rect>
          </property>
@@ -108,8 +114,8 @@
           <rect>
            <x>5</x>
            <y>20</y>
-           <width>261</width>
-           <height>51</height>
+           <width>236</width>
+           <height>61</height>
           </rect>
          </property>
          <property name="text">
@@ -123,7 +129,7 @@
          <property name="geometry">
           <rect>
            <x>5</x>
-           <y>75</y>
+           <y>80</y>
            <width>211</width>
            <height>26</height>
           </rect>
@@ -142,9 +148,9 @@
         <widget class="QCheckBox" name="checkBoxDictate">
          <property name="geometry">
           <rect>
-           <x>0</x>
-           <y>65</y>
-           <width>186</width>
+           <x>40</x>
+           <y>70</y>
+           <width>111</width>
            <height>19</height>
           </rect>
          </property>
@@ -170,20 +176,14 @@
         </widget>
        </widget>
       </item>
+      <item row="2" column="0" colspan="2">
+       <widget class="QCheckBox" name="checkBoxSysStart">
+        <property name="text">
+         <string>Run SpeechControl on system start</string>
+        </property>
+       </widget>
+      </item>
      </layout>
-    </widget>
-    <widget class="QCheckBox" name="checkBoxSysStart">
-     <property name="geometry">
-      <rect>
-       <x>5</x>
-       <y>230</y>
-       <width>236</width>
-       <height>19</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Run SpeechControl on system start</string>
-     </property>
     </widget>
    </widget>
    <widget class="QWidget" name="tabPlugins">
@@ -211,6 +211,25 @@
         <property name="title">
          <string>Description</string>
         </property>
+        <widget class="QLabel" name="labelPluginDescription">
+         <property name="geometry">
+          <rect>
+           <x>5</x>
+           <y>25</y>
+           <width>141</width>
+           <height>76</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>This is where the plug-in description goes.</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
       </item>
       <item row="1" column="1">
@@ -229,16 +248,16 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="QPushButton" name="pushButtonPluginSettings">
           <property name="text">
-           <string>PushButton</string>
+           <string>Settings</string>
           </property>
          </widget>
         </item>
        </layout>
       </item>
       <item row="0" column="1">
-       <widget class="QListWidget" name="listWidget"/>
+       <widget class="QListWidget" name="listWidgetPlugins"/>
       </item>
      </layout>
     </widget>
@@ -265,9 +284,9 @@
         <widget class="QLabel" name="label">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>5</x>
            <y>20</y>
-           <width>181</width>
+           <width>186</width>
            <height>71</height>
           </rect>
          </property>
@@ -278,10 +297,10 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="pushButtonWizardConfig">
          <property name="geometry">
           <rect>
-           <x>55</x>
+           <x>60</x>
            <y>100</y>
            <width>84</width>
            <height>23</height>
@@ -314,7 +333,7 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_2">
+        <widget class="QPushButton" name="pushButtonWizardMic">
          <property name="geometry">
           <rect>
            <x>60</x>
@@ -332,7 +351,7 @@
       <item row="1" column="0">
        <widget class="QGroupBox" name="groupBox_4">
         <property name="title">
-         <string>Create User</string>
+         <string>Sessions</string>
         </property>
         <widget class="QLabel" name="label_3">
          <property name="geometry">
@@ -344,13 +363,13 @@
           </rect>
          </property>
          <property name="text">
-          <string>This wizard allows you to create new users from scratch, as a copy or import them from an archive.</string>
+          <string>This wizard guides you through the process of creating new sessions and obtaining new material to download and use for SpeechControl.</string>
          </property>
          <property name="wordWrap">
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="pushButtonWizardSessions">
          <property name="geometry">
           <rect>
            <x>60</x>
@@ -386,10 +405,10 @@
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QPushButton" name="pushButton_4">
+        <widget class="QPushButton" name="pushButtonWizardVoxforge">
          <property name="geometry">
           <rect>
-           <x>55</x>
+           <x>60</x>
            <y>100</y>
            <width>84</width>
            <height>23</height>

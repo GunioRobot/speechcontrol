@@ -20,12 +20,14 @@
  */
 
 
-#include "settings.hpp"
 #include "core.hpp"
+#include "settings.hpp"
+#include "wizards/quickstart/wizard.hpp"
+#include "wizards/micsetup/wizard.hpp"
 #include "ui_settings.h"
 
-namespace SpeechControl {
-namespace Windows {
+using SpeechControl::Windows::Settings;
+using namespace SpeechControl::Wizards;
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -51,6 +53,9 @@ void Settings::on_tabWidgetWizards_currentChanged(int p_index)
             ui->checkBoxDesktopControl->setChecked(Core::instance()->getConfig("Options/Control",QVariant(false)).toBool());
             ui->checkBoxVoxForge->setChecked(Core::instance()->getConfig("VoxForge/EnableUploading",QVariant(false)).toBool());
         break;
+    case 1:
+
+        break;
     }
 
 }
@@ -63,4 +68,24 @@ void Settings::on_buttonBox_accepted()
     Core::instance()->setConfig("VoxForge/EnableUploading",ui->checkBoxVoxForge->checkState());
 }
 
-}}
+void SpeechControl::Windows::Settings::on_pushButtonWizardConfig_clicked()
+{
+    QuickStart* l_wiz = new QuickStart(this);
+    l_wiz->show();
+}
+
+void SpeechControl::Windows::Settings::on_pushButtonWizardSessions_clicked()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_pushButtonWizardVoxforge_clicked()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_pushButtonWizardMic_clicked()
+{
+    MicrophoneSetup* l_wiz = new MicrophoneSetup(this);
+    l_wiz->show();
+}

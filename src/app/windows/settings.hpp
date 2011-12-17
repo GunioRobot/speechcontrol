@@ -44,6 +44,10 @@ public:
 private slots:
     void on_tabWidgetWizards_currentChanged(int index);
     void on_buttonBox_accepted();
+    void on_pushButtonWizardConfig_clicked();
+    void on_pushButtonWizardSessions_clicked();
+    void on_pushButtonWizardVoxforge_clicked();
+    void on_pushButtonWizardMic_clicked();
 
 private:
     Ui::Settings *ui;
