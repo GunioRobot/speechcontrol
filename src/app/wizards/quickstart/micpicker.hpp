@@ -25,19 +25,25 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class MicrophoneCreation;
+    class MicrophonePicker;
 }
 
-class MicrophoneCreation : public QWizardPage
+namespace SpeechControl {
+namespace Wizards {
+namespace Pages {
+
+class MicrophonePicker : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    explicit MicrophoneCreation(QWidget *parent = 0);
-    ~MicrophoneCreation();
+    explicit MicrophonePicker(QWidget *parent = 0);
+    ~MicrophonePicker();
 
 private:
-    Ui::MicrophoneCreation *ui;
+    Ui::MicrophonePicker *ui;
 };
+
+}}}
 
 #endif // MICPICKER_HPP

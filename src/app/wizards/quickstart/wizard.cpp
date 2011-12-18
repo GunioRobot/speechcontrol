@@ -21,7 +21,9 @@
 
 #include "wizard.hpp"
 #include "userinit.hpp"
+#include "micpicker.hpp"
 #include "wizards/intro.hpp"
+#include "wizards/outro.hpp"
 
 using namespace SpeechControl::Wizards;
 
@@ -33,6 +35,13 @@ QuickStart::QuickStart(QWidget *parent) :
             new Pages::Introduction(tr("This wizard is designed to ease the process of configuring SpeechControl.")));
     setPage(QuickStart::UserCreationPage,
             new Pages::UserInitialization);
+    setPage(QuickStart::MicrophoneCreationPage,
+            new Pages::MicrophonePicker);
+    /*setPage(QuickStart::BookDownloadPage,
+            new Pages::BookDownload);*/
+    setPage(QuickStart::ConclusionPage,
+            new Pages::Conclusion(tr("You've successfully configured SpeechControl to your liking. "
+                                     "If you need to re-configure SpeechControl, feel free to run this wizard again.")));
 }
 
 QuickStart::~QuickStart()

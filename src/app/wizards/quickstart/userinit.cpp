@@ -22,6 +22,7 @@
 #include "userinit.hpp"
 #include "ui_userinit.h"
 #include <QLocale>
+#include <QDebug>
 
 using SpeechControl::Wizards::Pages::UserInitialization;
 
@@ -39,11 +40,17 @@ UserInitialization::~UserInitialization()
 
 bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
 {
-    if (ui->lineEditNameFirst->text().isEmpty() ||
-        ui->lineEditNameMiddle->text().isEmpty()){
-        this->setSubTitle("<b><font color='bed'>Please enter your name.</font></b>");
+    if (ui->lineEditNameFirst->text().isEmpty()){
+        this->setSubTitle("<b><font color='red'>Please enter your first name.</font></b>");
         return false;
     }
+
+    if (ui->lineEditNameLast->text().isEmpty()){
+        this->setSubTitle("<b><font color='red'>Please enter your last name, at least an initial.</font></b>");
+        return false;
+    }
+
+    return true;
 }
 
 /// @todo Load all of the countries.

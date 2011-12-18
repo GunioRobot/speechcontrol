@@ -19,17 +19,30 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <microphone.hpp>
+
 #include "micpicker.hpp"
 #include "ui_micpicker.h"
 
-MicrophoneCreation::MicrophoneCreation(QWidget *parent) :
+using namespace SpeechControl;
+using namespace SpeechControl::Wizards::Pages;
+
+MicrophonePicker::MicrophonePicker(QWidget *parent) :
     QWizardPage(parent),
-    ui(new Ui::MicrophoneCreation)
+    ui(new Ui::MicrophoneSelection)
 {
     ui->setupUi(this);
+
+    MicrophoneList l_mics = Microphone::allMicrophones();
+    if (l_mics.empty())
+        ui->comboBoxMicrophones->setEnabled(false);
+    else {
+        Q_FOREACH(const Microphone* l_mic, l_mics)
+            ui->comboBoxMicrophones->addItem(l_mic->friendlyName(),l_mic->uuid().toString());
+    }
 }
 
-MicrophoneCreation::~MicrophoneCreation()
+MicrophonePicker::~MicrophonePicker()
 {
     delete ui;
 }

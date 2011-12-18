@@ -27,6 +27,7 @@ using namespace SpeechControl;
 using namespace SpeechControl::Wizards::Pages;
 using SpeechControl::Wizards::Pages::MicrophoneSelection;
 
+/// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSelection::MicrophoneSelection(QWidget *parent) :
     QWizardPage(parent), ui(new Ui::MicrophoneSelection),
     m_mic(Microphone::defaultMicrophone())
@@ -69,11 +70,10 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
     return m_complete;
 }
 
-/// @todo Obtain the device via GStreamer.
 /// @todo Set the device to be detected for volume detection here.
 /// @todo Set this page's value to this field.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated(int index)
 {
     const QUuid l_uuid(ui->comboBoxMicrophones->itemData(index).toString());
-    m_mic = Microphone::getMicrophone(l_uuid);
+    m_mic = Microphone::getMicrophone(l_uuid);    
 }
