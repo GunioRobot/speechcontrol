@@ -67,11 +67,6 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
         l_msg->showMessage(tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
                                  tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."),
                                    "NoMicrophonesFoundOnStart");
-    } else {
-        Microphone* l_mic = Microphone::defaultMicrophone();
-        l_mic->startRecording();
-        l_mic->stopRecording();
-        l_mic->deleteLater();
     }
 }
 
@@ -83,11 +78,12 @@ void Core::start() {
     Windows::Main* l_mw = new Windows::Main;
 
     if (Session::allSessions().empty()){
-        QMessageBox::information(l_mw,tr("Welcome to SpeechControl"),
-                                 tr("This seems to be the first time you've run SpeechControl on this system."
-                                    "A wizard allowing you to start SpeechControl will appear."));
-        QuickStart* l_win = new QuickStart(l_mw);
-        l_win->exec();
+        if (QMessageBox::question(l_mw,tr("First Run"),
+                                 tr("This seems to be the first time you've run SpeechControl on this system. "
+                                    "A wizard allowing you to start SpeechControl will appear."),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes){
+            QuickStart* l_win = new QuickStart(l_mw);
+            l_win->exec();
+        }
     }
 
     l_mw->show();

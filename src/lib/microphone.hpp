@@ -94,11 +94,10 @@ namespace SpeechControl {
         static QGst::ChildProxyPtr s_chldPrxy;
 
         void obtain();
-        QGst::BinPtr m_binAudioSrc;
+        QGst::BinPtr m_binAudio;
         QGst::PadPtr m_padAudio;
         QGst::ElementPtr m_srcAudio;
-        QGst::ElementPtr m_sinkFile;
-        QGst::ElementPtr m_muxWav;
+        QGst::ElementPtr m_sinkAudio;
         QGst::PipelinePtr m_pipeline;
         QGlib::Value m_device;
         QUuid m_uuid;
@@ -106,7 +105,9 @@ namespace SpeechControl {
 
     private slots:
         void release();
-        void onBusMessage(const QGst::MessagePtr &);
+        void onPipelineBusmessage(const QGst::MessagePtr &);
+        void onSinkaudioEos(const QGlib::Value& );
+        void onSinkaudioNewbuffer(const QGlib::Value& );
     };
 }
 
