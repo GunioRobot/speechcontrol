@@ -22,8 +22,10 @@
 #include "microphone.hpp"
 
 #include <QUuid>
-#include <QMessageBox>
+#include <QDebug>
+#include <QVariant>
 #include <QGlib/Error>
+#include <QGlib/Connect>
 
 using namespace SpeechControl;
 using SpeechControl::Microphone;
@@ -36,8 +38,9 @@ QGst::ChildProxyPtr Microphone::s_chldPrxy;
 Microphone::Microphone(QGlib::Value device ) :
     m_device(device), m_uuid(QUuid::createUuid())
 {
-    s_lst.insert(m_uuid,const_cast<Microphone*>(this));
-    obtain();
+   // Get the microphone.
+   obtain();
+   connect(this,SIGNAL(destroyed()),this,SLOT(release()));
 }
 
 /// @todo Have the system detect when new microphones are added + removed to the system.
@@ -61,9 +64,10 @@ void Microphone::findMicrophones() {
             s_src->setState(QGst::StateNull);
 
             if (s_propProbe && s_propProbe->propertySupportsProbe("device")) {
-                Q_FOREACH(QGlib::Value device, devices) {
-                    s_propProbe->setProperty("device", device);
-                    new Microphone(device);
+                Q_FOREACH(QGlib::Value l_device, devices) {
+                    qDebug() << tr("Found microphone") << l_device;
+                    s_propProbe->setProperty("device", l_device);
+                    new Microphone(l_device);
                 }
             }
         }
@@ -92,6 +96,7 @@ Microphone* Microphone::defaultMicrophone()
 
 const bool Microphone::active() const
 {
+    return !(!this->m_pipeline);
 }
 
 const QString Microphone::friendlyName() const
@@ -99,9 +104,6 @@ const QString Microphone::friendlyName() const
     return m_device.toString();
 }
 
-const Microphone::TestResults Microphone::test() const
-{
-}
 
 const QUuid Microphone::uuid() const
 {
@@ -113,65 +115,142 @@ MicrophoneList Microphone::allMicrophones()
     return s_lst.values();
 }
 
-/// @todo Determine the approriate audio format for recording.
-/// @todo Implement a means of initating recording to memory.
 void SpeechControl::Microphone::startRecording()
 {
+    // Wipe any data already used for recording; their loss.
     m_data.clear();
 
-    // Get that device (in Pokemon style voice)
-    try {
-        m_micSrcBin = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-                                           "audioresample ! audiorate ! speexenc ! queue");
-    } catch (const QGlib::Error & error) {
-        qCritical() << "Failed to create audio source bin:" << error;
-        return;
+    // Obtain tools for recording like the encoder and the source.
+    m_sinkFile = QGst::ElementFactory::make("filesink");
+
+    if (!m_sinkFile) {
+       qCritical() << tr("One or more elements could not be created. "
+                             "Verify that you have all the necessary element plugins installed.");
+       return;
     }
 
-    m_memoryBin = QGst::Bin::fromDescription("appsink name=\"appsink\" ");
+    m_sinkFile->setProperty("location", "file.wav");
 
-    // lock it down and get it ready.
-    QGst::ElementPtr l_src = m_micSrcBin->getElementByName("audiosrc");
-    l_src->setState(QGst::StateReady);
-    QGst::ChildProxyPtr l_chldPrxy = l_src.dynamicCast<QGst::ChildProxy>();
-    if (l_chldPrxy && l_chldPrxy->childrenCount() > 0) {
-        QGst::ObjectPtr l_realSrc = l_chldPrxy->childByIndex(0);
-        l_realSrc->setProperty("device", m_device);
-    }
-
-    // build that pipeline!
+    // Build the pipeline.
     m_pipeline = QGst::Pipeline::create();
-    m_pipeline->add(m_micSrcBin,m_memoryBin);
+    m_pipeline->add(m_binAudioSrc, m_muxWav, m_sinkFile);
+
+    //link elements
+    QGst::PadPtr audioPad = m_muxWav->getRequestPad("sink_%d");
+    m_binAudioSrc->getStaticPad("src")->link(audioPad);
+
+    m_muxWav->link(m_muxWav);
+    m_muxWav->link(m_sinkFile);
+
+    // Connect the bus to this Microphone to detect changes in the pipeline.
+    m_pipeline->bus()->addSignalWatch();
+    QGlib::connect(m_pipeline->bus(), "message", this, &Microphone::onBusMessage);
+
+    // Get the party started :)
+    m_pipeline->setState(QGst::StatePlaying);
+}
+
+void SpeechControl::Microphone::stopRecording()
+{
+    // Stop recording.
 }
 
 const QByteArray* Microphone::data() const {
-    return &m_data;
-}
-
-/// @todo Ensure that the audio's been flushed.
-void SpeechControl::Microphone::stopRecording()
-{
-    QGst::ElementPtr l_src = m_micSrcBin->getElementByName("audiosrc");
-    l_src->setState(QGst::StateNull);
-    m_micSrcBin.clear();
+    if (m_data.size() == 0)
+        return 0;
+    else
+        return &m_data;
 }
 
 const double SpeechControl::Microphone::volume() const
 {
+    return 0.0;
 }
 
 const bool SpeechControl::Microphone::isMuted() const
 {
+    return false;
 }
 
-void SpeechControl::Microphone::setVolume(const double &)
+void SpeechControl::Microphone::setVolume(const double &p_volume)
 {
 }
 
-void SpeechControl::Microphone::mute(const bool &)
+void SpeechControl::Microphone::mute(const bool &p_mute)
 {
 }
 
 void SpeechControl::Microphone::obtain()
 {
+   try {
+       m_binAudioSrc = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
+                                             "audioresample ! audiorate ! wavenc name=\"wavenc\" ! queue");
+   } catch (const QGlib::Error & error) {
+       qCritical() << "Failed to create audio source bin:" << error;
+       m_binAudioSrc.clear();
+       return;
+   }
+
+   s_lst.insert(m_uuid,const_cast<Microphone*>(this));
+
+   m_srcAudio = m_binAudioSrc->getElementByName("audiosrc");
+   m_muxWav = m_binAudioSrc->getElementByName("wavenc");
+
+   //autoaudiosrc creates the actual source in the READY state
+   m_srcAudio->setState(QGst::StateReady);
+
+   QGst::ChildProxyPtr childProxy = m_srcAudio.dynamicCast<QGst::ChildProxy>();
+   if (childProxy && childProxy->childrenCount() > 0) {
+       //the actual source is the first child
+       QGst::ObjectPtr realSrc = childProxy->childByIndex(0);
+       realSrc->setProperty("device", m_device.toString());
+   }
+
+   m_srcAudio->setState(QGst::StateNull);
+}
+
+void SpeechControl::Microphone::release()
+{
+    // Turn everything off.
+    m_binAudioSrc->setState(QGst::StateNull);
+    m_srcAudio->setState(QGst::StateNull);
+    m_sinkFile->setState(QGst::StateNull);
+    m_pipeline->setState(QGst::StateNull);
+
+    // Free memory.
+    m_binAudioSrc.clear();
+    m_srcAudio.clear();
+    m_sinkFile.clear();
+    m_pipeline.clear();
+}
+
+const bool Microphone::isValid() const {
+    return !m_binAudioSrc.isNull();
+}
+
+void Microphone::onBusMessage(const QGst::MessagePtr & message)
+{
+    switch (message->type()) {
+        case QGst::MessageEos:
+            //got end-of-stream - stop the pipeline
+            //stop();
+            break;
+        case QGst::MessageError:
+            //check if the pipeline exists before destroying it,
+            //as we might get multiple error messages
+            if (m_pipeline) {
+                //stop();
+            }
+            qCritical() << tr("Pipeline Error")
+                        << message.staticCast<QGst::ErrorMessage>()->error().message();
+            break;
+
+        default:
+            break;
+    }
+}
+
+Microphone::~Microphone() {
+    // Release the microphone.
+    release();
 }

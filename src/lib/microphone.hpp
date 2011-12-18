@@ -28,8 +28,10 @@
 #include <QObject>
 
 #include <QGlib/Value>
-
 #include <QGst/Bin>
+#include <QGst/Pad>
+#include <QGst/Bus>
+#include <QGst/Message>
 #include <QGst/Element>
 #include <QGst/Pipeline>
 #include <QGst/ChildProxy>
@@ -64,6 +66,7 @@ namespace SpeechControl {
         Q_DECLARE_FLAGS(TestResults, TestResult)
 
         explicit Microphone(QGlib::Value = 0);
+        virtual ~Microphone();
         static Microphone* getMicrophone(const QUuid& );
         static Microphone* defaultMicrophone();
         static MicrophoneList allMicrophones();
@@ -72,9 +75,9 @@ namespace SpeechControl {
         const QByteArray* data() const;
         const QUuid uuid() const;
         const QString friendlyName() const;
-        const TestResults test() const;
         const double volume() const;
         const bool isMuted() const;
+        const bool isValid() const;
 
         void setVolume(const double& );
         void mute(const bool& );
@@ -83,7 +86,7 @@ namespace SpeechControl {
         void startRecording();
         void stopRecording();
 
-    private:
+    private:        
         static void findMicrophones();
         static MicrophoneMap s_lst;
         static QGst::ElementPtr s_src;
@@ -91,14 +94,19 @@ namespace SpeechControl {
         static QGst::ChildProxyPtr s_chldPrxy;
 
         void obtain();
-        void release();
+        QGst::BinPtr m_binAudioSrc;
+        QGst::PadPtr m_padAudio;
+        QGst::ElementPtr m_srcAudio;
+        QGst::ElementPtr m_sinkFile;
+        QGst::ElementPtr m_muxWav;
+        QGst::PipelinePtr m_pipeline;
         QGlib::Value m_device;
         QUuid m_uuid;
-        QGst::BinPtr m_micSrcBin;
-        QGst::BinPtr m_memoryBin;
-        QGst::PipelinePtr m_pipeline;
-        QGst::StreamVolumePtr m_volume;
         QByteArray m_data;
+
+    private slots:
+        void release();
+        void onBusMessage(const QGst::MessagePtr &);
     };
 }
 
