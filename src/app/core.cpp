@@ -59,7 +59,7 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
 
     // check for microphones
-    QGst::init();
+    QGst::init(&argc,&argv);
     Microphone::init();
     if (Microphone::allMicrophones().empty()){
         QErrorMessage* l_msg = new QErrorMessage;
@@ -71,6 +71,7 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
         Microphone* l_mic = Microphone::defaultMicrophone();
         l_mic->startRecording();
         l_mic->stopRecording();
+        l_mic->deleteLater();
     }
 }
 

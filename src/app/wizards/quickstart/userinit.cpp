@@ -39,6 +39,11 @@ UserInitialization::~UserInitialization()
 
 bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
 {
+    if (ui->lineEditNameFirst->text().isEmpty() ||
+        ui->lineEditNameMiddle->text().isEmpty()){
+        this->setSubTitle("<b><font color='bed'>Please enter your name.</font></b>");
+        return false;
+    }
 }
 
 /// @todo Load all of the countries.
