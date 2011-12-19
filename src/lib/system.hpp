@@ -19,48 +19,36 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#ifndef CORE_HPP
-#define CORE_HPP
+#ifndef SYSTEM_HPP
+#define SYSTEM_HPP
 
 #include <QObject>
-#include <QVariant>
-
-class QSettings;
 
 namespace SpeechControl {
-namespace Windows {
-  struct Main;
-}
-  struct Core;
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+class System : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
+    Q_DISABLE_COPY(System)
 
-  signals:
+public:
+    explicit System(int* argc, char**[]);
+    static System* instance();
+
+signals:
     void started();
     void stopped();
 
-  public:
-    Core(int,char**);
-    virtual ~Core();
-    QVariant getConfig(const QString&, QVariant = QVariant()) const;
-    void setConfig(const QString&, const QVariant&);
-    static Core* instance();
+public slots:
+    static void start();
+    static void start(int*,char**[]);
+    static void stop();
 
-  public slots:
-    void start();
-    void stop();
+private:
+    static System* s_inst;
 
-  private:
-    QSettings* m_settings;
-    static Core* s_inst;
-    
-  };
+};
+
 }
 
-#endif // CORE_HPP
+#endif // SYSTEM_HPP

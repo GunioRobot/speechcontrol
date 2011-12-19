@@ -25,8 +25,8 @@
 #include <QApplication>
 #include <QErrorMessage>
 #include <QMessageBox>
-#include <QGst/Init>
 
+#include <system.hpp>
 #include <training.hpp>
 #include <microphone.hpp>
 
@@ -54,13 +54,12 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     l_app->setOrganizationName("Synthetic Intellect Institute");
     l_app->setApplicationVersion("0.0b");
 
+    System::start(&argc,&argv);
 
     // build settings
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
 
     // check for microphones
-    QGst::init(&argc,&argv);
-    Microphone::init();
     if (Microphone::allMicrophones().empty()){
         QErrorMessage* l_msg = new QErrorMessage;
         l_msg->setWindowTitle("No Microphones Found");
@@ -77,7 +76,7 @@ Core::~Core () {
 void Core::start() {
     Windows::Main* l_mw = new Windows::Main;
 
-    if (Session::allSessions().empty()){
+    if (Session::allSessions().empty() && Core::instance()->getConfig("MainWindow/Geometry").isNull()){
         if (QMessageBox::question(l_mw,tr("First Run"),
                                  tr("This seems to be the first time you've run SpeechControl on this system. "
                                     "A wizard allowing you to start SpeechControl will appear."),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes){
