@@ -51,6 +51,7 @@ Main::Main() : m_ui(new Ui::MainWindow) {
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
 
    m_ui->labelSessionCount->setText(tr("You have <b>%1</b> sessions.").arg(Session::allSessions().count()));
+   m_ui->statusBar->showMessage("Ready.");
 }
 
 Main::~Main() {
