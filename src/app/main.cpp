@@ -20,8 +20,10 @@
  */
 
 #include "core.hpp"
+
 #include <QApplication>
 
+// pretty simple, huh?
 int main( int argc, char** argv ) {
     SpeechControl::Core l_core(argc,argv);
     l_core.start();
