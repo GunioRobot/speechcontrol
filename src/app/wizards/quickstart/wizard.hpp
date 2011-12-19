@@ -42,6 +42,9 @@ class QuickStart : public WizardBase
 public:
     explicit QuickStart(QWidget *parent = 0);
     ~QuickStart();
+
+public slots:
+    virtual void accept();
 };
 
 }}

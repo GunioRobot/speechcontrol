@@ -73,6 +73,21 @@ Session * Session::create()
         qWarning() << "Can't make session" << l_uuid;
         return 0;
     }
+
+    QDomDocument l_dom("Session");
+    QDomElement l_rootElem = l_dom.createElement("Session");
+    l_rootElem.setAttribute("uuid",l_uuid.toString());
+    l_dom.appendChild(l_rootElem);
+
+    const QUrl l_path = getPath(l_uuid);
+    QFile* l_file = new QFile(l_path.toLocalFile());
+    if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
+        QTextStream l_strm(l_file);
+        l_dom.save(l_strm,4);
+    }
+
+    l_file->close();
+    l_file->deleteLater();
 }
 
 const bool Session::exists(const QUuid& l_uuid){
@@ -171,6 +186,10 @@ QFile * Phrase::audio() const
 {
     const QString l_pth = m_sess->audioPath().toLocalFile() + "/" + m_elem->attribute("filename");
     return new QFile(l_pth);
+}
+
+QString Phrase::text() const {
+    return m_elem->attribute("text");
 }
 
 /// @todo This method should add itself to the parent session.

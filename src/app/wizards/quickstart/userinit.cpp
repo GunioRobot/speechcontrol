@@ -21,8 +21,10 @@
 
 #include "userinit.hpp"
 #include "ui_userinit.h"
-#include <QLocale>
+
 #include <QDebug>
+#include <QLocale>
+#include <QVariantMap>
 
 using SpeechControl::Wizards::Pages::UserInitialization;
 
@@ -31,6 +33,15 @@ UserInitialization::UserInitialization(QWidget *parent) :
     ui(new Ui::UserInitialization)
 {
     ui->setupUi(this);
+    registerField("name-first",ui->lineEditNameFirst);
+    registerField("name-last",ui->lineEditNameLast);
+    registerField("name-middle",ui->lineEditNameFirst);
+    registerField("age",ui->comboBoxAge);
+    registerField("country",ui->comboBoxCountry);
+    registerField("language-spoken",ui->comboBoxLanguageSpoken);
+    registerField("language-native",ui->comboBoxLanguageNative);
+    registerField("is-gender-male",ui->radioButtonMale);
+    registerField("is-gender-female",ui->radioButtonFemale);
 }
 
 UserInitialization::~UserInitialization()
@@ -46,7 +57,12 @@ bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
     }
 
     if (ui->lineEditNameLast->text().isEmpty()){
-        this->setSubTitle("<b><font color='red'>Please enter your last name, at least an initial.</font></b>");
+        this->setSubTitle("<b><font color='red'>Please enter at least the first letter of your last name.</font></b>");
+        return false;
+    }
+
+    if (!ui->radioButtonFemale->isChecked() && !ui->radioButtonMale->isChecked()){
+        this->setSubTitle("<b><font color='red'>Please select your gender.</font></b>");
         return false;
     }
 

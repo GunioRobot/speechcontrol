@@ -46,10 +46,12 @@ namespace SpeechControl {
 
     public:
         virtual ~Phrase();
+        static Phrase* create(Session*);
+
         Session* parentSession() const;
         QUuid uuid() const;
         QFile* audio() const;
-        static Phrase* create(Session*);
+        QString text() const;
 
     private:
         explicit Phrase(Session*, QDomElement* );
@@ -66,16 +68,17 @@ namespace SpeechControl {
         virtual ~Session();
         PhraseList phrases() const;
         Phrase* phrase(const QUuid&) const;
+        static Session* create();
+        static Session* obtain(const QUuid&);
+        static SessionList allSessions();
+        static const bool exists(const QUuid&);
+
         void load(const QUuid&);
         void save();
         void addPhrase(Phrase*);
         const QUuid uuid() const;
         Session& operator<<(Phrase*);
         Session& operator<<(PhraseList&);
-        static Session* create();
-        static Session* obtain(const QUuid&);
-        static SessionList allSessions();
-        static const bool exists(const QUuid&);
 
     private:
         Session(const QUuid& );

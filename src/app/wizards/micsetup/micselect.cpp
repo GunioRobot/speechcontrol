@@ -33,6 +33,7 @@ MicrophoneSelection::MicrophoneSelection(QWidget *parent) :
     m_mic(Microphone::defaultMicrophone())
 {
     ui->setupUi(this);
+    this->registerField("mic",ui->comboBoxMicrophones,"currentIndex",SIGNAL(currentIndexChanged(QString)));
 }
 
 MicrophoneSelection::~MicrophoneSelection()
@@ -55,6 +56,9 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 {
+    if (m_mic)
+        wizard()->setProperty("mic-uuid",m_mic->uuid().toString());
+
     return ui->progressBarFeedback->isEnabled();
 }
 

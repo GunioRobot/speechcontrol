@@ -19,10 +19,13 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizards/micsetup/wizard.hpp"
-#include "wizards/micsetup/micselect.hpp"
+#include "core.hpp"
+#include "wizard.hpp"
+#include "micselect.hpp"
 #include "wizards/intro.hpp"
+#include "wizards/outro.hpp"
 
+using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
 MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
@@ -32,8 +35,17 @@ MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
             new Pages::Introduction(tr("This wizard will help you configure your microphone ") +
                                      tr("for optimal performance in SpeechControl.")));
     setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
+    setPage(MicrophoneSetup::ConclusionPage,
+            new Pages::Conclusion(tr("You've configured your microphone to work optimally with SpeechControl. "
+                                     "Click <b>Finish</b> to finialize your results and commit them to SpeechControl.")));
+}
+
+void MicrophoneSetup::accept(){
+    Core::instance()->setConfig("Microphone/Default",field("mic-uuid"));
+    this->QDialog::accept();
 }
 
 MicrophoneSetup::~MicrophoneSetup()
 {
+
 }

@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>424</width>
-    <height>326</height>
+    <width>448</width>
+    <height>345</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -21,9 +21,9 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>295</y>
-     <width>416</width>
-     <height>32</height>
+     <y>315</y>
+     <width>436</width>
+     <height>26</height>
     </rect>
    </property>
    <property name="orientation">
@@ -40,9 +40,9 @@
    <property name="geometry">
     <rect>
      <x>5</x>
-     <y>10</y>
-     <width>416</width>
-     <height>286</height>
+     <y>5</y>
+     <width>441</width>
+     <height>306</height>
     </rect>
    </property>
    <property name="tabPosition">
@@ -52,7 +52,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tabGeneral">
     <attribute name="title">
@@ -61,10 +61,10 @@
     <widget class="QWidget" name="gridLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>406</width>
-       <height>256</height>
+       <x>10</x>
+       <y>5</y>
+       <width>421</width>
+       <height>271</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -104,8 +104,14 @@
         </widget>
        </widget>
       </item>
-      <item row="1" column="0" colspan="2">
+      <item row="1" column="0">
        <widget class="QGroupBox" name="groupBox_8">
+        <property name="minimumSize">
+         <size>
+          <width>214</width>
+          <height>121</height>
+         </size>
+        </property>
         <property name="title">
          <string>VoxForge</string>
         </property>
@@ -114,7 +120,7 @@
           <rect>
            <x>5</x>
            <y>20</y>
-           <width>236</width>
+           <width>201</width>
            <height>61</height>
           </rect>
          </property>
@@ -193,10 +199,10 @@
     <widget class="QWidget" name="gridLayoutWidget_3">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>406</width>
-       <height>256</height>
+       <x>5</x>
+       <y>5</y>
+       <width>426</width>
+       <height>271</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
@@ -204,20 +210,29 @@
        <widget class="QGroupBox" name="groupBox">
         <property name="minimumSize">
          <size>
-          <width>150</width>
+          <width>250</width>
           <height>0</height>
          </size>
         </property>
         <property name="title">
          <string>Description</string>
         </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+        <property name="flat">
+         <bool>false</bool>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
         <widget class="QLabel" name="labelPluginDescription">
          <property name="geometry">
           <rect>
-           <x>5</x>
-           <y>25</y>
-           <width>141</width>
-           <height>76</height>
+           <x>14</x>
+           <y>26</y>
+           <width>224</width>
+           <height>121</height>
           </rect>
          </property>
          <property name="text">
@@ -230,9 +245,99 @@
           <bool>true</bool>
          </property>
         </widget>
+        <widget class="QWidget" name="formLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>3</x>
+           <y>167</y>
+           <width>246</width>
+           <height>69</height>
+          </rect>
+         </property>
+         <layout class="QFormLayout" name="formLayout">
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_8">
+            <property name="minimumSize">
+             <size>
+              <width>50</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Website</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="minimumSize">
+             <size>
+              <width>42</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>42</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Author</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_10">
+            <property name="minimumSize">
+             <size>
+              <width>44</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>44</width>
+              <height>15</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Version</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="labelWebsite">
+            <property name="text">
+             <string>&lt;a href=&quot;http://www.foo.bog&quot;&gt;http://www.foo.bog&lt;/a&gt;</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLabel" name="labelAuthor">
+            <property name="text">
+             <string>Jacky Alcine</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="labelVersion">
+            <property name="text">
+             <string>0.3</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="1" column="0" colspan="2">
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <spacer name="horizontalSpacer">
@@ -269,10 +374,10 @@
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>406</width>
-       <height>256</height>
+       <x>10</x>
+       <y>10</y>
+       <width>416</width>
+       <height>261</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -286,7 +391,7 @@
           <rect>
            <x>5</x>
            <y>20</y>
-           <width>186</width>
+           <width>201</width>
            <height>71</height>
           </rect>
          </property>
@@ -322,7 +427,7 @@
           <rect>
            <x>10</x>
            <y>20</y>
-           <width>176</width>
+           <width>196</width>
            <height>76</height>
           </rect>
          </property>
@@ -336,7 +441,7 @@
         <widget class="QPushButton" name="pushButtonWizardMic">
          <property name="geometry">
           <rect>
-           <x>60</x>
+           <x>65</x>
            <y>100</y>
            <width>84</width>
            <height>23</height>
@@ -358,7 +463,7 @@
           <rect>
            <x>5</x>
            <y>20</y>
-           <width>186</width>
+           <width>206</width>
            <height>71</height>
           </rect>
          </property>
@@ -373,7 +478,7 @@
          <property name="geometry">
           <rect>
            <x>60</x>
-           <y>95</y>
+           <y>100</y>
            <width>84</width>
            <height>23</height>
           </rect>
@@ -394,7 +499,7 @@
           <rect>
            <x>5</x>
            <y>15</y>
-           <width>186</width>
+           <width>201</width>
            <height>81</height>
           </rect>
          </property>
@@ -408,7 +513,7 @@
         <widget class="QPushButton" name="pushButtonWizardVoxforge">
          <property name="geometry">
           <rect>
-           <x>60</x>
+           <x>65</x>
            <y>100</y>
            <width>84</width>
            <height>23</height>
@@ -425,6 +530,7 @@
    </widget>
   </widget>
  </widget>
+ <layoutdefault spacing="6" margin="6"/>
  <resources/>
  <connections>
   <connection>
@@ -462,16 +568,16 @@
  </connections>
  <designerdata>
   <property name="gridDeltaX">
-   <number>5</number>
+   <number>3</number>
   </property>
   <property name="gridDeltaY">
-   <number>5</number>
+   <number>3</number>
   </property>
   <property name="gridSnapX">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="gridSnapY">
-   <bool>true</bool>
+   <bool>false</bool>
   </property>
   <property name="gridVisible">
    <bool>false</bool>

@@ -180,7 +180,7 @@ void SpeechControl::Microphone::obtain()
 {
    try {
        m_binAudio = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-                                             "audioresample ! audiorate ! wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
+                                               "audioresample ! audiorate ! volume ! wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
    } catch (const QGlib::Error & error) {
        qCritical() << "Failed to create audio source bin:" << error;
        m_binAudio.clear();

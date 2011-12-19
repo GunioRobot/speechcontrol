@@ -41,6 +41,9 @@ public:
     explicit MicrophoneSetup(QWidget *parent = 0);
     ~MicrophoneSetup();
 
+public slots:
+    virtual void accept();
+
 };
 
 }}

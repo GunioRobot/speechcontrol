@@ -19,12 +19,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "core.hpp"
 #include "wizard.hpp"
 #include "userinit.hpp"
-#include "micpicker.hpp"
 #include "wizards/intro.hpp"
+#include "wizards/micsetup/micselect.hpp"
 #include "wizards/outro.hpp"
 
+#include <QVariantMap>
+
+using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
 QuickStart::QuickStart(QWidget *parent) :
@@ -36,12 +40,40 @@ QuickStart::QuickStart(QWidget *parent) :
     setPage(QuickStart::UserCreationPage,
             new Pages::UserInitialization);
     setPage(QuickStart::MicrophoneCreationPage,
-            new Pages::MicrophonePicker);
+            new Pages::MicrophoneSelection);
     /*setPage(QuickStart::BookDownloadPage,
             new Pages::BookDownload);*/
     setPage(QuickStart::ConclusionPage,
             new Pages::Conclusion(tr("You've successfully configured SpeechControl to your liking. "
                                      "If you need to re-configure SpeechControl, feel free to run this wizard again.")));
+}
+
+/// @todo The user's country could be automatically detected by QLocale.
+void QuickStart::accept() {
+    Core* l_core = Core::instance();
+    QVariantMap l_name;
+    QVariantMap l_language;
+    QString l_gender;
+
+    l_name["First"] = field("name-first");
+    l_name["Middle"] = field("name-middle");
+    l_name["Last"] = field("name-last");
+
+    l_language["Spoken"] = field("language-spoken");
+    l_language["Native"] = field("language-native");
+
+    if (!field("is-gender-male").toBool())
+        l_gender = "Male";
+    else
+        l_gender = "Female";
+
+    l_core->setConfig("User/Name",l_name);
+    l_core->setConfig("User/Age",field("age"));
+    l_core->setConfig("User/Country",field("country"));
+    l_core->setConfig("User/Language",l_language);
+    l_core->setConfig("User/Gender",l_gender);
+    l_core->setConfig("Microphone/Default",property("mic-uuid"));
+    this->QDialog::accept();
 }
 
 QuickStart::~QuickStart()
