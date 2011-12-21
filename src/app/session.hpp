@@ -34,8 +34,10 @@ namespace SpeechControl {
     class Session;
 
     typedef QList<Session*> SessionList;
+    typedef QList<Content*> ContentList;
     typedef QMap<QUuid, Session*> SessionMap;
 
+    /// @todo Find a proper means of attribution.
     class Content : public QObject {
         Q_OBJECT
         Q_DISABLE_COPY(Content)
@@ -44,15 +46,23 @@ namespace SpeechControl {
         explicit Content(const QUuid&);
         virtual ~Content();
         void load(const QUuid&);
-        uint pages() const;
-        uint words() const;
-        uint length() const;
-        uint characters() const;
+        const uint pageCount() const;
+        const uint words() const;
+        const uint length() const;
+        const uint characters() const;
+        const QUuid uuid() const;
+        const QString title() const;
+        const QString author() const;
+        const QStringList pages() const;
+        const QString pageAt(const int&) const;
         static Content* obtain(const QUuid&);
+        static ContentList allContents();
 
     private:
         static QString getPath(const QUuid&);
         QStringList m_lines;
+        QDomDocument* m_dom;
+        QUuid m_uuid;
     };
 
     class Session : public QObject {

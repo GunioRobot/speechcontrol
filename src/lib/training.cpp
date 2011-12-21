@@ -319,13 +319,3 @@ const QDateTime Corpus::timeCompleted() const
 {
     return QDateTime::fromString(m_dom->elementsByTagName("Date").at(0).toElement().attribute("Completed"));
 }
-
-const QString SpeechControl::Corpus::title() const
-{
-    return m_dom->documentElement().elementsByTagName("Biblography").at(0).toElement().attribute("Title");
-}
-
-const QString SpeechControl::Corpus::author() const
-{
-    return m_dom->documentElement().elementsByTagName("Biblography").at(0).toElement().attribute("Author");
-}

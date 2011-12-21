@@ -19,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef WIZARD_HPP
-#define WIZARD_HPP
+#ifndef QS_WIZARD_HPP
+#define QS_WIZARD_HPP
 
 #include "wizards/base.hpp"
 

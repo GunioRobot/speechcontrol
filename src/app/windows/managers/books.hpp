@@ -29,6 +29,7 @@ namespace Ui {
 }
 
 namespace SpeechControl {
+    class Content;
 namespace Windows {
 namespace Managers {
 
@@ -39,9 +40,21 @@ class BooksManager : public QDialog
 public:
     explicit BooksManager(QWidget *parent = 0);
     ~BooksManager();
+    static Content* doSelectContent();
+
+private slots:
+    void on_btnSelect_clicked();
+
+    void on_btnAdd_clicked();
+
+    void on_btnCancel_clicked();
+
+    void on_lstBooks_itemSelectionChanged();
 
 private:
     Ui::BookManager *ui;
+    Content* m_book;
+    void updateList();
 };
 
 }}}

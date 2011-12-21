@@ -132,8 +132,6 @@ namespace SpeechControl {
         Corpus& operator<<(Sentence*);
         Corpus& operator<<(SentenceList&);
 
-        const QString title() const;
-        const QString author() const;
         const QDateTime timeStarted() const;
         const QDateTime timeLastModified() const;
         const QDateTime timeCompleted() const;

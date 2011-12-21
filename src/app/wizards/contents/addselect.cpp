@@ -19,45 +19,28 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "addselect.hpp"
+#include "wizard.hpp"
+#include "ui_additionselectionpage.h"
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
+using SpeechControl::Wizards::Pages::AdditionSelectionPage;
 
-#include <QDialog>
-
-namespace Ui {
-    class Settings;
+AdditionSelectionPage::AdditionSelectionPage(QWidget *parent) :
+    QWizardPage(parent),
+    m_ui(new Ui::AdditionSelectionPage)
+{
+    m_ui->setupUi(this);
 }
 
-namespace SpeechControl {
-namespace Windows {
-
-
-class Settings : public QDialog
+AdditionSelectionPage::~AdditionSelectionPage()
 {
-    Q_OBJECT
+    delete m_ui;
+}
 
-public:
-    explicit Settings(QWidget *parent = 0);
-    ~Settings();
-
-private slots:
-    void on_tabWidgetWizards_currentChanged(int index);
-    void on_buttonBox_accepted();
-    void on_pushButtonWizardConfig_clicked();
-    void on_pushButtonWizardSessions_clicked();
-    void on_pushButtonWizardVoxforge_clicked();
-    void on_pushButtonWizardMic_clicked();
-    void on_pushButtonAdd_clicked();
-    void on_pushButtonTrain_clicked();
-    void on_pushButtonDelete_clicked();
-
-    void on_listWidgetBooks_itemSelectionChanged();
-
-private:
-    Ui::Settings *ui;
-};
-
-}}
-
-#endif // SETTINGS_HPP
+int AdditionSelectionPage::nextId()
+{
+    if (m_ui->radioButtonFile->isChecked())
+        return ContentWizard::FileSelectionPage;
+    else if (m_ui->radioButtonWiki->isChecked())
+        return ContentWizard::WikiSourcePage;
+}

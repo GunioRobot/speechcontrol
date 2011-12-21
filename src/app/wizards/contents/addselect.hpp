@@ -19,45 +19,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef ADDSELECT_HPP
+#define ADDSELECT_HPP
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
-
-#include <QDialog>
+#include <QWizardPage>
 
 namespace Ui {
-    class Settings;
+    class AdditionSelectionPage;
 }
 
 namespace SpeechControl {
-namespace Windows {
+namespace Wizards {
+namespace Pages {
 
-
-class Settings : public QDialog
+class AdditionSelectionPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    explicit Settings(QWidget *parent = 0);
-    ~Settings();
-
-private slots:
-    void on_tabWidgetWizards_currentChanged(int index);
-    void on_buttonBox_accepted();
-    void on_pushButtonWizardConfig_clicked();
-    void on_pushButtonWizardSessions_clicked();
-    void on_pushButtonWizardVoxforge_clicked();
-    void on_pushButtonWizardMic_clicked();
-    void on_pushButtonAdd_clicked();
-    void on_pushButtonTrain_clicked();
-    void on_pushButtonDelete_clicked();
-
-    void on_listWidgetBooks_itemSelectionChanged();
+    explicit AdditionSelectionPage(QWidget *parent = 0);
+    ~AdditionSelectionPage();
+    virtual int nextId();
 
 private:
-    Ui::Settings *ui;
+    Ui::AdditionSelectionPage *m_ui;
 };
 
-}}
+}}}
 
-#endif // SETTINGS_HPP
+#endif // ADDSELECT_HPP

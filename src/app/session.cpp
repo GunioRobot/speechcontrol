@@ -30,6 +30,7 @@ using SpeechControl::Content;
 using SpeechControl::Session;
 using SpeechControl::SessionMap;
 using SpeechControl::SessionList;
+using SpeechControl::ContentList;
 
 QMap<QUuid, QDomElement*> Session::s_elems;
 QDomDocument* Session::s_dom = 0;
@@ -93,17 +94,6 @@ void Session::load(const QUuid &p_uuid)
     m_corpus = Corpus::obtain(l_corpusUuid);
 }
 
-Content::Content(const QUuid& p_uuid) {
-
-}
-
-Content* Content::obtain(const QUuid &p_uuid)
-{
-}
-
-Content::~Content()
-{
-}
 
 SessionList Session::allSessions()
 {
@@ -129,27 +119,82 @@ Session* Session::create(const Content* p_content)
 {
 }
 
-uint Content::pages() const
+Content::Content(const QUuid& p_uuid) {
+    load(p_uuid);
+}
+
+Content* Content::obtain(const QUuid &p_uuid)
 {
 }
 
-void Content::load(const QUuid &)
+void Content::load(const QUuid &p_uuid)
 {
+    QFile* l_file = new QFile(getPath(p_uuid));
+    m_dom = new QDomDocument("Content");
+    m_dom->setContent(l_file);
+
+    m_lines = m_dom->documentElement().elementsByTagName("Content").at(0).nodeValue().split("\n");
+    m_uuid = p_uuid;
 }
 
-uint Content::words() const
+const uint Content::pageCount() const
 {
+    return m_dom->documentElement().elementsByTagName("Count").at(0).toElement().attribute("pages").toUInt();
 }
 
-uint Content::length() const
+const uint Content::words() const
 {
+    return m_dom->documentElement().elementsByTagName("Count").at(0).toElement().attribute("words").toUInt();
 }
 
-uint Content::characters() const
+const uint Content::length() const
 {
+    return m_lines.join("\n").length();
+}
+
+const uint Content::characters() const
+{
+    return m_dom->documentElement().elementsByTagName("Count").at(0).toElement().attribute("chars").toUInt();
 }
 
 QString Content::getPath(const QUuid &p_uuid)
 {
     return QDir::homePath() + "/.speechcontrol/contents/" + p_uuid.toString();
+}
+
+const QString Content::title() const
+{
+    return m_dom->documentElement().elementsByTagName("Biblography").at(0).toElement().attribute("Title");
+}
+
+const QString Content::author() const
+{
+    return m_dom->documentElement().elementsByTagName("Biblography").at(0).toElement().attribute("Author");
+}
+
+Content::~Content()
+{
+}
+
+const QUuid Content::uuid() const
+{
+    return m_uuid;
+}
+
+ContentList Content::allContents()
+{
+    return ContentList();
+}
+
+const QStringList SpeechControl::Content::pages() const
+{
+    return m_lines;
+}
+
+const QString SpeechControl::Content::pageAt(const int &l_index) const
+{
+    if (l_index < m_lines.count() && l_index != 0)
+        return m_lines.at(l_index);
+
+    return QString::null;
 }

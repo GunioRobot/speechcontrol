@@ -19,38 +19,30 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "core.hpp"
 #include "wizard.hpp"
-#include "micselect.hpp"
+#include "addselect.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 
 #include <QIcon>
 
-using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
-MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
+ContentWizard::ContentWizard(QWidget *parent) :
     WizardBase(parent)
 {
-    QIcon l_icon = QIcon::fromTheme("audio-headset");
+    QIcon l_icon = QIcon::fromTheme("text-plain");
     setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
-    setWindowTitle(tr("Microphone Setup Wizard - SpeechControl"));
-    setPage(MicrophoneSetup::IntroductionPage,
-            new Pages::Introduction(tr("This wizard will help you configure your microphone ") +
-                                     tr("for optimal performance in SpeechControl.")));
-    setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
-    setPage(MicrophoneSetup::ConclusionPage,
-            new Pages::Conclusion(tr("You've configured your microphone to work optimally with SpeechControl. "
-                                     "Click <b>Finish</b> to finialize your results and commit them to SpeechControl.")));
+    setWindowTitle(tr("Book Addition Wizard - SpeechControl"));
+    setPage(ContentWizard::IntroductionPage,
+            new Pages::Introduction(tr("This wizard allows you to add more reading sources for transcription "
+                                       "for SpeechControl.")));
+    setPage(ContentWizard::AdditionSelectionPage,
+            new Pages::AdditionSelectionPage);
+    setPage(ContentWizard::ConclusionPage,
+            new Pages::Conclusion(tr("You've successfully added a book to your local transcription library.")));
 }
 
-void MicrophoneSetup::accept(){
-    Core::instance()->setConfig("Microphone/Default",property("mic-uuid"));
-    this->QDialog::accept();
-}
-
-MicrophoneSetup::~MicrophoneSetup()
+ContentWizard::~ContentWizard()
 {
-
 }

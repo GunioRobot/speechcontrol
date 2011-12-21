@@ -65,7 +65,7 @@ void Training::on_pushButtonProgress_toggled(bool checked)
 
 void Training::startTraining(Session *p_session)
 {
-    Training* l_dialog = new Training(QApplication::topLevelWidgets().front());
+    Training* l_dialog = new Training;
     l_dialog->setSession(p_session);
     l_dialog->exec();
 }

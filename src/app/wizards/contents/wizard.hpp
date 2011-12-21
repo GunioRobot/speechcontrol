@@ -19,45 +19,40 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef CONTENTS_WIZARD_HPP
+#define CONTENTS_WIZARD_HPP
 
-#ifndef SETTINGS_HPP
-#define SETTINGS_HPP
-
-#include <QDialog>
-
-namespace Ui {
-    class Settings;
-}
+#include "wizards/base.hpp"
 
 namespace SpeechControl {
-namespace Windows {
+namespace Wizards {
 
-
-class Settings : public QDialog
+class ContentWizard : public WizardBase
 {
     Q_OBJECT
-
 public:
-    explicit Settings(QWidget *parent = 0);
-    ~Settings();
+    enum Pages {
+        IntroductionPage = 0,
+        AdditionSelectionPage,
 
-private slots:
-    void on_tabWidgetWizards_currentChanged(int index);
-    void on_buttonBox_accepted();
-    void on_pushButtonWizardConfig_clicked();
-    void on_pushButtonWizardSessions_clicked();
-    void on_pushButtonWizardVoxforge_clicked();
-    void on_pushButtonWizardMic_clicked();
-    void on_pushButtonAdd_clicked();
-    void on_pushButtonTrain_clicked();
-    void on_pushButtonDelete_clicked();
+        // from Wikipedia (not yet implemented)
+        WikiSourcePage,
+        PageSelectionPage,
 
-    void on_listWidgetBooks_itemSelectionChanged();
+        // from a local file...
+        // need to support ODF, PDF, RTF, ePUB, ...
+        FileSelectionPage,
 
-private:
-    Ui::Settings *ui;
+        // for ALL
+        EditContentsPage,
+
+        ConclusionPage
+    };
+
+    explicit ContentWizard(QWidget *parent = 0);
+    virtual ~ContentWizard();
+
 };
 
 }}
-
-#endif // SETTINGS_HPP
+#endif // WIZARD_HPP

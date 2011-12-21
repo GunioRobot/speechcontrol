@@ -37,15 +37,16 @@ QuickStart::QuickStart(QWidget *parent) :
 {
     this->setWindowTitle(tr("Quick Start :: SpeechControl"));
     QIcon l_icon = QIcon::fromTheme("preferences-desktop-personal");
-    setPixmap(QWizard::LogoPixmap,l_icon.pixmap(64,64,QIcon::Active,QIcon::On));
+    setWindowTitle(tr("Quick Start - SpeechControl"));
+    setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
     setPage(QuickStart::IntroductionPage,
             new Pages::Introduction(tr("This wizard is designed to ease the process of configuring SpeechControl.")));
     setPage(QuickStart::UserCreationPage,
             new Pages::UserInitialization);
     setPage(QuickStart::MicrophoneCreationPage,
             new Pages::MicrophoneSelection);
-    /*setPage(QuickStart::BookDownloadPage,
-            new Pages::BookDownload);*/
+    //setPage(QuickStart::BookAdditionPage,
+    //        new Pages::BookAdditionPage);
     setPage(QuickStart::ConclusionPage,
             new Pages::Conclusion(tr("You've successfully configured SpeechControl to your liking. "
                                      "If you need to re-configure SpeechControl, feel free to run this wizard again.")));

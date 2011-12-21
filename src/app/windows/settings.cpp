@@ -19,13 +19,18 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <training.hpp>
 
 #include "core.hpp"
 #include "settings.hpp"
 #include "wizards/quickstart/wizard.hpp"
 #include "wizards/micsetup/wizard.hpp"
+#include "wizards/contents/wizard.hpp"
+#include "session.hpp"
 #include "ui_settings.h"
 
+using SpeechControl::Content;
+using SpeechControl::ContentList;
 using SpeechControl::Windows::Settings;
 using namespace SpeechControl::Wizards;
 
@@ -47,14 +52,36 @@ Settings::~Settings()
 void Settings::on_tabWidgetWizards_currentChanged(int p_index)
 {
     switch (p_index){
-        case 0:
-            ui->checkBoxSysStart->setChecked(Core::instance()->getConfig("Options/AutoStart",QVariant(false)).toBool());
-            ui->checkBoxDictate->setChecked(Core::instance()->getConfig("Options/Dictation",QVariant(false)).toBool());
-            ui->checkBoxDesktopControl->setChecked(Core::instance()->getConfig("Options/Control",QVariant(false)).toBool());
-            ui->checkBoxVoxForge->setChecked(Core::instance()->getConfig("VoxForge/EnableUploading",QVariant(false)).toBool());
+    case 0: // configuration
+    {
+        ui->checkBoxSysStart->setChecked(Core::instance()->getConfig("Options/AutoStart",QVariant(false)).toBool());
+        ui->checkBoxDictate->setChecked(Core::instance()->getConfig("Options/Dictation",QVariant(false)).toBool());
+        ui->checkBoxDesktopControl->setChecked(Core::instance()->getConfig("Options/Control",QVariant(false)).toBool());
+        ui->checkBoxVoxForge->setChecked(Core::instance()->getConfig("VoxForge/EnableUploading",QVariant(false)).toBool());
+    }
         break;
-    case 1:
-
+    case 1: // plug-ins
+    {
+    }
+        break;
+    case 2: // books
+    {
+        ContentList l_books = Content::allContents();
+        ui->textEditPreview->setEnabled(false);
+        if (l_books.isEmpty()){
+            ui->listWidgetBooks->clear();
+        } else {
+            Q_FOREACH(const Content* l_cnt, l_books){
+                QListWidgetItem* l_item = new QListWidgetItem(l_cnt->title());
+                l_item->setData(0,l_cnt->uuid().toString());
+                ui->listWidgetBooks->addItem(l_item);
+            }
+        }
+    }
+        break;
+    case 3: // wizards
+    {
+    }
         break;
     }
 
@@ -90,24 +117,10 @@ void SpeechControl::Windows::Settings::on_pushButtonWizardMic_clicked()
     l_wiz->show();
 }
 
-void SpeechControl::Windows::Settings::on_actionAddBook_triggered()
-{
-
-}
-
-void SpeechControl::Windows::Settings::on_actionStartTrainingWith_triggered()
-{
-
-}
-
-void SpeechControl::Windows::Settings::on_action_Delete_triggered()
-{
-
-}
-
 void SpeechControl::Windows::Settings::on_pushButtonAdd_clicked()
 {
-
+    ContentWizard* l_wiz = new ContentWizard;
+    l_wiz->show();
 }
 
 void SpeechControl::Windows::Settings::on_pushButtonTrain_clicked()
@@ -118,4 +131,17 @@ void SpeechControl::Windows::Settings::on_pushButtonTrain_clicked()
 void SpeechControl::Windows::Settings::on_pushButtonDelete_clicked()
 {
 
+}
+
+void SpeechControl::Windows::Settings::on_listWidgetBooks_itemSelectionChanged()
+{
+    QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
+    if (l_item){
+        Content* l_cnt = Content::obtain(l_item->data(0).toString());
+        ui->textEditPreview->setEnabled(true);
+        ui->textEditPreview->setPlainText(l_cnt->pageAt(0));
+    } else {
+        ui->textEditPreview->clear();
+        ui->textEditPreview->setEnabled(false);
+    }
 }

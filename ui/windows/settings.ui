@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>446</width>
-    <height>343</height>
+    <width>449</width>
+    <height>348</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,8 +20,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>5</x>
-     <y>315</y>
+     <x>9</x>
+     <y>321</y>
      <width>436</width>
      <height>26</height>
     </rect>
@@ -41,8 +41,8 @@
     <rect>
      <x>7</x>
      <y>5</y>
-     <width>432</width>
-     <height>306</height>
+     <width>439</width>
+     <height>313</height>
     </rect>
    </property>
    <property name="tabPosition">
@@ -52,7 +52,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>2</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="tabGeneral">
     <attribute name="title">
@@ -61,10 +61,10 @@
     <widget class="QWidget" name="gridLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>4</x>
        <y>5</y>
-       <width>421</width>
-       <height>271</height>
+       <width>427</width>
+       <height>277</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
@@ -202,7 +202,7 @@
        <x>5</x>
        <y>5</y>
        <width>426</width>
-       <height>271</height>
+       <height>278</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
@@ -376,8 +376,8 @@
       <rect>
        <x>3</x>
        <y>5</y>
-       <width>427</width>
-       <height>271</height>
+       <width>428</width>
+       <height>280</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
@@ -495,10 +495,10 @@
     <widget class="QWidget" name="gridLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>416</width>
-       <height>261</height>
+       <x>3</x>
+       <y>5</y>
+       <width>427</width>
+       <height>279</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">
@@ -526,8 +526,8 @@
         <widget class="QPushButton" name="pushButtonWizardConfig">
          <property name="geometry">
           <rect>
-           <x>60</x>
-           <y>100</y>
+           <x>62</x>
+           <y>108</y>
            <width>84</width>
            <height>23</height>
           </rect>
@@ -546,9 +546,9 @@
         <widget class="QLabel" name="label_2">
          <property name="geometry">
           <rect>
-           <x>10</x>
+           <x>5</x>
            <y>20</y>
-           <width>196</width>
+           <width>201</width>
            <height>76</height>
           </rect>
          </property>
@@ -562,8 +562,8 @@
         <widget class="QPushButton" name="pushButtonWizardMic">
          <property name="geometry">
           <rect>
-           <x>65</x>
-           <y>100</y>
+           <x>66</x>
+           <y>110</y>
            <width>84</width>
            <height>23</height>
           </rect>
@@ -599,7 +599,7 @@
          <property name="geometry">
           <rect>
            <x>60</x>
-           <y>100</y>
+           <y>108</y>
            <width>84</width>
            <height>23</height>
           </rect>
@@ -635,7 +635,7 @@
          <property name="geometry">
           <rect>
            <x>65</x>
-           <y>100</y>
+           <y>106</y>
            <width>84</width>
            <height>23</height>
           </rect>
