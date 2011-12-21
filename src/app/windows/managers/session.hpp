@@ -30,6 +30,9 @@ namespace Ui {
 
 namespace SpeechControl {
     class Session;
+    namespace Widgets {
+        class SessionWidget;
+    }
 namespace Windows {
 namespace Managers {
 
@@ -41,10 +44,13 @@ public:
     explicit SessionManager(QWidget *parent = 0);
     ~SessionManager();
     static Session* doSelectSession();
+    Session* session() const;
 
 private:
-    Ui::SessionManager *ui;
+    Ui::SessionManager *m_ui;
+    Session* m_session;
 };
+
 }}}
 
 #endif // SESSIONMANAGER_HPP

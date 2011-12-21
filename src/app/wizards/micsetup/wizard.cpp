@@ -25,12 +25,16 @@
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 
+#include <QIcon>
+
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
 MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
     WizardBase(parent)
 {
+    QIcon l_icon = QIcon::fromTheme("audio-headset");
+    setPixmap(QWizard::LogoPixmap,l_icon.pixmap(64,64,QIcon::Active,QIcon::On));
     setPage(MicrophoneSetup::IntroductionPage,
             new Pages::Introduction(tr("This wizard will help you configure your microphone ") +
                                      tr("for optimal performance in SpeechControl.")));
@@ -41,7 +45,7 @@ MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
 }
 
 void MicrophoneSetup::accept(){
-    Core::instance()->setConfig("Microphone/Default",field("mic-uuid"));
+    Core::instance()->setConfig("Microphone/Default",property("mic-uuid"));
     this->QDialog::accept();
 }
 

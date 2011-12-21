@@ -19,28 +19,39 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "../../session.hpp"
 #include "session.hpp"
-#include "widgets/session.hpp"
-#include "training.hpp"
 #include "ui_session.h"
+
+#include <training.hpp>
 
 using namespace SpeechControl;
 using SpeechControl::Windows::Managers::SessionManager;
-using SpeechControl::Widgets::SessionWidget;
 
 SessionManager::SessionManager(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::SessionManager)
+    m_ui(new Ui::SessionManager)
 {
-    ui->setupUi(this);
+    m_ui->setupUi(this);
+    SessionList l_lst = Session::allSessions();
+    Q_FOREACH(const Session* l_sessionItr, l_lst){
+        m_ui->listSession->addItem(l_sessionItr->corpus()->title());
+    }
 }
 
 SessionManager::~SessionManager()
 {
-    delete ui;
+    delete m_ui;
+}
+
+Session* SessionManager::session() const {
+    return m_session;
 }
 
 /// @todo Implement a means of selecting @see Session objects from a list (using SessionWidget)
 Session* SessionManager::doSelectSession()
 {
+    SessionManager* l_win = new SessionManager;
+    l_win->exec();
+    return l_win->session();
 }

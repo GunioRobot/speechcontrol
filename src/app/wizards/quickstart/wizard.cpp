@@ -26,6 +26,7 @@
 #include "wizards/micsetup/micselect.hpp"
 #include "wizards/outro.hpp"
 
+#include <QIcon>
 #include <QVariantMap>
 
 using namespace SpeechControl;
@@ -35,6 +36,8 @@ QuickStart::QuickStart(QWidget *parent) :
     WizardBase(parent)
 {
     this->setWindowTitle(tr("Quick Start :: SpeechControl"));
+    QIcon l_icon = QIcon::fromTheme("preferences-desktop-personal");
+    setPixmap(QWizard::LogoPixmap,l_icon.pixmap(64,64,QIcon::Active,QIcon::On));
     setPage(QuickStart::IntroductionPage,
             new Pages::Introduction(tr("This wizard is designed to ease the process of configuring SpeechControl.")));
     setPage(QuickStart::UserCreationPage,
@@ -62,17 +65,19 @@ void QuickStart::accept() {
     l_language["Spoken"] = field("language-spoken");
     l_language["Native"] = field("language-native");
 
-    if (!field("is-gender-male").toBool())
+    if (field("is-gender-male").toBool())
         l_gender = "Male";
     else
         l_gender = "Female";
 
     l_core->setConfig("User/Name",l_name);
-    l_core->setConfig("User/Age",field("age"));
-    l_core->setConfig("User/Country",field("country"));
-    l_core->setConfig("User/Language",l_language);
     l_core->setConfig("User/Gender",l_gender);
+    l_core->setConfig("User/Language",l_language);
+
+    l_core->setConfig("User/Age",property("age"));
+    l_core->setConfig("User/Country",property("country"));
     l_core->setConfig("Microphone/Default",property("mic-uuid"));
+
     this->QDialog::accept();
 }
 

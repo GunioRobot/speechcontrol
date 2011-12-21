@@ -89,3 +89,33 @@ void SpeechControl::Windows::Settings::on_pushButtonWizardMic_clicked()
     MicrophoneSetup* l_wiz = new MicrophoneSetup(this);
     l_wiz->show();
 }
+
+void SpeechControl::Windows::Settings::on_actionAddBook_triggered()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_actionStartTrainingWith_triggered()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_action_Delete_triggered()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_pushButtonAdd_clicked()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_pushButtonTrain_clicked()
+{
+
+}
+
+void SpeechControl::Windows::Settings::on_pushButtonDelete_clicked()
+{
+
+}

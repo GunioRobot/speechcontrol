@@ -26,7 +26,7 @@
 
 using SpeechControl::Sphinx;
 
-Sphinx::Sphinx(QObject *parent) : QObject(parent) {
+Sphinx::Sphinx() {
 }
 
 Sphinx::~Sphinx() {
@@ -38,5 +38,45 @@ void Sphinx::recognizeFromFile(const QFile *p_file)
 }
 
 void Sphinx::recognizeFromMicrophone(const Microphone *p_mic)
+{
+}
+
+void SpeechControl::Sphinx::startRecognizing(const SpeechControl::Microphone *)
+{
+}
+
+void SpeechControl::Sphinx::stopRecording()
+{
+}
+
+SpeechControl::AcousticModel::~AcousticModel()
+{
+}
+
+void SpeechControl::AcousticModel::setParamter(const QString &, const QVariant &)
+{
+}
+
+void SpeechControl::AcousticModel::setParamters(const QVariantMap &)
+{
+}
+
+void SpeechControl::AcousticModel::mergeParameters(const QVariantMap &)
+{
+}
+
+QVariant SpeechControl::AcousticModel::parameter(const QString &) const
+{
+}
+
+QVariantMap SpeechControl::AcousticModel::paramters() const
+{
+}
+
+quint16 SpeechControl::AcousticModel::sampleRate() const
+{
+}
+
+void SpeechControl::AcousticModel::setSampleRate(const quint16 &)
 {
 }

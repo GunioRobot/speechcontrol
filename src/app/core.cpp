@@ -31,6 +31,7 @@
 #include <microphone.hpp>
 
 #include "core.hpp"
+#include "session.hpp"
 #include "windows/main.hpp"
 #include "wizards/quickstart/wizard.hpp"
 
@@ -55,6 +56,7 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     l_app->setApplicationVersion("0.0b");
 
     System::start(&argc,&argv);
+    Session::init();
 
     // build settings
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
@@ -76,7 +78,7 @@ Core::~Core () {
 void Core::start() {
     Windows::Main* l_mw = new Windows::Main;
 
-    if (Session::allSessions().empty() && Core::instance()->getConfig("MainWindow/Geometry").isNull()){
+    if (!s_inst->m_settings->contains("User/Name")){
         if (QMessageBox::question(l_mw,tr("First Run"),
                                  tr("This seems to be the first time you've run SpeechControl on this system. "
                                     "A wizard allowing you to start SpeechControl will appear."),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes){

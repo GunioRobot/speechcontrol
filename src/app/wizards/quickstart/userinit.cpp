@@ -66,6 +66,9 @@ bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
         return false;
     }
 
+    wizard()->setProperty("age",ui->comboBoxAge->currentText());
+    wizard()->setProperty("country",ui->comboBoxCountry->currentText());
+
     return true;
 }
 

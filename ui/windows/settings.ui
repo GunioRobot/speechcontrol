@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>448</width>
-    <height>345</height>
+    <width>446</width>
+    <height>343</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,9 +39,9 @@
   <widget class="QTabWidget" name="tabWidgetWizards">
    <property name="geometry">
     <rect>
-     <x>5</x>
+     <x>7</x>
      <y>5</y>
-     <width>441</width>
+     <width>432</width>
      <height>306</height>
     </rect>
    </property>
@@ -52,7 +52,7 @@
     <enum>QTabWidget::Rounded</enum>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tabGeneral">
     <attribute name="title">
@@ -260,7 +260,7 @@
             <property name="minimumSize">
              <size>
               <width>50</width>
-              <height>15</height>
+              <height>10</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -279,7 +279,7 @@
             <property name="minimumSize">
              <size>
               <width>42</width>
-              <height>15</height>
+              <height>10</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -298,7 +298,7 @@
             <property name="minimumSize">
              <size>
               <width>44</width>
-              <height>15</height>
+              <height>10</height>
              </size>
             </property>
             <property name="maximumSize">
@@ -363,6 +363,127 @@
       </item>
       <item row="0" column="1">
        <widget class="QListWidget" name="listWidgetPlugins"/>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tabBooks">
+    <attribute name="title">
+     <string>Books</string>
+    </attribute>
+    <widget class="QWidget" name="gridLayoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>3</x>
+       <y>5</y>
+       <width>427</width>
+       <height>271</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="0" column="0">
+       <widget class="QGroupBox" name="groupBox_7">
+        <property name="minimumSize">
+         <size>
+          <width>180</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>My Books</string>
+        </property>
+        <widget class="QListWidget" name="listWidgetBooks">
+         <property name="geometry">
+          <rect>
+           <x>3</x>
+           <y>17</y>
+           <width>173</width>
+           <height>218</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPlainTextEdit" name="textEditPreview">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="backgroundVisible">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeType">
+           <enum>QSizePolicy::MinimumExpanding</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonAdd">
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Add..</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonTrain">
+          <property name="maximumSize">
+           <size>
+            <width>45</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Train</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonDelete">
+          <property name="minimumSize">
+           <size>
+            <width>35</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>50</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Delete</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>

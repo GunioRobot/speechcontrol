@@ -19,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef TRAINING_HPP
-#define TRAINING_HPP
+#ifndef TRAINING_WINDOW_HPP
+#define TRAINING_WINDOW_HPP
 
 #include <QDialog>
 
@@ -29,20 +29,34 @@ namespace Ui {
 }
 
 namespace SpeechControl {
+    class Session;
+
 namespace Windows {
 
 class Training : public QDialog
 {
     Q_OBJECT
+    Q_PROPERTY(Session* Session READ session WRITE setSession)
 
 public:
     explicit Training(QWidget *parent = 0);
-    ~Training();
+    virtual ~Training();
+    static void startTraining(Session*);
+    void setSession(Session* );
+    Session* session() const;
+
+public slots:
+    void stopCollecting();
+    void startCollecting();
+
+private slots:
+    void on_pushButtonProgress_toggled(bool checked);
 
 private:
     Ui::Training *ui;
+    Session* m_session;
 };
 
 }}
 
-#endif // TRAINING_HPP
+#endif // TRAINING_WINDOW_HPP

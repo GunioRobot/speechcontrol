@@ -49,6 +49,18 @@ private slots:
     void on_pushButtonWizardVoxforge_clicked();
     void on_pushButtonWizardMic_clicked();
 
+    void on_actionAddBook_triggered();
+
+    void on_actionStartTrainingWith_triggered();
+
+    void on_action_Delete_triggered();
+
+    void on_pushButtonAdd_clicked();
+
+    void on_pushButtonTrain_clicked();
+
+    void on_pushButtonDelete_clicked();
+
 private:
     Ui::Settings *ui;
 };

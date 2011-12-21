@@ -23,22 +23,49 @@
 #define SPHINX_HPP
 
 #include <QObject>
+#include <QVariant>
+#include <QVariantMap>
 
 class QFile;
 
 namespace SpeechControl {
-    class Microphone;
     class Sphinx;
+    class Trainer;
+    class Microphone;
+    class AcousticModel;
+
+    typedef QList<AcousticModel*> AcousticModelList;
+
+    class AcousticModel : public QObject {
+        Q_OBJECT
+        Q_DISABLE_COPY(AcousticModel)
+
+    public:
+        virtual ~AcousticModel();
+        void setParamter(const QString&, const QVariant& );
+        void setParamters(const QVariantMap&);
+        void mergeParameters(const QVariantMap&);
+        QVariant parameter(const QString&) const;
+        QVariantMap paramters() const;
+        quint16 sampleRate() const;
+        void setSampleRate(const quint16&);
+    };
 
     class Sphinx : public QObject {
         Q_OBJECT
+        Q_DISABLE_COPY(Sphinx)
+
     public:
-        explicit Sphinx(QObject *parent = 0);
+        explicit Sphinx();
         virtual ~Sphinx();
+        void setAcousticModel(const AcousticModel* );
+        AcousticModel* acousticModel() const;
 
     public slots:
         void recognizeFromFile(const QFile* );
         void recognizeFromMicrophone(const Microphone* );
+        void startRecognizing(const Microphone* );
+        void stopRecording();
 
     };
 }

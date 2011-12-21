@@ -116,6 +116,7 @@ MicrophoneList Microphone::allMicrophones()
     return s_lst.values();
 }
 
+/// @todo In addition, you will NEED TO MAKE SURE THAT YOU RECORD AT A SAMPLING RATE OF 16 KHZ (or 8 kHz if you adapt a telephone model) IN MONO WITH SINGLE CHANNEL.
 void SpeechControl::Microphone::startRecording()
 {
     // Wipe any data already used for recording; their loss.

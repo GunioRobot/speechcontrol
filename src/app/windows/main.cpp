@@ -28,10 +28,11 @@
 
 #include <training.hpp>
 
-#include "settings.hpp"
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
+#include "training.hpp"
+#include "settings.hpp"
 #include "managers/books.hpp"
 #include "managers/session.hpp"
 #include "wizards/quickstart/wizard.hpp"
@@ -41,8 +42,6 @@ using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
-using SpeechControl::Session;
-
 Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
@@ -50,7 +49,7 @@ Main::Main() : m_ui(new Ui::MainWindow) {
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
 
-   m_ui->labelSessionCount->setText(tr("You have <b>%1</b> sessions.").arg(Session::allSessions().count()));
+   //m_ui->labelSessionCount->setText(tr("You have <b>%1</b> sessions.").arg(Session::allSessions().count()));
    m_ui->statusBar->showMessage("Ready.");
 }
 
@@ -77,4 +76,6 @@ void SpeechControl::Windows::Main::on_actionAbout_SpeechControl_triggered()
 void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()
 {
     Session* l_session = SessionManager::doSelectSession();
+    if (l_session)
+        Training::startTraining(l_session);
 }
