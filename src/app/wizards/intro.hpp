@@ -32,13 +32,13 @@ namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class Introduction : public QWizardPage
+class IntroductionPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    explicit Introduction(const QString&);
-    ~Introduction();
+    explicit IntroductionPage(const QString&);
+    ~IntroductionPage();
 
 private:
     Ui::Introduction *ui;

@@ -19,19 +19,31 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizard.hpp"
-#include "wizards/intro.hpp"
+#ifndef WS_WIKIPAGE_HPP
+#define WS_WIKIPAGE_HPP
 
-using namespace SpeechControl::Wizards;
+#include <QWizardPage>
 
-Backup::Backup(QWidget *parent) :
-    WizardBase(parent)
-{
-    setPage(Backup::IntroductionPage,
-            new Pages::IntroductionPage(tr("This wizard allows you to restore or back-up your session "
-                                       "information with ease.")));
+namespace Ui {
+    class WikiSourcePage;
 }
 
-Backup::~Backup()
+namespace SpeechControl {
+namespace Wizards {
+namespace Pages {
+
+class WikiSourcePage : public QWizardPage
 {
-}
+    Q_OBJECT
+
+public:
+    explicit WikiSourcePage(QWidget *parent = 0);
+    ~WikiSourcePage();
+
+private:
+    Ui::WikiSourcePage *ui;
+};
+
+}}}
+
+#endif // WIKIPAGE_HPP

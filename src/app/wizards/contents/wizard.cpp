@@ -21,11 +21,16 @@
 
 #include "wizard.hpp"
 #include "addselect.hpp"
+#include "fileselect.hpp"
+#include "wikipage.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
+#include "session.hpp"
 
 #include <QIcon>
+#include <QVariant>
 
+using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
 ContentWizard::ContentWizard(QWidget *parent) :
@@ -35,12 +40,40 @@ ContentWizard::ContentWizard(QWidget *parent) :
     setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
     setWindowTitle(tr("Book Addition Wizard - SpeechControl"));
     setPage(ContentWizard::IntroductionPage,
-            new Pages::Introduction(tr("This wizard allows you to add more reading sources for transcription "
+            new Pages::IntroductionPage(tr("This wizard allows you to add more reading sources for transcription "
                                        "for SpeechControl.")));
     setPage(ContentWizard::AdditionSelectionPage,
             new Pages::AdditionSelectionPage);
+    setPage(ContentWizard::FileSelectionPage,
+            new Pages::FileSelectionPage);
+    setPage(ContentWizard::WikiSourcePage,
+            new Pages::WikiSourcePage);
     setPage(ContentWizard::ConclusionPage,
             new Pages::Conclusion(tr("You've successfully added a book to your local transcription library.")));
+}
+
+int ContentWizard::nextId() const {
+    switch (currentId()){
+        case IntroductionPage:
+            return AdditionSelectionPage;
+        break;
+
+        case AdditionSelectionPage:
+            if (field("selection.wiki").toBool())
+                return WikiSourcePage;
+            else
+                return FileSelectionPage;
+        break;
+
+        case WikiSourcePage:
+        case FileSelectionPage:
+            return ConclusionPage;
+        break;
+
+        case ConclusionPage:
+            return -1;
+        break;
+    }
 }
 
 ContentWizard::~ContentWizard()

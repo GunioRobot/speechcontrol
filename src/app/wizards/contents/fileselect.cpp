@@ -19,19 +19,32 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizard.hpp"
-#include "wizards/intro.hpp"
+#include "fileselect.hpp"
+#include "ui_cw_fileselectionpage.h"
 
-using namespace SpeechControl::Wizards;
+#include <QFileDialog>
 
-Backup::Backup(QWidget *parent) :
-    WizardBase(parent)
+using SpeechControl::Wizards::Pages::FileSelectionPage;
+
+FileSelectionPage::FileSelectionPage(QWidget *parent) :
+    QWizardPage(parent),
+    m_ui(new Ui::FileSelectionPage)
 {
-    setPage(Backup::IntroductionPage,
-            new Pages::IntroductionPage(tr("This wizard allows you to restore or back-up your session "
-                                       "information with ease.")));
+    m_ui->setupUi(this);
 }
 
-Backup::~Backup()
+FileSelectionPage::~FileSelectionPage()
 {
+    delete m_ui;
+}
+
+void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
+{
+    const QString l_filePath = QFileDialog::getOpenFileName(this, tr("Open Text File"), QDir::homePath(), tr("Text Files (*.txt)"));
+
+    if (!l_filePath.isNull()){
+        QFile l_file(l_filePath);
+        m_ui->plainTextEdit->setPlainText(l_file.readAll());
+        m_ui->lineEdit->setText(l_filePath);
+    }
 }

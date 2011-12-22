@@ -39,7 +39,6 @@ class AdditionSelectionPage : public QWizardPage
 public:
     explicit AdditionSelectionPage(QWidget *parent = 0);
     ~AdditionSelectionPage();
-    virtual int nextId();
 
 private:
     Ui::AdditionSelectionPage *m_ui;

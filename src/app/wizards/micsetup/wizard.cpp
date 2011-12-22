@@ -37,7 +37,7 @@ MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
     setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
     setWindowTitle(tr("Microphone Setup Wizard - SpeechControl"));
     setPage(MicrophoneSetup::IntroductionPage,
-            new Pages::Introduction(tr("This wizard will help you configure your microphone ") +
+            new Pages::IntroductionPage(tr("This wizard will help you configure your microphone ") +
                                      tr("for optimal performance in SpeechControl.")));
     setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
     setPage(MicrophoneSetup::ConclusionPage,

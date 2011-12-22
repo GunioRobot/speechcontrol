@@ -19,19 +19,34 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wizard.hpp"
-#include "wizards/intro.hpp"
+#ifndef FILESELECT_HPP
+#define FILESELECT_HPP
 
-using namespace SpeechControl::Wizards;
+#include <QWizardPage>
 
-Backup::Backup(QWidget *parent) :
-    WizardBase(parent)
-{
-    setPage(Backup::IntroductionPage,
-            new Pages::IntroductionPage(tr("This wizard allows you to restore or back-up your session "
-                                       "information with ease.")));
+namespace Ui {
+    class FileSelectionPage;
 }
 
-Backup::~Backup()
+namespace SpeechControl {
+namespace Wizards {
+namespace Pages {
+
+class FileSelectionPage : public QWizardPage
 {
-}
+    Q_OBJECT
+
+public:
+    explicit FileSelectionPage(QWidget *parent = 0);
+    ~FileSelectionPage();
+
+private slots:
+    void on_toolButton_clicked();
+
+private:
+    Ui::FileSelectionPage *m_ui;
+};
+
+}}}
+
+#endif // FILESELECT_HPP

@@ -43,14 +43,14 @@ public:
         // need to support ODF, PDF, RTF, ePUB, ...
         FileSelectionPage,
 
-        // for ALL
-        EditContentsPage,
-
         ConclusionPage
     };
 
     explicit ContentWizard(QWidget *parent = 0);
     virtual ~ContentWizard();
+
+public slots:
+    virtual int nextId() const;
 
 };
 

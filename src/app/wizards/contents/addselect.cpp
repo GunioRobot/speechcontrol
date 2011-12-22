@@ -19,6 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDebug>
+
 #include "addselect.hpp"
 #include "wizard.hpp"
 #include "ui_additionselectionpage.h"
@@ -30,17 +32,11 @@ AdditionSelectionPage::AdditionSelectionPage(QWidget *parent) :
     m_ui(new Ui::AdditionSelectionPage)
 {
     m_ui->setupUi(this);
+    registerField("selection.wiki",m_ui->radioButtonWiki);
+    registerField("selection.file",m_ui->radioButtonFile);
 }
 
 AdditionSelectionPage::~AdditionSelectionPage()
 {
     delete m_ui;
-}
-
-int AdditionSelectionPage::nextId()
-{
-    if (m_ui->radioButtonFile->isChecked())
-        return ContentWizard::FileSelectionPage;
-    else if (m_ui->radioButtonWiki->isChecked())
-        return ContentWizard::WikiSourcePage;
 }

@@ -24,7 +24,7 @@
 
 using namespace SpeechControl::Wizards::Pages;
 
-Introduction::Introduction(const QString& summary) :
+IntroductionPage::IntroductionPage(const QString& summary) :
                            QWizardPage(),
     ui(new Ui::Introduction)
 {
@@ -32,7 +32,7 @@ Introduction::Introduction(const QString& summary) :
     ui->labelSummary->setText(summary);
 }
 
-Introduction::~Introduction()
+IntroductionPage::~IntroductionPage()
 {
     delete ui;
 }
