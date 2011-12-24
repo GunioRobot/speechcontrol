@@ -19,6 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QSettings>
@@ -57,6 +58,9 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
 
     System::start(&argc,&argv);
     Session::init();
+
+    QDir l_dir;
+    l_dir.mkdir(QDir::homePath() + "/.speechcontrol/contents");
 
     // build settings
     m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);

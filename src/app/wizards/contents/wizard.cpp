@@ -66,7 +66,13 @@ int ContentWizard::nextId() const {
         break;
 
         case WikiSourcePage:
+            return ConclusionPage;
+        break;
+
         case FileSelectionPage:
+            Content::create(field("file.author").toString(),
+                            field("file.title").toString(),
+                            field("file.content").toString());
             return ConclusionPage;
         break;
 

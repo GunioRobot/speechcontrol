@@ -23,6 +23,7 @@
 #include "ui_cw_fileselectionpage.h"
 
 #include <QFileDialog>
+#include <QTextStream>
 
 using SpeechControl::Wizards::Pages::FileSelectionPage;
 
@@ -31,6 +32,9 @@ FileSelectionPage::FileSelectionPage(QWidget *parent) :
     m_ui(new Ui::FileSelectionPage)
 {
     m_ui->setupUi(this);
+    registerField("file.content",m_ui->plainTextEdit,"plainText",SIGNAL(textChanged()));
+    registerField("file.author",m_ui->lineEditAuthor);
+    registerField("file.title",m_ui->lineEditTitle);
 }
 
 FileSelectionPage::~FileSelectionPage()
@@ -43,8 +47,17 @@ void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
     const QString l_filePath = QFileDialog::getOpenFileName(this, tr("Open Text File"), QDir::homePath(), tr("Text Files (*.txt)"));
 
     if (!l_filePath.isNull()){
-        QFile l_file(l_filePath);
-        m_ui->plainTextEdit->setPlainText(l_file.readAll());
+        QFile* l_file = new QFile(l_filePath);
+        l_file->open(QIODevice::ReadOnly);
+        QTextStream l_strm(l_file);
+        m_ui->lineEditAuthor->setText(l_strm.readLine());
+        m_ui->lineEditTitle->setText(l_strm.readLine());
+
+        while (!l_strm.atEnd()){
+            m_ui->plainTextEdit->setPlainText(m_ui->plainTextEdit->toPlainText().append(l_strm.readLine()));
+        }
+
         m_ui->lineEdit->setText(l_filePath);
+        l_file->close();
     }
 }

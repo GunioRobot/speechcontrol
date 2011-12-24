@@ -34,17 +34,24 @@ SessionManager::SessionManager(QWidget *parent) :
     m_ui(new Ui::SessionManager)
 {
     m_ui->setupUi(this);
+    updateList();
+}
+
+
+SessionManager::~SessionManager()
+{
+    delete m_ui;
+}
+
+void SessionManager::updateList() {
+    m_ui->listSession->clear();
+
     SessionList l_lst = Session::allSessions();
     Q_FOREACH(const Session* l_sessionItr, l_lst){
         QListWidgetItem* l_item = new QListWidgetItem(l_sessionItr->content()->title());
         l_item->setData(0,l_sessionItr->uuid().toString());
         m_ui->listSession->addItem(l_item);
     }
-}
-
-SessionManager::~SessionManager()
-{
-    delete m_ui;
 }
 
 Session* SessionManager::session() const {
@@ -57,19 +64,12 @@ Session* SessionManager::doSelectSession()
     SessionManager* l_win = new SessionManager;
     if (Session::allSessions().empty()){
         l_win->on_btnCreate_clicked();
-
-        if (!Session::allSessions().empty())
-            return Session::allSessions().first();
-        else
-            return 0;
     } else {
-        if (l_win->exec() == QDialog::Accepted)
-            return l_win->session();
-        else
+        if (l_win->exec() != QDialog::Accepted)
             return 0;
     }
 
-    return 0;
+    return l_win->session();
 }
 
 void SpeechControl::Windows::Managers::SessionManager::on_btnCancel_clicked()
@@ -79,24 +79,21 @@ void SpeechControl::Windows::Managers::SessionManager::on_btnCancel_clicked()
 
 void SpeechControl::Windows::Managers::SessionManager::on_btnOk_clicked()
 {
+    m_session = 0;
     const QListWidgetItem* l_item = m_ui->listSession->currentItem();
     if (l_item){
         m_session = Session::obtain(QUuid(l_item->data(0).toString()));
         this->accept();
-    } else {
-        m_session = 0;
+    } else
         this->reject();
-    }
 }
 
 void SpeechControl::Windows::Managers::SessionManager::on_btnCreate_clicked()
 {
+    m_session = 0;
     Content* l_content = BooksManager::doSelectContent();
-    if (l_content != 0){
+    if (l_content)
         m_session = Session::create(l_content);
-        this->accept();
-    } else {
-        m_session = 0;
-        this->reject();
-    }
+
+    updateList();
 }

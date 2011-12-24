@@ -35,6 +35,8 @@ namespace SpeechControl {
 
     typedef QList<Session*> SessionList;
     typedef QList<Content*> ContentList;
+
+    typedef QMap<QUuid, Content*> ContentMap;
     typedef QMap<QUuid, Session*> SessionMap;
 
     /// @todo Find a proper means of attribution.
@@ -55,11 +57,13 @@ namespace SpeechControl {
         const QString author() const;
         const QStringList pages() const;
         const QString pageAt(const int&) const;
+        static Content* create(const QString&, const QString&, const QString& );
         static Content* obtain(const QUuid&);
         static ContentList allContents();
 
     private:
         static QString getPath(const QUuid&);
+        static ContentMap s_lst;
         QStringList m_lines;
         QDomDocument* m_dom;
         QUuid m_uuid;

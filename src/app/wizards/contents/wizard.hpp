@@ -40,7 +40,10 @@ public:
         PageSelectionPage,
 
         // from a local file...
-        // need to support ODF, PDF, RTF, ePUB, ...
+        /// @todo Provide support for RTF.
+        /// @todo Provide support for ODT.
+        /// @todo Provide support for PDF.
+        /// @todo Provide support for ePub.
         FileSelectionPage,
 
         ConclusionPage

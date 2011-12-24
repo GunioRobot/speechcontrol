@@ -22,6 +22,7 @@
 #include "system.hpp"
 #include "microphone.hpp"
 
+#include <QDir>
 #include <QGst/Init>
 #include <QApplication>
 
@@ -39,6 +40,10 @@ System::System(int* argc, char** argv[]) :
         QGst::init();
 
     Microphone::init();
+    QDir l_dir;
+    l_dir.mkpath(QDir::homePath() + "/.speechcontrol/sessions");
+    l_dir.mkpath(QDir::homePath() + "/.speechcontrol/corpus");
+    l_dir.mkpath(QDir::homePath() + "/.speechcontrol/dictionaries");
 }
 
 void System::start() {

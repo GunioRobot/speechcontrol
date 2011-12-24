@@ -122,8 +122,8 @@ namespace SpeechControl {
     public:
         Corpus(const QUuid& );
         virtual ~Corpus();
-        static Corpus* create();
         static Corpus* obtain(const QUuid&);
+        static Corpus* create(const QStringList&);
         static CorpusList allCorpuses();
         static const bool exists(const QUuid&);
 

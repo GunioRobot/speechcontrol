@@ -54,8 +54,12 @@ void Corpus::addSentence(Sentence *l_phrs)
 }
 
 void Corpus::addSentence(const QString &l_txt, const QFile *l_audio){
+    qDebug() << "Adding sentence" << l_txt;
     Sentence* l_sentence = Sentence::create(this);
-    l_sentence->m_elem->attribute(QUrl::fromLocalFile(l_audio->fileName()).toString());
+
+    if (l_audio)
+        l_sentence->m_elem->attribute(QUrl::fromLocalFile(l_audio->fileName()).toString());
+
     l_sentence->m_elem->attribute(l_txt);
 }
 
@@ -74,7 +78,8 @@ Corpus & Corpus::operator <<(SentenceList &l_lst)
     return *this;
 }
 
-Corpus * Corpus::create()
+/// @todo Build a dictionary from the said text.
+Corpus * Corpus::create(const QStringList& p_text)
 {
     QUuid l_uuid = QUuid::createUuid();
     QDir l_dir;
@@ -86,20 +91,28 @@ Corpus * Corpus::create()
     QDomDocument l_dom("Session");
     QDomElement l_rootElem = l_dom.createElement("Session");
     QDomElement l_dateElem = l_dom.createElement("Date");
+    QDomElement l_sentencesElem = l_dom.createElement("Sentences");
 
     l_rootElem.setAttribute("uuid",l_uuid.toString());
     l_dateElem.setAttribute("Created",QDateTime::currentDateTimeUtc().toString());
-    l_dom.appendChild(l_rootElem).appendChild(l_dateElem);
+
+    l_rootElem.appendChild(l_dateElem);
+    l_rootElem.appendChild(l_sentencesElem);
+    l_dom.appendChild(l_rootElem);
 
     const QUrl l_path = getPath(l_uuid);
-    QFile* l_file = new QFile(l_path.toLocalFile());
-    if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
-        QTextStream l_strm(l_file);
-        l_dom.save(l_strm,4);
+    QFile* l_file = new QFile(l_path.toLocalFile() + "/corpus.xml");
+    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QTextStream l_strm(l_file);
+    l_dom.save(l_strm,4);
+
+    Corpus* l_corpus = Corpus::obtain(l_uuid);
+    Q_FOREACH(const QString& l_str, p_text){
+        l_corpus->addSentence(l_str,0);
     }
 
-    l_file->close();
-    l_file->deleteLater();
+    l_corpus->save();
+    return l_corpus;
 }
 
 const bool Corpus::exists(const QUuid& l_uuid){
@@ -108,7 +121,7 @@ const bool Corpus::exists(const QUuid& l_uuid){
 
 QUrl Corpus::getPath(const QUuid &l_uuid)
 {
-    return QDir::homePath() + "./speechcontrol/corpus/" + l_uuid.toString();
+    return QDir::homePath() + "/.speechcontrol/corpus/" + l_uuid.toString();
 }
 
 QUrl Corpus::audioPath()
@@ -132,7 +145,7 @@ Corpus* Corpus::obtain(const QUuid &l_uuid)
 void Corpus::load(const QUuid &p_uuid)
 {
     const QUrl l_path = getPath(p_uuid);
-    QFile* l_file = new QFile(l_path.toLocalFile());
+    QFile* l_file = new QFile(l_path.toLocalFile() + "/corpus.xml");
 
     if (l_file->open(QIODevice::ReadOnly)){
         if (!m_dom)
@@ -153,6 +166,7 @@ void Corpus::load(const QUuid &p_uuid)
 
 void Corpus::save()
 {
+    qDebug() << "Saving corpus" << this->uuid();
     const QUrl l_path = getPath(this->uuid());
     QFile* l_file = new QFile(l_path.toLocalFile());
     if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
@@ -164,7 +178,7 @@ void Corpus::save()
 CorpusList Corpus::allCorpuses()
 {
     CorpusList l_lst;
-    QDir l_dir(QDir::homePath() + "./speechcontrol/corpus/");
+    QDir l_dir(QDir::homePath() + "/.speechcontrol/corpus/");
     l_dir.setFilter(QDir::Dirs);
     QStringList l_results = l_dir.entryList(QStringList() << "*");
     Q_FOREACH(const QString& l_uuid, l_results){
@@ -239,7 +253,7 @@ void Dictionary::load(const QUuid &l_uuid)
 
 const QString Dictionary::getPath(const QUuid &l_uuid)
 {
-    return QDir::homePath() + "./speechcontrol/dictionaries/" + l_uuid.toString() + ".dic";
+    return QDir::homePath() + "/.speechcontrol/dictionaries/" + l_uuid.toString() + ".dic";
 }
 
 DictionaryEntry::DictionaryEntry(Dictionary *p_dict, const QString &p_word, const QString &p_phoneme) :

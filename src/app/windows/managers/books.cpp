@@ -82,12 +82,12 @@ Content* SpeechControl::Windows::Managers::BooksManager::doSelectContent()
         l_wiz->on_btnAdd_clicked();
         if (Content::allContents().empty())
             return 0;
+    } else {
+        if (l_wiz->exec() == QDialog::Accepted)
+            return l_wiz->m_book;
+        else
+            return 0;
     }
-
-    if (l_wiz->exec() == QDialog::Accepted)
-        return l_wiz->m_book;
-    else
-        return 0;
 
     return 0;
 }
@@ -118,4 +118,5 @@ void SpeechControl::Windows::Managers::BooksManager::on_lstBooks_itemSelectionCh
         ui->lblTitle->setText("No Selection");
         ui->lcdWordCount->display(0);
     }
+    ui->btnSelect->setEnabled(!(!l_item));
 }
