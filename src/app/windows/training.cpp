@@ -43,6 +43,8 @@ Training::Training(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PLAY));
+    ui->pushButtonProgress->setText(tr("Start"));
+    ui->pushButtonProgress->setChecked(false);
     ui->pushButtonSave->setIcon(QIcon::fromTheme(ICON_SAVE));
     ui->pushButtonReset->setIcon(QIcon::fromTheme(ICON_CLEAR));
     ui->pushButtonUndo->setIcon(QIcon::fromTheme(ICON_UNDO));
