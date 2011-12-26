@@ -48,19 +48,21 @@ Sentence * Corpus::sentence(const QUuid &l_key) const
 }
 
 /// @todo Add the Sentence to the XML document and then to the list.
-void Corpus::addSentence(Sentence *l_phrs)
+Sentence* Corpus::addSentence(Sentence *l_phrs)
 {
-    m_sntncLst.insert(l_phrs->uuid(),l_phrs);
+    m_sntncLst.insert(l_phrs->uuid(),l_phrs);    
+    return l_phrs;
 }
 
-void Corpus::addSentence(const QString &l_txt, const QFile *l_audio){
-    qDebug() << "Adding sentence" << l_txt;
-    Sentence* l_sentence = Sentence::create(this);
+Sentence* Corpus::addSentence(const QString &l_txt, const QFile *l_audio)
+{
+    qDebug() << "Adding sentence" << l_txt << l_txt.toUtf8().toBase64();
+    Sentence* l_sentence = Sentence::create(this,l_txt.toUtf8().toBase64());
 
     if (l_audio)
         l_sentence->m_elem->attribute(QUrl::fromLocalFile(l_audio->fileName()).toString());
 
-    l_sentence->m_elem->attribute(l_txt);
+    return l_sentence;
 }
 
 Corpus & Corpus::operator <<(Sentence *l_phrs)
@@ -84,16 +86,16 @@ Corpus * Corpus::create(const QStringList& p_text)
     QUuid l_uuid = QUuid::createUuid();
     QDir l_dir;
     if (!l_dir.mkpath(getPath(l_uuid).toLocalFile())){
-        qWarning() << "Can't make session" << l_uuid;
+        qWarning() << "Can't make corpus" << l_uuid;
         return 0;
     }
 
-    QDomDocument l_dom("Session");
-    QDomElement l_rootElem = l_dom.createElement("Session");
-    QDomElement l_dateElem = l_dom.createElement("Date");
+    QDomDocument l_dom("Corpus");
+    QDomElement l_rootElem = l_dom.createElement("Corpuses");
+    QDomElement l_dateElem = l_dom.createElement("Timing");
     QDomElement l_sentencesElem = l_dom.createElement("Sentences");
 
-    l_rootElem.setAttribute("uuid",l_uuid.toString());
+    l_rootElem.setAttribute("Uuid",l_uuid.toString());
     l_dateElem.setAttribute("Created",QDateTime::currentDateTimeUtc().toString());
 
     l_rootElem.appendChild(l_dateElem);
@@ -108,7 +110,8 @@ Corpus * Corpus::create(const QStringList& p_text)
 
     Corpus* l_corpus = Corpus::obtain(l_uuid);
     Q_FOREACH(const QString& l_str, p_text){
-        l_corpus->addSentence(l_str,0);
+        Sentence* l_sent = l_corpus->addSentence(l_str.simplified(),0);
+        l_corpus->m_dom->documentElement().namedItem("Sentences").appendChild(*l_sent->m_elem);
     }
 
     l_corpus->save();
@@ -124,20 +127,24 @@ QUrl Corpus::getPath(const QUuid &l_uuid)
     return QDir::homePath() + "/.speechcontrol/corpus/" + l_uuid.toString();
 }
 
-QUrl Corpus::audioPath()
+QUrl Corpus::audioPath() const
 {
     return getPath(this->uuid()).toLocalFile() + "/audio";
 }
 
 const QUuid Corpus::uuid() const
 {
-    return m_dom->documentElement().attribute("uuid");
+    return m_dom->documentElement().attribute("Uuid");
 }
 
 Corpus* Corpus::obtain(const QUuid &l_uuid)
 {
-    if (!QFile::exists(getPath(l_uuid).toLocalFile()))
+    const QString l_path = getPath(l_uuid).toLocalFile() + "/corpus.xml";
+
+    if (!QFile::exists(l_path)){
+        qDebug() << "Corpus not found at" << l_path;
         return 0;
+    }
 
     return new Corpus(l_uuid);
 }
@@ -147,32 +154,39 @@ void Corpus::load(const QUuid &p_uuid)
     const QUrl l_path = getPath(p_uuid);
     QFile* l_file = new QFile(l_path.toLocalFile() + "/corpus.xml");
 
-    if (l_file->open(QIODevice::ReadOnly)){
+    if (l_file->exists() && l_file->open(QIODevice::ReadOnly)){
         if (!m_dom)
-            m_dom = new QDomDocument;
+            m_dom = new QDomDocument("Corpus");
 
-        m_dom->setContent(l_file);
+        if (!m_dom->setContent(l_file)){
+            qDebug() << "Failed to load corpus.";
+            return;
+        }
 
-        // get phrases
         QDomNodeList l_elems = m_dom->documentElement().firstChildElement("Sentences").childNodes();
 
         for (int i = 0; i < l_elems.count(); ++i){
             QDomElement l_elem = l_elems.at(i).toElement();
-            Sentence* l_phrs = new Sentence(this,&l_elem);
-            m_sntncLst.insert(l_phrs->uuid(),l_phrs);
+
+            if (!l_elem.isNull()){
+                //qDebug() << "Loading sentence:" << l_elem.attribute("text") << l_elem.attribute("uuid");
+                Sentence* l_phrs = new Sentence(this,(new QDomElement(l_elems.at(i).toElement())));
+                addSentence(l_phrs);
+            }
         }
-    }
+    } else
+        qDebug() << "Failed to open corpus XML file.";
 }
 
 void Corpus::save()
 {
-    qDebug() << "Saving corpus" << this->uuid();
     const QUrl l_path = getPath(this->uuid());
-    QFile* l_file = new QFile(l_path.toLocalFile());
+    QFile* l_file = new QFile(l_path.toLocalFile() + "/corpus.xml");
     if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
         QTextStream l_strm(l_file);
         m_dom->save(l_strm,4);
-    }
+    } else
+        qDebug() << "Can't open:" << l_file->errorString();
 }
 
 CorpusList Corpus::allCorpuses()
@@ -194,13 +208,14 @@ Corpus::~Corpus()
 
 }
 
-Sentence::Sentence(Corpus* p_sess, QDomElement *p_elem) : m_elem(p_elem), m_sess(p_sess)
+/// @todo Drop the addition of the element and have it request it from the base Corpus.
+Sentence::Sentence(Corpus* p_corpus, QDomElement *p_elem) : m_elem(p_elem), m_corpus(p_corpus)
 {
 }
 
 Corpus * Sentence::parentSession() const
 {
-    return m_sess;
+    return m_corpus;
 }
 
 QUuid Sentence::uuid() const
@@ -210,32 +225,27 @@ QUuid Sentence::uuid() const
 
 QFile * Sentence::audio() const
 {
-    const QString l_pth = m_sess->audioPath().toLocalFile() + "/" + m_elem->attribute("file");
-    return new QFile(l_pth);
+    const QString l_fileName = m_elem->attribute("file");
+    return new QFile(m_corpus->audioPath().toLocalFile() + "/" + l_fileName);
 }
 
 QString Sentence::text() const {
-    return m_elem->attribute("text");
+    return QByteArray::fromBase64(m_elem->attribute("text").toUtf8());
 }
 
-/// @todo This method should add itself to the parent session.
-Sentence * Sentence::create(Corpus *l_sess)
+Sentence * Sentence::create(Corpus *l_sess, QString l_txt)
 {
-    QDomElement l_elem = l_sess->m_dom->createElement("Sentence"),
-            l_rootElem = l_sess->m_dom->documentElement().namedItem("Sentences").toElement();
-
-    l_rootElem.appendChild(l_elem);
-    l_elem.setAttribute("file",QString::null);
-    l_elem.setAttribute("uuid",QUuid::createUuid());
-    Sentence* l_phrs = new Sentence(l_sess,&l_elem);
-    l_sess->addSentence(l_phrs);
-
-    return l_phrs;
+    const QUuid l_uuid = QUuid::createUuid();
+    QDomElement* l_elem = new QDomElement(l_sess->m_dom->createElement("Sentence"));
+    l_elem->setAttribute("file",QUuid::createUuid());
+    l_elem->setAttribute("uuid",l_uuid);
+    l_elem->setAttribute("text",l_txt);
+    return l_sess->addSentence(new Sentence(l_sess,l_elem));
 }
 
 Sentence::~Sentence()
 {
-
+    // What to clean up? :P
 }
 
 void Dictionary::load(const QUuid &l_uuid)
@@ -275,15 +285,17 @@ QString DictionaryEntry::phoneme() const
     return m_phnm;
 }
 
-Dictionary * Dictionary::obtain(const QUuid &)
+Dictionary* Dictionary::obtain(const QUuid &l_uuid)
 {
+    return 0;
 }
 
 DictionaryEntryList * Dictionary::entries() const
 {
+    return 0;
 }
 
-void Dictionary::addEntry(DictionaryEntry *)
+void Dictionary::addEntry(DictionaryEntry *l_entry)
 {
 }
 
@@ -332,4 +344,9 @@ const QDateTime Corpus::timeLastModified() const
 const QDateTime Corpus::timeCompleted() const
 {
     return QDateTime::fromString(m_dom->elementsByTagName("Date").at(0).toElement().attribute("Completed"));
+}
+
+QStringList SpeechControl::Sentence::words() const
+{
+    return text().split(" ");
 }

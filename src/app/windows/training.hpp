@@ -30,6 +30,7 @@ namespace Ui {
 
 namespace SpeechControl {
     class Session;
+    class Sentence;
 
 namespace Windows {
 
@@ -48,13 +49,24 @@ public:
 public slots:
     void stopCollecting();
     void startCollecting();
+    virtual void open();
 
 private slots:
-    void on_pushButtonProgress_toggled(bool checked);
+    void updateProgress(const double& );
+    void on_pushButtonClose_clicked();
+    void on_pushButtonProgress_toggled(const bool& );
 
 private:
+    /// @todo Use these functions to segment the phrase into parts that the user can read.
+    void navigateToPart(const int& );
+    void navigateNextPart();
+    void navigatePreviousPart();
+    void startNavigating();
+    void stopNavigating();
+
     Ui::Training *ui;
     Session* m_session;
+    Sentence* m_curSntct;
 };
 
 }}

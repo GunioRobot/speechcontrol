@@ -19,20 +19,16 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "session.hpp"
+#include <stdio.h>
+
 #include <training.hpp>
+#include "session.hpp"
 
 #include <QDir>
 #include <QDebug>
 #include <QTextStream>
 
-using SpeechControl::Corpus;
-using SpeechControl::Content;
-using SpeechControl::Session;
-using SpeechControl::SessionMap;
-using SpeechControl::SessionList;
-using SpeechControl::ContentList;
-using SpeechControl::ContentMap;
+using namespace SpeechControl;
 
 QMap<QUuid, QDomElement*> Session::s_elems;
 QDomDocument* Session::s_dom = 0;
@@ -54,8 +50,12 @@ Corpus * Session::corpus() const
 /// @todo Invoke the progress of this session when loaded.
 void Session::setCorpus(Corpus* l_corpus)
 {
-    m_corpus = l_corpus;
-    assessProgress();
+    if (l_corpus){
+        m_corpus = l_corpus;
+        assessProgress();
+    } else {
+        qDebug() << "Null corpus not added.";
+    }
 }
 
 Content* Session::content() const
@@ -71,11 +71,19 @@ void Session::setContent(Content* l_content)
 
 void Session::assessProgress()
 {
+    if (m_corpus){
+        const int l_index = m_corpus->sentences().indexOf(this->firstIncompleteSentence());
+        const double l_progress = (double) l_index / (double) m_corpus->sentences().count();
+        qDebug() << l_index << l_progress;
+        emit progressChanged(l_progress);
+    } else {
+        emit progressChanged(0.0);
+    }
 }
 
 void Session::init(){
     qDebug() << "Loading sessions...";
-    QFile l_file(QDir::homePath() + "/.speechcontrol/sessions.xml");
+    QFile* l_file = new QFile(QDir::homePath() + "/.speechcontrol/sessions.xml");
     s_elems.clear();
 
     if (s_dom){
@@ -85,44 +93,45 @@ void Session::init(){
 
     s_dom = new QDomDocument("Sessions");
 
-    if (l_file.exists()){
-        l_file.open(QIODevice::ReadOnly);
-        s_dom->setContent(&l_file);
+    if (l_file->exists()){
+        l_file->open(QIODevice::ReadOnly);
+        s_dom->setContent(l_file);
 
         const QDomElement l_domElem = s_dom->documentElement();
         const QDomNodeList l_domList = l_domElem.elementsByTagName("Session");
 
         for (int i = 0; i < l_domList.count(); i++){
-            QDomElement *l_node = new QDomElement(l_domList.at(i).toElement());
-            s_elems.insert(QUuid(l_node->attribute("uuid")),l_node);
+            QDomElement l_node = l_domList.at(i).toElement();
+            const QUuid l_uuid(l_node.attribute("uuid"));
+            s_elems.insert(l_uuid,new QDomElement(l_domList.at(i).toElement()));
         }
         qDebug() << l_domList.count() << "sessions loaded.";
     } else {
-        l_file.open(QIODevice::WriteOnly | QIODevice::Truncate);
-        QTextStream l_strm(&l_file);
+        l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
         QDomElement l_elem = s_dom->createElement("Sessions");
         s_dom->appendChild(l_elem);
-        s_dom->save(l_strm,4);
+        l_file->write(s_dom->toString(4).toLocal8Bit());
         qDebug() << "Created session listing.";
     }
+
+    l_file->close();
 }
 
-/// @bug A weird SIGSEGV occurs here.
 void Session::load(const QUuid &p_uuid)
 {
     m_elem = s_elems.value(p_uuid);
-    const QUuid l_cntntUuid(m_elem->attribute("content"));
-    const QUuid l_corpusUuid(m_elem->attribute("corpus"));
-    m_content = Content::obtain(l_cntntUuid);
-    m_corpus = Corpus::obtain(l_corpusUuid);
+    setCorpus(Corpus::obtain(m_elem->attribute("corpus")));
+    setContent(Content::obtain(m_elem->attribute("content")));
 }
 
 
 SessionList Session::allSessions()
 {
     SessionList l_lst;
-    foreach (QUuid l_uuid, s_elems.keys())
-        l_lst << new Session(l_uuid);
+    Q_FOREACH(const QUuid l_uuid, s_elems.keys()){
+        Session* l_session = Session::obtain(l_uuid);
+        l_lst << l_session;
+    }
 
     return l_lst;
 }
@@ -141,17 +150,20 @@ Session* Session::obtain(const QUuid &p_uuid)
 /// @todo Create a new @see Corpus with this @see Session.
 Session* Session::create(const Content* p_content)
 {
+    const QStringList l_lst = p_content->pages().join("\n").simplified().replace(".",".\n").split(QRegExp("\n"),QString::SkipEmptyParts);
+    qDebug () << "Session text: " << l_lst;
     const QUuid l_uuid = QUuid::createUuid();
     QDomElement l_sessElem = s_dom->createElement("Session");
     s_dom->documentElement().appendChild(l_sessElem);
     l_sessElem.setAttribute("uuid",l_uuid.toString());
     l_sessElem.setAttribute("content",p_content->uuid().toString());
-    l_sessElem.setAttribute("corpus",Corpus::create(p_content->pages().join("\n").split("\n.",QString::SkipEmptyParts))->uuid());
+    l_sessElem.setAttribute("corpus",Corpus::create(l_lst)->uuid());
 
-    QFile l_file(QDir::homePath() + "/.speechcontrol/sessions.xml");
-    l_file.open(QIODevice::WriteOnly | QIODevice::Truncate);
-    QTextStream l_str(&l_file);
+    QFile* l_file = new QFile(QDir::homePath() + "/.speechcontrol/sessions.xml");
+    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QTextStream l_str(l_file);
     s_dom->save(l_str,4);
+    l_file->close();
 
     init();
 
@@ -173,13 +185,14 @@ Content* Content::obtain(const QUuid &p_uuid)
 void Content::load(const QUuid &p_uuid)
 {
     QFile* l_file = new QFile(getPath(p_uuid));
-    l_file->open(QIODevice::ReadOnly);
-    m_dom = new QDomDocument("Content");
-    m_dom->setContent(l_file->readAll());
-    qDebug() << l_file->readAll();
-
-    m_lines = m_dom->documentElement().elementsByTagName("Content").at(0).toElement().text().split("\n");
-    m_uuid = p_uuid;
+    QByteArray l_data;
+    if (l_file->open(QIODevice::ReadOnly)){
+        m_dom = new QDomDocument("Content");
+        m_dom->setContent(l_file);
+        m_lines = m_dom->documentElement().elementsByTagName("Content").at(0).toElement().text().split("\n");
+        m_uuid = p_uuid;
+    } else
+        qDebug() << "Can't open Content XML document.";
 }
 
 /// @todo Determine a means of finding the page count.
@@ -228,6 +241,7 @@ const QString Content::author() const
 
 Content::~Content()
 {
+    // What to clean up?
 }
 
 const QUuid Content::uuid() const
@@ -242,7 +256,7 @@ ContentList Content::allContents()
     l_dir.setFilter(QDir::Files);
     QStringList l_results = l_dir.entryList(QStringList() << "*");
 
-    Q_FOREACH(const QString& l_uuid, l_results){
+    Q_FOREACH(const QString l_uuid, l_results){
         l_lst << Content::obtain(QUuid(l_uuid));
     }
 
@@ -287,4 +301,46 @@ Content * Content::create(const QString &p_author, const QString &p_title, const
     l_dom->save(l_strm,4);
 
     return Content::obtain(l_uuid);
+}
+
+Sentence* Session::firstIncompleteSentence() const
+{
+    const SentenceList l_lst = m_corpus->sentences();
+    SentenceList::ConstIterator l_endItr = l_lst.end();
+    for (SentenceList::ConstIterator l_itr = l_lst.begin(); l_itr != l_endItr; l_itr++){
+        const Sentence* l_sent = (*l_itr);
+        qDebug() << "Sentence text (firstincomplete):" << l_sent->text();
+
+        if (l_sent->audio() || !l_sent->audio()->exists())
+            return *l_itr;
+        else
+            continue;
+    }
+
+    return 0;
+}
+
+Sentence* Session::lastIncompleteSentence() const
+{
+    const SentenceList l_lst = m_corpus->sentences();
+    SentenceList::ConstIterator l_startItr = l_lst.begin();
+    for (SentenceList::ConstIterator l_itr = l_lst.end();
+         l_itr != l_startItr; l_itr--){
+        if (!(*l_itr)->audio()->exists())
+            return *l_itr;
+        else
+            continue;
+    }
+
+    return 0;
+}
+
+SentenceList Session::incompletedSentences() const
+{
+    return SentenceList();
+}
+
+const bool Session::isCompleted() const
+{
+    return !(incompletedSentences().empty());
 }

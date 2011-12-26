@@ -98,16 +98,17 @@ namespace SpeechControl {
 
     public:
         virtual ~Sentence();
-        static Sentence* create(Corpus* );
+        static Sentence* create(Corpus* , QString l_txt = QString());
         Corpus* parentSession() const;
         QUuid uuid() const;
         QFile* audio() const;
         QString text() const;
+        QStringList words() const;
 
     private:
         explicit Sentence(Corpus*, QDomElement* );
         QDomElement* m_elem;
-        Corpus* m_sess;
+        Corpus* m_corpus;
     };
 
     class Corpus : public QObject {
@@ -127,8 +128,8 @@ namespace SpeechControl {
         static CorpusList allCorpuses();
         static const bool exists(const QUuid&);
 
-        void addSentence(Sentence*);
-        void addSentence(const QString&, const QFile*);
+        Sentence* addSentence(Sentence*);
+        Sentence* addSentence(const QString&, const QFile*);
         Corpus& operator<<(Sentence*);
         Corpus& operator<<(SentenceList&);
 
@@ -148,7 +149,7 @@ namespace SpeechControl {
         static QUrl getPath(const QUuid&);
         static CorpusMap s_lst;
 
-        QUrl audioPath();
+        QUrl audioPath() const;
         QDomDocument* m_dom;
         SentenceMap m_sntncLst;
         Dictionary* m_dict;

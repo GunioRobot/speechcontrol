@@ -26,8 +26,8 @@
 #include "wizards/contents/wizard.hpp"
 
 using SpeechControl::Content;
-using SpeechControl::Windows::Managers::BooksManager;
 using SpeechControl::Wizards::ContentWizard;
+using SpeechControl::Windows::Managers::BooksManager;
 
 BooksManager::BooksManager(QWidget *parent) :
     QDialog(parent),
@@ -62,7 +62,7 @@ void BooksManager::updateList(){
     }
 }
 
-void SpeechControl::Windows::Managers::BooksManager::on_btnSelect_clicked()
+void BooksManager::on_btnSelect_clicked()
 {
     QListWidgetItem* l_item = ui->lstBooks->currentItem();
     if (l_item){
@@ -74,13 +74,16 @@ void SpeechControl::Windows::Managers::BooksManager::on_btnSelect_clicked()
     }
 }
 
-Content* SpeechControl::Windows::Managers::BooksManager::doSelectContent()
+Content* BooksManager::doSelectContent()
 {
     BooksManager* l_wiz = new BooksManager;
 
     if (Content::allContents().empty()){
         l_wiz->on_btnAdd_clicked();
-        if (Content::allContents().empty())
+
+        if (!Content::allContents().empty())
+            return l_wiz->m_book;
+        else
             return 0;
     } else {
         if (l_wiz->exec() == QDialog::Accepted)
@@ -93,7 +96,7 @@ Content* SpeechControl::Windows::Managers::BooksManager::doSelectContent()
 }
 
 /// @todo Invoke the Book addition wizard here.
-void SpeechControl::Windows::Managers::BooksManager::on_btnAdd_clicked()
+void BooksManager::on_btnAdd_clicked()
 {
     ContentWizard* l_wiz = new ContentWizard;
 
@@ -101,12 +104,12 @@ void SpeechControl::Windows::Managers::BooksManager::on_btnAdd_clicked()
         updateList();
 }
 
-void SpeechControl::Windows::Managers::BooksManager::on_btnCancel_clicked()
+void BooksManager::on_btnCancel_clicked()
 {
     reject();
 }
 
-void SpeechControl::Windows::Managers::BooksManager::on_lstBooks_itemSelectionChanged()
+void BooksManager::on_lstBooks_itemSelectionChanged()
 {
     const QListWidgetItem* l_item = ui->lstBooks->currentItem();
     if (l_item){

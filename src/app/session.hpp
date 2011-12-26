@@ -31,10 +31,12 @@
 namespace SpeechControl {
     class Corpus;
     class Content;
+    class Sentence;
     class Session;
 
     typedef QList<Session*> SessionList;
     typedef QList<Content*> ContentList;
+    typedef QList<Sentence*> SentenceList;
 
     typedef QMap<QUuid, Content*> ContentMap;
     typedef QMap<QUuid, Session*> SessionMap;
@@ -79,11 +81,13 @@ namespace SpeechControl {
     public:
         explicit Session(const QUuid&);
         virtual ~Session();
+        const QUuid uuid() const;
+        const bool isCompleted() const;
         Corpus* corpus() const;
         Content* content() const;
-        const QUuid uuid() const;
-        void setCorpus(Corpus* );
-        void setContent(Content* );
+        Sentence* firstIncompleteSentence() const;
+        Sentence* lastIncompleteSentence() const;
+        SentenceList incompletedSentences() const;
 
         static void init();
         static Session* obtain(const QUuid&);
@@ -94,6 +98,8 @@ namespace SpeechControl {
         void progressChanged(const double& );
 
     public slots:
+        void setCorpus(Corpus* );
+        void setContent(Content* );
         void load(const QUuid&);
         void assessProgress();
 

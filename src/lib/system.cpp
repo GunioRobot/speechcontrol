@@ -41,7 +41,6 @@ System::System(int* argc, char** argv[]) :
 
     Microphone::init();
     QDir l_dir;
-    l_dir.mkpath(QDir::homePath() + "/.speechcontrol/sessions");
     l_dir.mkpath(QDir::homePath() + "/.speechcontrol/corpus");
     l_dir.mkpath(QDir::homePath() + "/.speechcontrol/dictionaries");
 }

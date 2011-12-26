@@ -26,6 +26,8 @@
 #include <QSettings>
 #include <QMessageBox>
 
+#include <training.hpp>
+
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
@@ -48,7 +50,8 @@ Main::Main() : m_ui(new Ui::MainWindow) {
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
 
-   m_ui->labelSessionCount->setText(tr("You have <b>%1</b> sessions.").arg(Session::allSessions().count()));
+   m_ui->lcdSession->display(Session::allSessions().count());
+   m_ui->lcdBooks->display(Content::allContents().count());
    m_ui->statusBar->showMessage("Ready.");
 }
 
@@ -75,7 +78,6 @@ void SpeechControl::Windows::Main::on_actionAbout_SpeechControl_triggered()
 void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()
 {
     Session* l_session = SessionManager::doSelectSession();
-
-    if (l_session != 0)
+    if (l_session)
         Training::startTraining(l_session);
 }

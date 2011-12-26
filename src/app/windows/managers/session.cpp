@@ -28,10 +28,12 @@
 
 using namespace SpeechControl;
 using SpeechControl::Windows::Managers::SessionManager;
+using SpeechControl::Windows::Managers::BooksManager;
 
 SessionManager::SessionManager(QWidget *parent) :
     QDialog(parent),
-    m_ui(new Ui::SessionManager)
+    m_ui(new Ui::SessionManager),
+    m_session(0)
 {
     m_ui->setupUi(this);
     updateList();
@@ -48,9 +50,13 @@ void SessionManager::updateList() {
 
     SessionList l_lst = Session::allSessions();
     Q_FOREACH(const Session* l_sessionItr, l_lst){
-        QListWidgetItem* l_item = new QListWidgetItem(l_sessionItr->content()->title());
+        QListWidgetItem* l_item = new QListWidgetItem(m_ui->listSession);
+        l_item->setText(l_sessionItr->content()->title());
         l_item->setData(0,l_sessionItr->uuid().toString());
         m_ui->listSession->addItem(l_item);
+
+        if (m_session && m_session->uuid() == l_sessionItr->uuid())
+            l_item->setSelected(true);
     }
 }
 
@@ -61,39 +67,46 @@ Session* SessionManager::session() const {
 /// @todo Implement a means of selecting @see Session objects from the manager.
 Session* SessionManager::doSelectSession()
 {
+    Session* l_session = 0;
     SessionManager* l_win = new SessionManager;
     if (Session::allSessions().empty()){
         l_win->on_btnCreate_clicked();
+        l_session = l_win->session();
     } else {
         if (l_win->exec() != QDialog::Accepted)
-            return 0;
+            l_session = 0;
+        else
+            l_session = l_win->session();
     }
 
-    return l_win->session();
+    return l_session;
 }
 
-void SpeechControl::Windows::Managers::SessionManager::on_btnCancel_clicked()
+void SessionManager::on_btnCancel_clicked()
 {
     this->reject();
 }
 
-void SpeechControl::Windows::Managers::SessionManager::on_btnOk_clicked()
+void SessionManager::on_btnOk_clicked()
 {
-    m_session = 0;
-    const QListWidgetItem* l_item = m_ui->listSession->currentItem();
-    if (l_item){
-        m_session = Session::obtain(QUuid(l_item->data(0).toString()));
-        this->accept();
-    } else
-        this->reject();
+    this->accept();
 }
 
-void SpeechControl::Windows::Managers::SessionManager::on_btnCreate_clicked()
+void SessionManager::on_btnCreate_clicked()
 {
-    m_session = 0;
     Content* l_content = BooksManager::doSelectContent();
+
     if (l_content)
         m_session = Session::create(l_content);
 
     updateList();
+}
+
+void SessionManager::on_listSession_itemSelectionChanged()
+{
+    m_session = 0;
+    const QListWidgetItem* l_item = m_ui->listSession->currentItem();
+
+    if (l_item)
+        m_session = Session::obtain(QUuid(l_item->data(0).toString()));
 }

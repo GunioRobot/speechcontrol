@@ -20,7 +20,6 @@
  */
 
 #include "core.hpp"
-
 #include <QApplication>
 
 // pretty simple, huh?

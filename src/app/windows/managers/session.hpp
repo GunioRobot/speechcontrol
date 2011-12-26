@@ -52,6 +52,8 @@ private slots:
     void on_btnCreate_clicked();
     void updateList();
 
+    void on_listSession_itemSelectionChanged();
+
 private:
     Ui::SessionManager *m_ui;
     Session* m_session;

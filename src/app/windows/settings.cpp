@@ -68,14 +68,12 @@ void Settings::on_tabWidgetWizards_currentChanged(int p_index)
     {
         ContentList l_books = Content::allContents();
         ui->textEditPreview->setEnabled(false);
-        if (l_books.isEmpty()){
-            ui->listWidgetBooks->clear();
-        } else {
-            Q_FOREACH(const Content* l_cnt, l_books){
-                QListWidgetItem* l_item = new QListWidgetItem(l_cnt->title());
-                l_item->setData(0,l_cnt->uuid().toString());
-                ui->listWidgetBooks->addItem(l_item);
-            }
+        ui->listWidgetBooks->clear();
+        Q_FOREACH(const Content* l_cnt, l_books){
+            QListWidgetItem* l_item = new QListWidgetItem;
+            l_item->setText(l_cnt->title());
+            l_item->setData(0,l_cnt->uuid().toString());
+            ui->listWidgetBooks->addItem(l_item);
         }
     }
         break;
