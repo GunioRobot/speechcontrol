@@ -34,126 +34,136 @@ class QDomDocument;
 class QDomElement;
 
 namespace SpeechControl {
-    class Corpus;
-    class Sentence;
-    class Dictionary;
-    class DictionaryEntry;
+class Corpus;
+class Phrase;
+class Sentence;
+class Dictionary;
+class DictionaryEntry;
 
-    typedef QList<Corpus*> CorpusList;
-    typedef QList<Sentence*> SentenceList;
-    typedef QList<Dictionary*> DictionaryList;    
-    typedef QList<DictionaryEntry*> DictionaryEntryList;
+typedef QList<Corpus*> CorpusList;
+typedef QList<Sentence*> SentenceList;
+typedef QList<Dictionary*> DictionaryList;
+typedef QList<DictionaryEntry*> DictionaryEntryList;
 
-    typedef QMap<QUuid, Corpus*> CorpusMap;
-    typedef QMap<QUuid, Sentence*> SentenceMap;
-    typedef QMap<QUuid, Dictionary*> DictionaryMap;
-    typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
+typedef QMap<QUuid, Corpus*> CorpusMap;
+typedef QMap<QUuid, Sentence*> SentenceMap;
+typedef QMap<QUuid, Dictionary*> DictionaryMap;
+typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
-    class DictionaryEntry : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(DictionaryEntry)
-        friend class Dictionary;
+class DictionaryEntry : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY(DictionaryEntry)
+    friend class Dictionary;
 
-    public:
-        DictionaryEntry(Dictionary*, const QString&, const QString&);
-        virtual ~DictionaryEntry();
-        QString word() const;
-        QString phoneme() const;
+public:
+    DictionaryEntry(Dictionary*, const QString&, const QString&);
+    virtual ~DictionaryEntry();
+    QString word() const;
+    QString phoneme() const;
 
-    private:
-        Dictionary* m_dict;
-        QString m_word;
-        QString m_phnm;
-    };
+private:
+    Dictionary* m_dict;
+    QString m_word;
+    QString m_phnm;
+};
 
-    class Dictionary : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Dictionary)
-        friend class Corpus;
+class Dictionary : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY(Dictionary)
+    friend class Corpus;
 
-    public:
-        Dictionary(const QUuid&);
-        virtual ~Dictionary();
-        static Dictionary* obtain(const QUuid&);
-        DictionaryEntryList* entries() const;
-        void addEntry(DictionaryEntry*);
-        DictionaryEntry* removeEntry(const QString&);
-        Dictionary& operator<<(DictionaryEntry*);
-        Dictionary& operator<<(DictionaryEntryList&);
+public:
+    Dictionary(const QUuid&);
+    virtual ~Dictionary();
+    static Dictionary* obtain(const QUuid&);
+    DictionaryEntryList* entries() const;
+    void addEntry(DictionaryEntry*);
+    DictionaryEntry* removeEntry(const QString&);
+    Dictionary& operator<<(DictionaryEntry*);
+    Dictionary& operator<<(DictionaryEntryList&);
 
-    public slots:
-        void load(const QUuid&);
-        void save();
+public slots:
+    void load(const QUuid&);
+    void save();
 
-    private:
-        static const QString getPath(const QUuid&);
-        static DictionaryMap s_lst;
-        DictionaryEntryMap m_words;
-    };
+private:
+    static const QString getPath(const QUuid&);
+    static DictionaryMap s_lst;
+    DictionaryEntryMap m_words;
+};
 
-    class Sentence : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Sentence)
-        friend class Corpus;
+class Phrase : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY(Phrase)
 
-    public:
-        virtual ~Sentence();
-        static Sentence* create(Corpus* , QString l_txt = QString());
-        Corpus* parentSession() const;
-        QUuid uuid() const;
-        QFile* audio() const;
-        QString text() const;
-        QStringList words() const;
+public:
+    Phrase(const Sentence*, const int&);
+    virtual ~Phrase();
+};
 
-    private:
-        explicit Sentence(Corpus*, QDomElement* );
-        QDomElement* m_elem;
-        Corpus* m_corpus;
-    };
+class Sentence : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY(Sentence)
+    friend class Corpus;
 
-    class Corpus : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Corpus)
-        Q_PROPERTY(SentenceList Sentences READ sentences)
-        Q_PROPERTY(Dictionary* Dictionary READ dictionary)
-        Q_PROPERTY(QUuid Uuid READ uuid)
-        friend class Sentence;
-        friend class Dictionary;
+public:
+    virtual ~Sentence();
+    static Sentence* create(Corpus* , QString l_txt = QString());
+    Corpus* parentSession() const;
+    QUuid uuid() const;
+    QFile* audio() const;
+    QString text() const;
+    QStringList words() const;
 
-    public:
-        Corpus(const QUuid& );
-        virtual ~Corpus();
-        static Corpus* obtain(const QUuid&);
-        static Corpus* create(const QStringList&);
-        static CorpusList allCorpuses();
-        static const bool exists(const QUuid&);
+private:
+    explicit Sentence(Corpus*, QDomElement* );
+    QDomElement* m_elem;
+    Corpus* m_corpus;
+};
 
-        Sentence* addSentence(Sentence*);
-        Sentence* addSentence(const QString&, const QFile*);
-        Corpus& operator<<(Sentence*);
-        Corpus& operator<<(SentenceList&);
+class Corpus : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY(Corpus)
+    Q_PROPERTY(SentenceList Sentences READ sentences)
+    Q_PROPERTY(Dictionary* Dictionary READ dictionary)
+    Q_PROPERTY(QUuid Uuid READ uuid)
+    friend class Sentence;
+    friend class Dictionary;
 
-        const QDateTime timeStarted() const;
-        const QDateTime timeLastModified() const;
-        const QDateTime timeCompleted() const;
-        Dictionary* dictionary() const;
-        SentenceList sentences() const;
-        Sentence* sentence(const QUuid&) const;
-        const QUuid uuid() const;
+public:
+    Corpus(const QUuid& );
+    virtual ~Corpus();
+    static Corpus* obtain(const QUuid&);
+    static Corpus* create(const QStringList&);
+    static CorpusList allCorpuses();
+    static const bool exists(const QUuid&);
 
-    public slots:
-        void load(const QUuid&);
-        void save();
+    Sentence* addSentence(Sentence*);
+    Sentence* addSentence(const QString&, const QFile*);
+    Corpus& operator<<(Sentence*);
+    Corpus& operator<<(SentenceList&);
 
-    private:
-        static QUrl getPath(const QUuid&);
-        static CorpusMap s_lst;
+    const QDateTime timeStarted() const;
+    const QDateTime timeLastModified() const;
+    const QDateTime timeCompleted() const;
+    Dictionary* dictionary() const;
+    SentenceList sentences() const;
+    Sentence* sentence(const QUuid&) const;
+    const QUuid uuid() const;
 
-        QUrl audioPath() const;
-        QDomDocument* m_dom;
-        SentenceMap m_sntncLst;
-        Dictionary* m_dict;
-    };
+public slots:
+    void load(const QUuid&);
+    void save();
+
+private:
+    static QUrl getPath(const QUuid&);
+    static CorpusMap s_lst;
+
+    QUrl audioPath() const;
+    QDomDocument* m_dom;
+    SentenceMap m_sntncLst;
+    Dictionary* m_dict;
+};
 
 }
 

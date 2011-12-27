@@ -58,13 +58,20 @@ private slots:
 
 private:
     /// @todo Use these functions to segment the phrase into parts that the user can read.
+    /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises
+    ///       and detect when empty noises are made and then advance.
+    /// @todo We also have to return this information to the root sentence, how do we combine these phrases to the originating sentence?
     void navigateToPart(const int& );
     void navigateNextPart();
     void navigatePreviousPart();
     void startNavigating();
     void stopNavigating();
 
-    Ui::Training *ui;
+    int m_pos;
+    int m_posMin;
+    int m_posMax;
+    int m_range;
+    Ui::Training *m_ui;
     Session* m_session;
     Sentence* m_curSntct;
 };

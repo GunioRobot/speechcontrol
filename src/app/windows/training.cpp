@@ -40,18 +40,18 @@ using SpeechControl::Windows::Training;
 
 Training::Training(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::Training)
+    m_ui(new Ui::Training)
 {
-    ui->setupUi(this);
-    ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_RECORD));
-    ui->pushButtonSave->setIcon(QIcon::fromTheme(ICON_SAVE));
-    ui->pushButtonReset->setIcon(QIcon::fromTheme(ICON_CLEAR));
-    ui->pushButtonUndo->setIcon(QIcon::fromTheme(ICON_UNDO));
+    m_ui->setupUi(this);
+    m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_RECORD));
+    m_ui->pushButtonSave->setIcon(QIcon::fromTheme(ICON_SAVE));
+    m_ui->pushButtonReset->setIcon(QIcon::fromTheme(ICON_CLEAR));
+    m_ui->pushButtonUndo->setIcon(QIcon::fromTheme(ICON_UNDO));
 }
 
 Training::~Training()
 {
-    delete ui;
+    delete m_ui;
 }
 
 void Training::startTraining(Session *p_session)
@@ -68,8 +68,8 @@ void Training::startTraining(Session *p_session)
 void Training::startCollecting()
 {
     // Configure the button.
-    ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PAUSE));
-    ui->pushButtonProgress->setText(tr("Pause"));
+    m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PAUSE));
+    m_ui->pushButtonProgress->setText(tr("Pause"));
 
     // Determine the last saved sentence in the session.
 
@@ -81,8 +81,8 @@ void Training::startCollecting()
 
 void Training::stopCollecting()
 {
-    ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_RECORD));
-    ui->pushButtonProgress->setText(tr("Start"));
+    m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_RECORD));
+    m_ui->pushButtonProgress->setText(tr("Start"));
 }
 
 /// @todo Connect the changing of progress of the session to this window.
@@ -104,7 +104,7 @@ void SpeechControl::Windows::Training::on_pushButtonClose_clicked()
 
 void SpeechControl::Windows::Training::on_pushButtonProgress_toggled(const bool& checked)
 {
-    ui->labelText->setEnabled(!checked);
+    m_ui->labelText->setEnabled(!checked);
     if (!checked)
         stopCollecting();
     else
@@ -113,36 +113,30 @@ void SpeechControl::Windows::Training::on_pushButtonProgress_toggled(const bool&
 
 void SpeechControl::Windows::Training::updateProgress(const double &p_progress)
 {
-    ui->progressBar->setValue((int)(p_progress * 100));
+    m_ui->progressBar->setValue((int)(p_progress * 100));
 }
 
 void SpeechControl::Windows::Training::open()
 {
-    ui->pushButtonProgress->setChecked(true);
+    m_ui->pushButtonProgress->setChecked(true);
     QDialog::open();
 }
 
 void SpeechControl::Windows::Training::navigateToPart(const int &l_index)
 {
-    int l_range = 0;
+    m_posMin = (l_index == 0 || l_index == 1) ? 0 : m_range * (l_index - 1);
+    m_posMax = m_range * (l_index + 1);
+    qDebug() << m_posMin << m_posMax;
+
     QStringList l_words = m_curSntct->words();
     QString l_text;
-
-    if (l_words.count() > 6)
-        l_range = l_words.count() / 4;
-    else
-        l_range = 2;
-
-    const int l_rangeMin = (l_index == 0 || l_index == 1) ? 0 : l_range * (l_index - 1);
-    const int l_rangeMax = l_range * (l_index + 1);
-    qDebug() << l_rangeMin << l_rangeMax;
 
     for (int i = 0; i < l_words.count(); i++){
         // determine if the index of the word falls between
         // the minimum or maximum value of the range.
         const QString l_curWord = l_words.at(i);
 
-        if (l_rangeMin == i)
+        if (m_posMin == i)
             l_text += "<b>";
 
         l_text += l_curWord;
@@ -150,25 +144,42 @@ void SpeechControl::Windows::Training::navigateToPart(const int &l_index)
         if (i != l_words.count() - 1)
             l_text += " ";
 
-        if (l_rangeMax == i)
+        if (m_posMax == i)
             l_text += "</b>";
     }
 
-    ui->labelText->setText(l_text);
+    m_pos = l_index;
+    m_ui->labelText->setText(l_text);
 }
 
+/// @todo When this goes over, advance to the next sentence.
 void SpeechControl::Windows::Training::navigateNextPart()
 {
+    if (m_pos + 1 == m_posMax)
+        navigateToPart(m_pos + 1);
 }
 
+/// @todo When this hits -1, it should head back to the previous sentence.
 void SpeechControl::Windows::Training::navigatePreviousPart()
 {
+    if (m_pos - 1 < 0)
+        navigateToPart(m_pos - 1);
 }
 
 void SpeechControl::Windows::Training::startNavigating()
 {
+    m_pos = 0;
+    QStringList l_words = m_curSntct->words();
+
+    if (l_words.count() > 6)
+        m_range = l_words.count() / 4;
+    else
+        m_range = 2;
+
+    navigateToPart(0);
 }
 
 void SpeechControl::Windows::Training::stopNavigating()
 {
+    m_pos = 0;
 }

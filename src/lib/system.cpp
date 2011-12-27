@@ -32,7 +32,7 @@ using SpeechControl::Microphone;
 System* SpeechControl::System::s_inst = 0;
 
 System::System(int* argc, char** argv[]) :
-    QObject(QApplication::instance())
+        QObject(QApplication::instance())
 {
     if (argc && argv)
         QGst::init(argc,argv);
@@ -56,6 +56,6 @@ void System::start(int* argc, char** argv[])
         s_inst = new System(argc,argv);
 }
 
-void System::stop(){
+void System::stop() {
     s_inst->deleteLater();
 }

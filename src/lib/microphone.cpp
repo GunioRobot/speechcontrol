@@ -36,7 +36,7 @@ QGst::PropertyProbePtr Microphone::s_propProbe;
 QGst::ChildProxyPtr Microphone::s_chldPrxy;
 
 Microphone::Microphone(QGlib::Value device ) :
-    m_device(device), m_uuid(QUuid::createUuid())
+        m_device(device), m_uuid(QUuid::createUuid())
 {
     connect(this,SIGNAL(destroyed()),this,SLOT(release()));
 
@@ -59,7 +59,7 @@ void Microphone::findMicrophones() {
         if (s_chldPrxy)
             s_propProbe = s_chldPrxy->childByIndex(0).dynamicCast<QGst::PropertyProbe>();
 
-        if (s_propProbe){
+        if (s_propProbe) {
             QList<QGlib::Value> devices = s_propProbe->probeAndGetValues("device");
             s_src->setState(QGst::StateNull);
 
@@ -112,7 +112,7 @@ const QUuid Microphone::uuid() const
 }
 
 MicrophoneList Microphone::allMicrophones()
-{    
+{
     return s_lst.values();
 }
 
@@ -123,9 +123,9 @@ void SpeechControl::Microphone::startRecording()
     m_data.clear();
 
     if (!m_sinkAudio) {
-       qCritical() << tr("One or more elements could not be created. "
-                             "Verify that you have all the necessary element plugins installed.");
-       return;
+        qCritical() << tr("One or more elements could not be created. "
+                          "Verify that you have all the necessary element plugins installed.");
+        return;
     }
 
     m_sinkAudio->setProperty("location", "file.wav");
@@ -179,32 +179,32 @@ void SpeechControl::Microphone::mute(const bool &p_mute)
 
 void SpeechControl::Microphone::obtain()
 {
-   try {
-       m_binAudio = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-                                               "audioresample ! audiorate ! volume ! wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
-   } catch (const QGlib::Error & error) {
-       qCritical() << "Failed to create audio source bin:" << error;
-       m_binAudio.clear();
-       return;
-   }
+    try {
+        m_binAudio = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
+                                                "audioresample ! audiorate ! volume ! wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
+    } catch (const QGlib::Error & error) {
+        qCritical() << "Failed to create audio source bin:" << error;
+        m_binAudio.clear();
+        return;
+    }
 
-   s_lst.insert(m_uuid,const_cast<Microphone*>(this));
+    s_lst.insert(m_uuid,const_cast<Microphone*>(this));
 
-   // Obtain tools for recording like the encoder and the source.
-   m_sinkAudio = m_binAudio->getElementByName("filesink");
-   m_srcAudio = m_binAudio->getElementByName("audiosrc");
+    // Obtain tools for recording like the encoder and the source.
+    m_sinkAudio = m_binAudio->getElementByName("filesink");
+    m_srcAudio = m_binAudio->getElementByName("audiosrc");
 
-   //autoaudiosrc creates the actual source in the READY state
-   m_srcAudio->setState(QGst::StateReady);
+    //autoaudiosrc creates the actual source in the READY state
+    m_srcAudio->setState(QGst::StateReady);
 
-   QGst::ChildProxyPtr childProxy = m_srcAudio.dynamicCast<QGst::ChildProxy>();
-   if (childProxy && childProxy->childrenCount() > 0) {
-       //the actual source is the first child
-       QGst::ObjectPtr realSrc = childProxy->childByIndex(0);
-       realSrc->setProperty("device", m_device.toString());
-   }
+    QGst::ChildProxyPtr childProxy = m_srcAudio.dynamicCast<QGst::ChildProxy>();
+    if (childProxy && childProxy->childrenCount() > 0) {
+        //the actual source is the first child
+        QGst::ObjectPtr realSrc = childProxy->childByIndex(0);
+        realSrc->setProperty("device", m_device.toString());
+    }
 
-   m_srcAudio->setState(QGst::StateNull);
+    m_srcAudio->setState(QGst::StateNull);
 }
 
 void SpeechControl::Microphone::release()
@@ -229,22 +229,22 @@ const bool Microphone::isValid() const {
 void Microphone::onPipelineBusmessage(const QGst::MessagePtr & message)
 {
     switch (message->type()) {
-        case QGst::MessageEos:
-            //got end-of-stream - stop the pipeline
+    case QGst::MessageEos:
+        //got end-of-stream - stop the pipeline
+        //stop();
+        break;
+    case QGst::MessageError:
+        //check if the pipeline exists before destroying it,
+        //as we might get multiple error messages
+        if (m_pipeline) {
             //stop();
-            break;
-        case QGst::MessageError:
-            //check if the pipeline exists before destroying it,
-            //as we might get multiple error messages
-            if (m_pipeline) {
-                //stop();
-            }
-            qCritical() << tr("Pipeline Error")
-                        << message.staticCast<QGst::ErrorMessage>()->error().message();
-            break;
+        }
+        qCritical() << tr("Pipeline Error")
+        << message.staticCast<QGst::ErrorMessage>()->error().message();
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 }
 

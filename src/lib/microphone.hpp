@@ -43,9 +43,18 @@
 namespace SpeechControl {
     class Microphone;
 
+    /**
+     * @brief Represents a shorthand for denoating a list of @see Microphone.
+     **/
     typedef QList<Microphone*> MicrophoneList;
+    /**
+     * @brief Represents a named mapping of Microphones.
+     **/
     typedef QMap<QUuid, Microphone*> MicrophoneMap;
 
+    /**
+     * @brief Represents a handle of an audio input device on this computer.
+     **/
     class Microphone : public QObject {
         Q_OBJECT
         Q_PROPERTY(const bool Active READ active)
@@ -56,11 +65,14 @@ namespace SpeechControl {
         Q_PROPERTY(const bool Muted READ isMuted WRITE mute)
 
     public:
-        enum TestResult {
-            Failure = 0x1,
-            CouldntOpen = 0x2,
-            NothingHeard = 0x4,
-            UnknownError = 0x8
+      /**
+       * @brief Represents the potential errors that arose from the Micrphone.
+       **/
+      enum TestResult {
+            Failure = 0,
+            CouldntOpen,
+            NothingHeard,
+            UnknownError = -1
         };
 
         Q_DECLARE_FLAGS(TestResults, TestResult)
@@ -86,7 +98,7 @@ namespace SpeechControl {
         void startRecording();
         void stopRecording();
 
-    private:        
+    private:
         static void findMicrophones();
         static MicrophoneMap s_lst;
         static QGst::ElementPtr s_src;
@@ -112,3 +124,5 @@ namespace SpeechControl {
 }
 
 #endif // MICROPHONE_HPP
+
+

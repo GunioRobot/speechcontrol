@@ -30,7 +30,7 @@
 
 using namespace SpeechControl;
 
-Corpus::Corpus(const QUuid& p_uuid) : QObject(), m_dom(new QDomDocument){
+Corpus::Corpus(const QUuid& p_uuid) : QObject(), m_dom(new QDomDocument) {
     load(p_uuid);
 }
 
@@ -50,7 +50,7 @@ Sentence * Corpus::sentence(const QUuid &l_key) const
 /// @todo Add the Sentence to the XML document and then to the list.
 Sentence* Corpus::addSentence(Sentence *l_phrs)
 {
-    m_sntncLst.insert(l_phrs->uuid(),l_phrs);    
+    m_sntncLst.insert(l_phrs->uuid(),l_phrs);
     return l_phrs;
 }
 
@@ -75,7 +75,7 @@ Corpus & Corpus::operator <<(Sentence *l_phrs)
 Corpus & Corpus::operator <<(SentenceList &l_lst)
 {
     foreach (Sentence* l_phrs, l_lst)
-        this->addSentence(l_phrs);
+    this->addSentence(l_phrs);
 
     return *this;
 }
@@ -85,7 +85,7 @@ Corpus * Corpus::create(const QStringList& p_text)
 {
     QUuid l_uuid = QUuid::createUuid();
     QDir l_dir;
-    if (!l_dir.mkpath(getPath(l_uuid).toLocalFile())){
+    if (!l_dir.mkpath(getPath(l_uuid).toLocalFile())) {
         qWarning() << "Can't make corpus" << l_uuid;
         return 0;
     }
@@ -109,7 +109,7 @@ Corpus * Corpus::create(const QStringList& p_text)
     l_dom.save(l_strm,4);
 
     Corpus* l_corpus = Corpus::obtain(l_uuid);
-    Q_FOREACH(const QString& l_str, p_text){
+    Q_FOREACH(const QString& l_str, p_text) {
         Sentence* l_sent = l_corpus->addSentence(l_str.simplified(),0);
         l_corpus->m_dom->documentElement().namedItem("Sentences").appendChild(*l_sent->m_elem);
     }
@@ -118,7 +118,7 @@ Corpus * Corpus::create(const QStringList& p_text)
     return l_corpus;
 }
 
-const bool Corpus::exists(const QUuid& l_uuid){
+const bool Corpus::exists(const QUuid& l_uuid) {
     return QFile::exists(getPath(l_uuid).toLocalFile());
 }
 
@@ -141,7 +141,7 @@ Corpus* Corpus::obtain(const QUuid &l_uuid)
 {
     const QString l_path = getPath(l_uuid).toLocalFile() + "/corpus.xml";
 
-    if (!QFile::exists(l_path)){
+    if (!QFile::exists(l_path)) {
         qDebug() << "Corpus not found at" << l_path;
         return 0;
     }
@@ -154,21 +154,21 @@ void Corpus::load(const QUuid &p_uuid)
     const QUrl l_path = getPath(p_uuid);
     QFile* l_file = new QFile(l_path.toLocalFile() + "/corpus.xml");
 
-    if (l_file->exists() && l_file->open(QIODevice::ReadOnly)){
+    if (l_file->exists() && l_file->open(QIODevice::ReadOnly)) {
         if (!m_dom)
             m_dom = new QDomDocument("Corpus");
 
-        if (!m_dom->setContent(l_file)){
+        if (!m_dom->setContent(l_file)) {
             qDebug() << "Failed to load corpus.";
             return;
         }
 
         QDomNodeList l_elems = m_dom->documentElement().firstChildElement("Sentences").childNodes();
 
-        for (int i = 0; i < l_elems.count(); ++i){
+        for (int i = 0; i < l_elems.count(); ++i) {
             QDomElement l_elem = l_elems.at(i).toElement();
 
-            if (!l_elem.isNull()){
+            if (!l_elem.isNull()) {
                 //qDebug() << "Loading sentence:" << l_elem.attribute("text") << l_elem.attribute("uuid");
                 Sentence* l_phrs = new Sentence(this,(new QDomElement(l_elems.at(i).toElement())));
                 addSentence(l_phrs);
@@ -182,7 +182,7 @@ void Corpus::save()
 {
     const QUrl l_path = getPath(this->uuid());
     QFile* l_file = new QFile(l_path.toLocalFile() + "/corpus.xml");
-    if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)){
+    if (l_file->open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         QTextStream l_strm(l_file);
         m_dom->save(l_strm,4);
     } else
@@ -195,7 +195,7 @@ CorpusList Corpus::allCorpuses()
     QDir l_dir(QDir::homePath() + "/.speechcontrol/corpus/");
     l_dir.setFilter(QDir::Dirs);
     QStringList l_results = l_dir.entryList(QStringList() << "*");
-    Q_FOREACH(const QString& l_uuid, l_results){
+    Q_FOREACH(const QString& l_uuid, l_results) {
         l_lst << Corpus::obtain(QUuid(l_uuid));
     }
 
@@ -254,7 +254,7 @@ void Dictionary::load(const QUuid &l_uuid)
     l_file->open(QIODevice::ReadOnly);
     QTextStream l_strm(l_file);
 
-    while (!l_strm.atEnd()){
+    while (!l_strm.atEnd()) {
         const QString l_line = l_strm.readLine();
         const QStringList l_tokens = l_line.split("\t",QString::SkipEmptyParts);
         m_words.insert(l_tokens[0],new DictionaryEntry(this,l_tokens[0],l_tokens[1]));
@@ -267,7 +267,7 @@ const QString Dictionary::getPath(const QUuid &l_uuid)
 }
 
 DictionaryEntry::DictionaryEntry(Dictionary *p_dict, const QString &p_word, const QString &p_phoneme) :
-    m_dict(p_dict), m_word(p_word), m_phnm(p_phoneme), QObject(p_dict)
+        m_dict(p_dict), m_word(p_word), m_phnm(p_phoneme), QObject(p_dict)
 {
 }
 

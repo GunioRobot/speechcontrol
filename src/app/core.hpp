@@ -30,37 +30,37 @@ class QSettings;
 
 namespace SpeechControl {
 namespace Windows {
-  struct Main;
+struct Main;
 }
-  struct Core;
+struct Core;
 
-  /// @todo Allow versioning of the configuration.
-  /// @todo Remove reference to Windows::Main.
-  class Core : public QObject {    
+/// @todo Allow versioning of the configuration.
+/// @todo Remove reference to Windows::Main.
+class Core : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY(Core)
-      friend class Windows::Main;
+    friend class Windows::Main;
 
-  signals:
+signals:
     void started();
     void stopped();
 
-  public:
+public:
     Core(int,char**);
     virtual ~Core();
     QVariant getConfig(const QString&, QVariant = QVariant()) const;
     void setConfig(const QString&, const QVariant&);
     static Core* instance();
 
-  public slots:
+public slots:
     void start();
     void stop();
 
-  private:
+private:
     QSettings* m_settings;
     static Core* s_inst;
-    
-  };
+
+};
 }
 
 #endif // CORE_HPP
