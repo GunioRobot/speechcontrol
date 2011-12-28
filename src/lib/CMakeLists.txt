@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
+## @todo Considering dropping QtGui support in this library.
+
 ## variables
-set(MARYTTSQT_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
-set(MARYTTSQT_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
-set(MARYTTSQT_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_LIB_INCLUDE_DIRS "${SPCHNCTRL_INCLUDE_DIRS}")
 set(SPCHCNTRL_LIB_LIBRARIES "${SPCHCNTRL_LIBRARIES}")
 
@@ -28,11 +27,14 @@ install(TARGETS spchcntrl
     LIBRARY DESTINATION "${SPCHCNTRL_LIB_DIR}")
 
 install(EXPORT SpeechControlLibraryDepends
-    DESTINATION "${SPCHCNTRL_CMAKE_DIR}")
+    DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
+    COMPONENT "dev")
 
 install(FILES ${SPCHCNTRL_LIB_HPP}
-    DESTINATION "${SPCHCNTRL_INCLUDE_DIR}")
+    DESTINATION "${SPCHCNTRL_INCLUDE_DIR}/lib"
+    COMPONENT "dev")
 
 install(FILES "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfig.cmake"
     "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfigVersion.cmake"
-    DESTINATION "${MARYTTSQT_CMAKE_DIR}")
+    DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
+    COMPONENT "dev")

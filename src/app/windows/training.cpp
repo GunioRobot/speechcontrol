@@ -38,7 +38,8 @@ using namespace SpeechControl;
 using SpeechControl::Windows::Training;
 
 Training::Training(QWidget *parent) :
-    QDialog(parent),
+    QDialog(parent), m_curPos(0), m_initPos(0), m_posMin(0), m_posMax(0),
+    m_session(0), m_curSntct(0), m_initSntct(0),
     m_ui(new Ui::Training)
 {
     m_ui->setupUi(this);
@@ -60,7 +61,7 @@ void Training::startTraining(Session *p_session)
         l_dialog->setSession(p_session);
         l_dialog->open();
     } else
-        QMessageBox::information(0,"Session Completed", "Your session is completed.");
+        QMessageBox::information(0,tr("Session Completed"), tr("Your session is completed."));
 }
 
 /// @todo Start training the session.
@@ -69,16 +70,27 @@ void Training::startCollecting()
     // Configure the button.
     m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PAUSE));
     m_ui->pushButtonProgress->setText(tr("Pause"));
-    m_ui->labelText->setText("<i>Rendering...</i>");
+    m_ui->labelText->setText(tr("<i>Rendering...</i>"));
 
     // Determine the last saved sentence in the session.
-    m_curSntct = m_session->firstIncompleteSentence();
+    m_initSntct= m_curSntct = m_session->firstIncompleteSentence();
 
     // Begin an iteration of reading sentences until interrupted or completed.
-    if (m_curSntct)
-        navigateToPart(0);
+    if (m_curSntct){
+        int l_start = 0;
+        const int l_max = m_curSntct->phrases().count();
+
+        for (; l_start < l_max; l_start++){
+            if (!m_curSntct->isPhraseCompleted(l_start)){
+                m_initPos = l_start;
+                break;
+            }
+        }
+
+        navigateToPart(l_start);
+    }
     else
-        m_ui->labelText->setText("<i>No text is available for this session</i>.");
+        m_ui->labelText->setText(tr("<i>No text is available for this session</i>."));
 }
 
 void Training::stopCollecting()
@@ -145,7 +157,7 @@ void Training::navigateToPart(const int &l_index)
             l_text += " ";
     }
 
-    m_pos = l_index;
+    m_curPos = l_index;
     m_ui->labelText->setText(l_text);
     qDebug() << l_phrsLst.count() << l_text;
 }
@@ -153,24 +165,45 @@ void Training::navigateToPart(const int &l_index)
 /// @todo When this goes over, advance to the next sentence.
 void Training::navigateNextPart()
 {
-    if (m_pos + 1 == m_curSntct->phrases().count())
-        navigateToPart(m_pos + 1);
+    if (m_curPos + 1 != m_curSntct->phrases().count())
+        navigateToPart(m_curPos + 1);
 }
 
 /// @todo When this hits -1, it should head back to the previous sentence.
 void Training::navigatePreviousPart()
 {
-    if (m_pos - 1 < 0)
-        navigateToPart(m_pos - 1);
+    if (m_curPos - 1 < 0)
+        navigateToPart(m_curPos - 1);
 }
 
 void Training::startNavigating()
 {
-    m_pos = 0;
+    m_curPos = 0;
     navigateToPart(0);
 }
 
 void Training::stopNavigating()
 {
-    m_pos = 0;
+    m_curPos = 0;
+}
+
+/// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
+void SpeechControl::Windows::Training::on_pushButtonReset_clicked()
+{
+    // Undo the work up to the initial point.
+
+    // Now, revert and jump to the beginning.
+    m_curSntct = m_initSntct;
+    m_curPos = m_initPos;
+}
+
+/// @todo This should undo progress at a decrementing interval until it hits the point of where the dialog opened.
+void SpeechControl::Windows::Training::on_pushButtonUndo_clicked()
+{
+   navigatePreviousPart();
+}
+
+void SpeechControl::Windows::Training::on_pushButton_2_clicked()
+{
+    navigateNextPart();
 }

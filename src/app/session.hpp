@@ -66,7 +66,7 @@ namespace SpeechControl {
     private:
         static QString getPath(const QUuid&);
         static ContentMap s_lst;
-        QStringList m_lines;
+        QStringList m_pages;
         QDomDocument* m_dom;
         QUuid m_uuid;
     };

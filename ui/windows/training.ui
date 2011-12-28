@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>438</width>
-    <height>178</height>
+    <height>214</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
      <x>4</x>
      <y>4</y>
      <width>433</width>
-     <height>173</height>
+     <height>165</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -242,6 +242,19 @@ border-size: 5px;</string>
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>252</x>
+     <y>184</y>
+     <width>84</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
   </widget>
  </widget>
  <resources/>

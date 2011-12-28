@@ -45,6 +45,12 @@ BooksManager::~BooksManager()
 
 void BooksManager::updateList(){
     ContentList l_lst = Content::allContents();
+
+    if (l_lst.empty())
+        ui->lblTitle->setText("No Books");
+    else
+        ui->lblTitle->setText("No Selection");
+
     if (!l_lst.empty()){
         Q_FOREACH(const Content* l_cnt, l_lst){
             QListWidgetItem* l_item = new QListWidgetItem(l_cnt->title(),ui->lstBooks);
@@ -58,13 +64,6 @@ void BooksManager::updateList(){
         if (!m_book)
             ui->lstBooks->setCurrentRow(0);
     }
-
-    ui->btnSelect->setEnabled(l_lst.empty());
-
-    if (l_lst.empty())
-        ui->lblTitle->setText("No Books");
-    else
-        ui->lblTitle->setText("No Selection");
 }
 
 void BooksManager::on_btnSelect_clicked()
@@ -105,6 +104,7 @@ void BooksManager::on_btnAdd_clicked()
 
 void BooksManager::on_btnCancel_clicked()
 {
+    m_book = 0;
     reject();
 }
 
@@ -116,9 +116,10 @@ void BooksManager::on_lstBooks_itemSelectionChanged()
         const Content* l_cnt = Content::obtain(l_uuid);
         ui->lblTitle->setText(l_cnt->title());
         ui->lcdWordCount->display(QString::number(l_cnt->words()));
+        ui->btnSelect->setEnabled(true);
     } else {
         ui->lblTitle->setText("No Selection");
         ui->lcdWordCount->display(0);
+        ui->btnSelect->setEnabled(false);
     }
-    ui->btnSelect->setEnabled((bool)(l_item));
 }

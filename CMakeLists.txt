@@ -30,6 +30,7 @@ set(SPCHCNTRL_CMAKE_SDIR "${PROJECT_SOURCE_DIR}/cmake")
 set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
+set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/spchcntrl")
 
 ## done here to pick up the files in Qt Creator.
 file(GLOB SPCHCNTRL_UIQRESC "ui/*.qrc")

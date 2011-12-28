@@ -56,6 +56,12 @@ private slots:
     void on_pushButtonClose_clicked();
     void on_pushButtonProgress_toggled(const bool& );
 
+    void on_pushButtonReset_clicked();
+
+    void on_pushButtonUndo_clicked();
+
+    void on_pushButton_2_clicked();
+
 private:
     /// @todo Use these functions to segment the phrase into parts that the user can read.
     /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises
@@ -67,13 +73,14 @@ private:
     void startNavigating();
     void stopNavigating();
 
-    int m_pos;
+    int m_curPos;
+    int m_initPos;
     int m_posMin;
     int m_posMax;
-    int m_range;
     Ui::Training *m_ui;
     Session* m_session;
     Sentence* m_curSntct;
+    Sentence* m_initSntct;
 };
 
 }}

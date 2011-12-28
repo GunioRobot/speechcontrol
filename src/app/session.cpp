@@ -202,7 +202,7 @@ void Content::load(const QUuid &p_uuid)
 
         Q_FOREACH(const QChar l_chr, l_textBase){
             if (l_count == 200){
-                m_lines << l_text;
+                m_pages << l_text;
                 l_count = 0;
             }
 
@@ -221,24 +221,24 @@ void Content::load(const QUuid &p_uuid)
 /// @todo Define the size of one page.
 const uint Content::pageCount() const
 {
-    return length();
+    return m_pages.count();
 }
 
 /// @todo Determine a means of finding the words in the text.
 const uint Content::words() const
 {
-    return length();
+    return m_pages.join("\n").split(" ").count();
 }
 
 const uint Content::length() const
 {
-    return m_lines.join("\n").length();
+    return m_pages.join("\n").length();
 }
 
 /// @todo Determine a means of finding the count of alpha-numeric characters.
 const uint Content::characters() const
 {
-    return length();
+    return m_pages.join("\n").length();
 }
 
 QString Content::getPath(const QUuid &p_uuid)
@@ -288,13 +288,13 @@ ContentList Content::allContents()
 
 const QStringList SpeechControl::Content::pages() const
 {
-    return m_lines;
+    return m_pages;
 }
 
 const QString SpeechControl::Content::pageAt(const int &l_index) const
 {
-    if (l_index < m_lines.count())
-        return m_lines.at(l_index);
+    if (l_index < m_pages.count())
+        return m_pages.at(l_index);
 
     return QString::null;
 }
@@ -346,8 +346,7 @@ Sentence* Session::lastIncompleteSentence() const
 {
     const SentenceList l_lst = m_corpus->sentences();
     SentenceList::ConstIterator l_endItr = l_lst.begin();
-    for (SentenceList::ConstIterator l_itr = l_lst.end();
-         l_itr != l_endItr; l_itr--){
+    for (SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr--){
         const Sentence* l_sent = (*l_itr);
 
         if (!l_sent->allPhrasesCompleted())
