@@ -56,8 +56,8 @@ Sentence* Corpus::addSentence(Sentence *l_phrs)
 
 Sentence* Corpus::addSentence(const QString &l_txt, const QFile *l_audio)
 {
-    qDebug() << "Adding sentence" << l_txt << l_txt.toUtf8().toBase64();
-    Sentence* l_sentence = Sentence::create(this,l_txt.toUtf8().toBase64());
+    qDebug() << "Adding sentence" << l_txt << "...";
+    Sentence* l_sentence = Sentence::create(this,l_txt);
 
     if (l_audio)
         l_sentence->m_elem->attribute(QUrl::fromLocalFile(l_audio->fileName()).toString());
@@ -96,6 +96,7 @@ Corpus * Corpus::create(const QStringList& p_text)
     QDomElement l_sentencesElem = l_dom.createElement("Sentences");
 
     l_rootElem.setAttribute("Uuid",l_uuid.toString());
+    l_rootElem.setAttribute("Version",0.01);
     l_dateElem.setAttribute("Created",QDateTime::currentDateTimeUtc().toString());
 
     l_rootElem.appendChild(l_dateElem);
@@ -167,12 +168,13 @@ void Corpus::load(const QUuid &p_uuid)
 
         for (int i = 0; i < l_elems.count(); ++i) {
             QDomElement l_elem = l_elems.at(i).toElement();
+            qDebug() << "Loading sentence:" << l_elem.attribute("uuid");
 
-            if (!l_elem.isNull()) {
-                //qDebug() << "Loading sentence:" << l_elem.attribute("text") << l_elem.attribute("uuid");
-                Sentence* l_phrs = new Sentence(this,(new QDomElement(l_elems.at(i).toElement())));
-                addSentence(l_phrs);
-            }
+            if (l_elem.isNull()) continue;
+
+            Sentence* l_sntc = new Sentence(this,(new QDomElement(l_elems.at(i).toElement())));
+            qDebug() << "Loaded sentence:" << l_sntc->text();
+            addSentence(l_sntc);
         }
     } else
         qDebug() << "Failed to open corpus XML file.";
@@ -211,6 +213,10 @@ Corpus::~Corpus()
 /// @todo Drop the addition of the element and have it request it from the base Corpus.
 Sentence::Sentence(Corpus* p_corpus, QDomElement *p_elem) : m_elem(p_elem), m_corpus(p_corpus)
 {
+    // Build phrases.
+    QDomNodeList l_nodes = m_elem->childNodes();
+    for (int i = 0; i < l_nodes.length(); i++)
+        m_phrsLst << new Phrase(this,i);
 }
 
 Corpus * Sentence::parentSession() const
@@ -218,28 +224,55 @@ Corpus * Sentence::parentSession() const
     return m_corpus;
 }
 
-QUuid Sentence::uuid() const
+const QUuid Sentence::uuid() const
 {
     return QUuid(m_elem->attribute("uuid"));
 }
 
-QFile * Sentence::audio() const
+const QDir Sentence::audioPath() const
 {
-    const QString l_fileName = m_elem->attribute("file");
-    return new QFile(m_corpus->audioPath().toLocalFile() + "/" + l_fileName);
+    return QDir(m_corpus->audioPath().toLocalFile() + "/" + m_elem->attribute("file"));
 }
 
-QString Sentence::text() const {
-    return QByteArray::fromBase64(m_elem->attribute("text").toUtf8());
+/// @todo Merge all of the phrases together.
+const QString Sentence::text() const {
+    QString l_text;
+
+    Q_FOREACH(const Phrase* l_phrs, m_phrsLst){
+        l_text += l_phrs->text() + " ";
+    }
+
+    return l_text.trimmed();
 }
 
-Sentence * Sentence::create(Corpus *l_sess, QString l_txt)
+Sentence* Sentence::create(Corpus *l_sess, const QString& l_txt)
 {
     const QUuid l_uuid = QUuid::createUuid();
     QDomElement* l_elem = new QDomElement(l_sess->m_dom->createElement("Sentence"));
     l_elem->setAttribute("file",QUuid::createUuid());
     l_elem->setAttribute("uuid",l_uuid);
-    l_elem->setAttribute("text",l_txt);
+
+    // form phrases
+    QStringList l_words = l_txt.split(" ",QString::SkipEmptyParts);
+    QString l_phrase;
+
+    for (int i = 0, j = 0; i < l_words.count(); i++, j++){
+        if (j < 4)
+            l_phrase += l_words.at(i) + " ";
+
+        if (j == 3 || i + 2 == l_words.count() || i + 1 == l_words.count()){ // build phrase
+            l_phrase = l_phrase.trimmed();
+
+            QDomElement* l_phrsElem = new QDomElement(l_sess->m_dom->createElement("Phrase"));
+            l_phrsElem->setAttribute("uuid",QUuid::createUuid());
+            l_phrsElem->appendChild(l_sess->m_dom->createTextNode(l_phrase.toLocal8Bit().toBase64()));
+            l_elem->appendChild(*l_phrsElem);
+
+            j = -1;
+            l_phrase.clear();
+        }
+    }
+
     return l_sess->addSentence(new Sentence(l_sess,l_elem));
 }
 
@@ -346,7 +379,65 @@ const QDateTime Corpus::timeCompleted() const
     return QDateTime::fromString(m_dom->elementsByTagName("Date").at(0).toElement().attribute("Completed"));
 }
 
-QStringList SpeechControl::Sentence::words() const
+const QString Phrase::text() const
 {
-    return text().split(" ");
+    QDomElement* l_elem = m_sntnc->getPhraseElement(m_indx);
+    const QString l_base64Data = l_elem->text();
+    qDebug() << l_base64Data << QByteArray::fromBase64(l_base64Data.toLocal8Bit());
+    return QByteArray::fromBase64(l_base64Data.toLocal8Bit());
+}
+
+QFile* Phrase::audio() const
+{
+    const QString l_fileName = m_sntnc->getPhraseElement(m_indx)->attribute("uuid") + ".wav";
+    const QString l_pth = m_sntnc->audioPath().path();
+    return new QFile(l_pth + "/" + l_fileName);
+}
+
+const int Phrase::index() const
+{
+    return m_indx;
+}
+
+QDomElement* Sentence::getPhraseElement(const int &p_indx) const
+{
+    return new QDomElement(m_elem->elementsByTagName("Phrase").at(p_indx).toElement());
+}
+
+Phrase * Sentence::phrase(const int &) const
+{
+}
+
+const PhraseList Sentence::phrases() const
+{
+    return m_phrsLst;
+}
+
+Phrase::Phrase(const Sentence *p_sntnct, const int &p_index) :
+    m_sntnc(p_sntnct), m_indx(p_index)
+{
+}
+
+Phrase::~Phrase() {
+
+}
+
+const bool Sentence::allPhrasesCompleted() const
+{
+    Q_FOREACH(const Phrase* l_phrs, m_phrsLst){
+        if (!l_phrs->isCompleted())
+            return false;
+    }
+
+    return true;
+}
+
+const bool Sentence::isPhraseCompleted(const int &p_indx) const
+{
+    return m_phrsLst.at(p_indx)->isCompleted();
+}
+
+const bool Phrase::isCompleted() const
+{
+    return audio()->exists();
 }

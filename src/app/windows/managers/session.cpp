@@ -51,13 +51,16 @@ void SessionManager::updateList() {
     SessionList l_lst = Session::allSessions();
     Q_FOREACH(const Session* l_sessionItr, l_lst){
         QListWidgetItem* l_item = new QListWidgetItem(m_ui->listSession);
+        l_item->setData(Qt::UserRole,l_sessionItr->uuid().toString());
         l_item->setText(l_sessionItr->content()->title());
-        l_item->setData(0,l_sessionItr->uuid().toString());
         m_ui->listSession->addItem(l_item);
 
         if (m_session && m_session->uuid() == l_sessionItr->uuid())
             l_item->setSelected(true);
     }
+
+    if (!m_session)
+        m_ui->listSession->setCurrentRow(0);
 }
 
 Session* SessionManager::session() const {
@@ -67,19 +70,17 @@ Session* SessionManager::session() const {
 /// @todo Implement a means of selecting @see Session objects from the manager.
 Session* SessionManager::doSelectSession()
 {
-    Session* l_session = 0;
     SessionManager* l_win = new SessionManager;
+
     if (Session::allSessions().empty()){
         l_win->on_btnCreate_clicked();
-        l_session = l_win->session();
+        return l_win->session();
     } else {
-        if (l_win->exec() != QDialog::Accepted)
-            l_session = 0;
-        else
-            l_session = l_win->session();
+        if (l_win->exec() == QDialog::Accepted)
+            return l_win->session();
     }
 
-    return l_session;
+    return 0;
 }
 
 void SessionManager::on_btnCancel_clicked()
@@ -108,5 +109,5 @@ void SessionManager::on_listSession_itemSelectionChanged()
     const QListWidgetItem* l_item = m_ui->listSession->currentItem();
 
     if (l_item)
-        m_session = Session::obtain(QUuid(l_item->data(0).toString()));
+        m_session = Session::obtain(QUuid(l_item->data(Qt::UserRole).toString()));
 }

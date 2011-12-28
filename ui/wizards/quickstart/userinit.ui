@@ -67,6 +67,9 @@
         <property name="text">
          <string>Name</string>
         </property>
+        <property name="buddy">
+         <cstring>lineEditNameFirst</cstring>
+        </property>
        </widget>
       </item>
       <item row="0" column="1">
@@ -108,6 +111,9 @@
         <property name="text">
          <string>Spoken Language</string>
         </property>
+        <property name="buddy">
+         <cstring>comboBoxLanguageSpoken</cstring>
+        </property>
        </widget>
       </item>
       <item row="1" column="1">
@@ -142,6 +148,9 @@
         <property name="text">
          <string>Native Language</string>
         </property>
+        <property name="buddy">
+         <cstring>comboBoxLanguageNative</cstring>
+        </property>
        </widget>
       </item>
       <item row="2" column="1">
@@ -170,6 +179,9 @@
         <property name="text">
          <string>Country</string>
         </property>
+        <property name="buddy">
+         <cstring>comboBoxCountry</cstring>
+        </property>
        </widget>
       </item>
       <item row="3" column="1">
@@ -190,12 +202,18 @@
         <property name="text">
          <string>Age Range</string>
         </property>
+        <property name="buddy">
+         <cstring>comboBoxAge</cstring>
+        </property>
        </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Gender</string>
+        </property>
+        <property name="buddy">
+         <cstring>radioButtonFemale</cstring>
         </property>
        </widget>
       </item>

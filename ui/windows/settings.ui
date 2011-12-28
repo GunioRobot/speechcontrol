@@ -101,6 +101,9 @@
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <property name="buddy">
+          <cstring>checkBoxDesktopControl</cstring>
+         </property>
         </widget>
        </widget>
       </item>
@@ -129,6 +132,9 @@
          </property>
          <property name="wordWrap">
           <bool>true</bool>
+         </property>
+         <property name="buddy">
+          <cstring>checkBoxVoxForge</cstring>
          </property>
         </widget>
         <widget class="QCheckBox" name="checkBoxVoxForge">
@@ -178,6 +184,9 @@
          </property>
          <property name="wordWrap">
           <bool>true</bool>
+         </property>
+         <property name="buddy">
+          <cstring>checkBoxDictate</cstring>
          </property>
         </widget>
        </widget>
@@ -406,6 +415,11 @@
       </item>
       <item row="0" column="1">
        <widget class="QPlainTextEdit" name="textEditPreview">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="readOnly">
          <bool>true</bool>
         </property>
@@ -522,6 +536,9 @@
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <property name="buddy">
+          <cstring>pushButtonWizardConfig</cstring>
+         </property>
         </widget>
         <widget class="QPushButton" name="pushButtonWizardConfig">
          <property name="geometry">
@@ -557,6 +574,9 @@
          </property>
          <property name="wordWrap">
           <bool>true</bool>
+         </property>
+         <property name="buddy">
+          <cstring>pushButtonWizardMic</cstring>
          </property>
         </widget>
         <widget class="QPushButton" name="pushButtonWizardMic">
@@ -594,12 +614,15 @@
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <property name="buddy">
+          <cstring>pushButtonWizardSessions</cstring>
+         </property>
         </widget>
         <widget class="QPushButton" name="pushButtonWizardSessions">
          <property name="geometry">
           <rect>
            <x>60</x>
-           <y>108</y>
+           <y>105</y>
            <width>84</width>
            <height>23</height>
           </rect>
@@ -630,6 +653,9 @@
          <property name="wordWrap">
           <bool>true</bool>
          </property>
+         <property name="buddy">
+          <cstring>pushButtonWizardVoxforge</cstring>
+         </property>
         </widget>
         <widget class="QPushButton" name="pushButtonWizardVoxforge">
          <property name="geometry">
@@ -652,6 +678,25 @@
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="6"/>
+ <tabstops>
+  <tabstop>tabWidgetWizards</tabstop>
+  <tabstop>checkBoxDesktopControl</tabstop>
+  <tabstop>checkBoxDictate</tabstop>
+  <tabstop>checkBoxVoxForge</tabstop>
+  <tabstop>checkBoxSysStart</tabstop>
+  <tabstop>pushButtonPluginSettings</tabstop>
+  <tabstop>listWidgetPlugins</tabstop>
+  <tabstop>listWidgetBooks</tabstop>
+  <tabstop>textEditPreview</tabstop>
+  <tabstop>pushButtonAdd</tabstop>
+  <tabstop>pushButtonTrain</tabstop>
+  <tabstop>pushButtonDelete</tabstop>
+  <tabstop>pushButtonWizardConfig</tabstop>
+  <tabstop>pushButtonWizardMic</tabstop>
+  <tabstop>pushButtonWizardSessions</tabstop>
+  <tabstop>pushButtonWizardVoxforge</tabstop>
+  <tabstop>buttonBox</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>

@@ -25,20 +25,21 @@
 #include <QObject>
 
 namespace SpeechControl {
+    class Factory;
+    class AbstractPlugin;
 
-class AbstractPlugin : public QObject
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(AbstractPlugin)
+    class AbstractPlugin : public QObject {
+        Q_OBJECT
+        Q_DISABLE_COPY(AbstractPlugin)
 
-public:
-    explicit AbstractPlugin(QObject *parent = 0);
+    public:
+        explicit AbstractPlugin(QObject *parent = 0);
 
-signals:
+    signals:
 
-public slots:
+    public slots:
 
-};
+    };
 
 }
 

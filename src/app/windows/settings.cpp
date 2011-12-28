@@ -20,19 +20,21 @@
  */
 
 #include <training.hpp>
+#include <QMessageBox>
 
 #include "core.hpp"
+#include "session.hpp"
 #include "settings.hpp"
+#include "training.hpp"
 #include "wizards/quickstart/wizard.hpp"
 #include "wizards/micsetup/wizard.hpp"
 #include "wizards/contents/wizard.hpp"
-#include "session.hpp"
+#include "wizards/session-create/wizard.hpp"
 #include "ui_settings.h"
 
-using SpeechControl::Content;
-using SpeechControl::ContentList;
-using SpeechControl::Windows::Settings;
+using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows;
 
 Settings::Settings(QWidget *parent) :
     QDialog(parent),
@@ -72,9 +74,12 @@ void Settings::on_tabWidgetWizards_currentChanged(int p_index)
         Q_FOREACH(const Content* l_cnt, l_books){
             QListWidgetItem* l_item = new QListWidgetItem;
             l_item->setText(l_cnt->title());
-            l_item->setData(0,l_cnt->uuid().toString());
+            l_item->setData(Qt::UserRole,l_cnt->uuid().toString());
             ui->listWidgetBooks->addItem(l_item);
         }
+
+        if (!l_books.empty())
+            ui->listWidgetBooks->setCurrentRow(0);
     }
         break;
     case 3: // wizards
@@ -93,49 +98,60 @@ void Settings::on_buttonBox_accepted()
     Core::instance()->setConfig("VoxForge/EnableUploading",ui->checkBoxVoxForge->checkState());
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonWizardConfig_clicked()
+void Settings::on_pushButtonWizardConfig_clicked()
 {
     QuickStart* l_wiz = new QuickStart(this);
-    l_wiz->show();
+    l_wiz->open();
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonWizardSessions_clicked()
+void Settings::on_pushButtonWizardSessions_clicked()
 {
-
+    SessionCreate* l_wiz = new SessionCreate(this);
+    l_wiz->open();
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonWizardVoxforge_clicked()
+void Settings::on_pushButtonWizardVoxforge_clicked()
 {
-
+    QMessageBox::information(this,tr("Not Yet Implemented"),tr("This functionality doesn't yet exist."));
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonWizardMic_clicked()
+void Settings::on_pushButtonWizardMic_clicked()
 {
     MicrophoneSetup* l_wiz = new MicrophoneSetup(this);
-    l_wiz->show();
+    l_wiz->open();
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonAdd_clicked()
+void Settings::on_pushButtonAdd_clicked()
 {
     ContentWizard* l_wiz = new ContentWizard;
-    l_wiz->show();
+    l_wiz->open();
+
+    if (l_wiz->result() == QDialog::Accepted)
+        on_tabWidgetWizards_currentChanged(2);
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonTrain_clicked()
+void Settings::on_pushButtonTrain_clicked()
 {
-
+    QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
+    Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
+    Session* l_sess = Session::create(l_cnt);
+    Training::startTraining(l_sess);
 }
 
-void SpeechControl::Windows::Settings::on_pushButtonDelete_clicked()
+/// @todo Delete the selected book.
+void Settings::on_pushButtonDelete_clicked()
 {
-
+    QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
+    Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
 }
 
-void SpeechControl::Windows::Settings::on_listWidgetBooks_itemSelectionChanged()
+void Settings::on_listWidgetBooks_itemSelectionChanged()
 {
     QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
     if (l_item){
-        Content* l_cnt = Content::obtain(l_item->data(0).toString());
+        Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
+        ui->pushButtonTrain->setEnabled(true);
+        ui->pushButtonDelete->setEnabled(true);
         ui->textEditPreview->setEnabled(true);
         ui->textEditPreview->setPlainText(l_cnt->pageAt(0));
     } else {

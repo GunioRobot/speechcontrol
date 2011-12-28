@@ -71,14 +71,19 @@ void Session::setContent(Content* l_content)
 
 void Session::assessProgress()
 {
+    double l_progress;
     if (m_corpus){
-        const int l_index = m_corpus->sentences().indexOf(this->firstIncompleteSentence());
-        const double l_progress = (double) l_index / (double) m_corpus->sentences().count();
-        qDebug() << l_index << l_progress;
-        emit progressChanged(l_progress);
-    } else {
-        emit progressChanged(0.0);
-    }
+        Sentence* l_snt = this->firstIncompleteSentence();
+        if (l_snt){
+            const int l_index = m_corpus->sentences().indexOf(l_snt);
+            l_progress = (double) l_index / (double) m_corpus->sentences().count();
+
+        } else
+            l_progress = 1.0;
+    } else
+        l_progress = 0.0;
+
+    emit progressChanged(l_progress);
 }
 
 void Session::init(){
@@ -189,7 +194,24 @@ void Content::load(const QUuid &p_uuid)
     if (l_file->open(QIODevice::ReadOnly)){
         m_dom = new QDomDocument("Content");
         m_dom->setContent(l_file);
-        m_lines = m_dom->documentElement().elementsByTagName("Content").at(0).toElement().text().split("\n");
+
+        // Chunk up the text every 200 characters.
+        QString l_text;
+        QString l_textBase = m_dom->documentElement().elementsByTagName("Content").at(0).toElement().text();
+        uint l_count = 0;
+
+        Q_FOREACH(const QChar l_chr, l_textBase){
+            if (l_count == 200){
+                m_lines << l_text;
+                l_count = 0;
+            }
+
+            if (l_chr.isLetterOrNumber())
+                ++l_count;
+
+            l_text += l_chr;
+        }
+
         m_uuid = p_uuid;
     } else
         qDebug() << "Can't open Content XML document.";
@@ -229,14 +251,15 @@ const QString Content::title() const
 {
     QDomElement l_domElem = m_dom->documentElement();
     QDomElement l_bilboElem = l_domElem.namedItem("Bilbography").toElement();
-    return l_bilboElem.attributes().namedItem("Title").toAttr().value();
+    return l_bilboElem.attribute("Title");
 }
 
 /// @todo Find a cleaner, safer way of finding this info.
 const QString Content::author() const
 {
-    QDomElement l_bilboElem = m_dom->documentElement().elementsByTagName("Bilbography").at(0).toElement();
-    return l_bilboElem.attributes().namedItem("Author").toAttr().value();
+    QDomElement l_domElem = m_dom->documentElement();
+    QDomElement l_bilboElem = l_domElem.namedItem("Bilbography").toElement();
+    return l_bilboElem.attribute("Author");
 }
 
 Content::~Content()
@@ -270,7 +293,7 @@ const QStringList SpeechControl::Content::pages() const
 
 const QString SpeechControl::Content::pageAt(const int &l_index) const
 {
-    if (l_index < m_lines.count() && l_index != 0)
+    if (l_index < m_lines.count())
         return m_lines.at(l_index);
 
     return QString::null;
@@ -309,9 +332,8 @@ Sentence* Session::firstIncompleteSentence() const
     SentenceList::ConstIterator l_endItr = l_lst.end();
     for (SentenceList::ConstIterator l_itr = l_lst.begin(); l_itr != l_endItr; l_itr++){
         const Sentence* l_sent = (*l_itr);
-        qDebug() << "Sentence text (firstincomplete):" << l_sent->text();
 
-        if (l_sent->audio() || !l_sent->audio()->exists())
+        if (!l_sent->allPhrasesCompleted())
             return *l_itr;
         else
             continue;
@@ -323,10 +345,12 @@ Sentence* Session::firstIncompleteSentence() const
 Sentence* Session::lastIncompleteSentence() const
 {
     const SentenceList l_lst = m_corpus->sentences();
-    SentenceList::ConstIterator l_startItr = l_lst.begin();
+    SentenceList::ConstIterator l_endItr = l_lst.begin();
     for (SentenceList::ConstIterator l_itr = l_lst.end();
-         l_itr != l_startItr; l_itr--){
-        if (!(*l_itr)->audio()->exists())
+         l_itr != l_endItr; l_itr--){
+        const Sentence* l_sent = (*l_itr);
+
+        if (!l_sent->allPhrasesCompleted())
             return *l_itr;
         else
             continue;

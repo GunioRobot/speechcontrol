@@ -19,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef QS_WIZARD_HPP
-#define QS_WIZARD_HPP
+#ifndef SC_WIZARD_HPP
+#define SC_WIZARD_HPP
 
 #include "wizards/base.hpp"
 
@@ -35,7 +35,7 @@ class SessionCreate : public WizardBase
         IntroductionPage = 0,
         BookSelectionPage,
         // Adding unique info to the session?
-        //MetadtaInformationPage
+        //MetadataInformationPage
         ConclusionPage
     };
 

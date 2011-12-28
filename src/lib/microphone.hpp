@@ -83,6 +83,7 @@ namespace SpeechControl {
         static Microphone* defaultMicrophone();
         static MicrophoneList allMicrophones();
         static void init();
+
         const bool active() const;
         const QByteArray* data() const;
         const QUuid uuid() const;
@@ -97,6 +98,12 @@ namespace SpeechControl {
     public slots:
         void startRecording();
         void stopRecording();
+
+    private slots:
+      void release();
+      void onPipelineBusmessage(const QGst::MessagePtr &);
+      void onSinkaudioEos(const QGlib::Value& );
+      void onSinkaudioNewbuffer(const QGlib::Value& );
 
     private:
         static void findMicrophones();
@@ -115,11 +122,6 @@ namespace SpeechControl {
         QUuid m_uuid;
         QByteArray m_data;
 
-    private slots:
-        void release();
-        void onPipelineBusmessage(const QGst::MessagePtr &);
-        void onSinkaudioEos(const QGlib::Value& );
-        void onSinkaudioNewbuffer(const QGlib::Value& );
     };
 }
 

@@ -52,6 +52,7 @@ void Microphone::init() {
 void Microphone::findMicrophones() {
     const QString l_audioSrc("autoaudiosrc");
     s_src = QGst::ElementFactory::make(l_audioSrc);
+
     if (s_src) {
         s_src->setState(QGst::StateReady);
         s_chldPrxy = s_src.dynamicCast<QGst::ChildProxy>();

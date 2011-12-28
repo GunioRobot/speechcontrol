@@ -29,45 +29,45 @@
 class QFile;
 
 namespace SpeechControl {
-class Sphinx;
-class Trainer;
-class Microphone;
-class AcousticModel;
+    class Sphinx;
+    class Trainer;
+    class Microphone;
+    class AcousticModel;
 
-typedef QList<AcousticModel*> AcousticModelList;
+    typedef QList<AcousticModel*> AcousticModelList;
 
-class AcousticModel : public QObject {
-    Q_OBJECT
-    Q_DISABLE_COPY(AcousticModel)
+    class AcousticModel : public QObject {
+        Q_OBJECT
+        Q_DISABLE_COPY(AcousticModel)
 
-public:
-    virtual ~AcousticModel();
-    void setParamter(const QString&, const QVariant& );
-    void setParamters(const QVariantMap&);
-    void mergeParameters(const QVariantMap&);
-    QVariant parameter(const QString&) const;
-    QVariantMap paramters() const;
-    quint16 sampleRate() const;
-    void setSampleRate(const quint16&);
-};
+    public:
+        virtual ~AcousticModel();
+        void setParamter(const QString&, const QVariant& );
+        void setParamters(const QVariantMap&);
+        void mergeParameters(const QVariantMap&);
+        QVariant parameter(const QString&) const;
+        QVariantMap paramters() const;
+        quint16 sampleRate() const;
+        void setSampleRate(const quint16&);
+    };
 
-class Sphinx : public QObject {
-    Q_OBJECT
-    Q_DISABLE_COPY(Sphinx)
+    class Sphinx : public QObject {
+        Q_OBJECT
+        Q_DISABLE_COPY(Sphinx)
 
-public:
-    explicit Sphinx();
-    virtual ~Sphinx();
-    void setAcousticModel(const AcousticModel* );
-    AcousticModel* acousticModel() const;
+    public:
+        explicit Sphinx();
+        virtual ~Sphinx();
+        void setAcousticModel(const AcousticModel* );
+        AcousticModel* acousticModel() const;
 
-public slots:
-    void recognizeFromFile(const QFile* );
-    void recognizeFromMicrophone(const Microphone* );
-    void startRecognizing(const Microphone* );
-    void stopRecording();
+    public slots:
+        void recognizeFromFile(const QFile* );
+        void recognizeFromMicrophone(const Microphone* );
+        void startRecognizing(const Microphone* );
+        void stopRecording();
 
-};
+    };
 }
 
 #endif // SPHINX_HPP
