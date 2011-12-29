@@ -11,7 +11,7 @@ find_package(Qt4 4.7.4 COMPONENTS
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
 include("${QT_USE_FILE}")
-pkg_search_module(POCKETSPHINX pocketsphinx)
+pkg_search_module(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
 
 ## variables
 set(SPCHCNTRL_INCLUDE_DIRS "${QT_INCLUDE_DIR}"
