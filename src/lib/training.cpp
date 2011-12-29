@@ -20,13 +20,13 @@
  */
 
 #include "training.hpp"
+#include <QDir>
+#include <QUrl>
+#include <QUuid>
+#include <QFile>
+#include <QDebug>
 #include <QDomDocument>
 #include <QDomElement>
-#include <QDebug>
-#include <QUuid>
-#include <QDir>
-#include <QFile>
-#include <QUrl>
 
 using namespace SpeechControl;
 
@@ -34,23 +34,18 @@ Corpus::Corpus(const QUuid& p_uuid) : QObject(), m_dom(new QDomDocument) {
     load(p_uuid);
 }
 
+/// @todo This list has to be ordered from '0' to 'n-1'.
+/// @note Since this sorts the values by index, the value returned should be called once and stored into a variable, to prevent overhead.
+/// @todo Cache the ordered listing and update it whenever it's modified.
 SentenceList Corpus::sentences() const
 {
-    return m_sntncLst.values();
-}
-
-Sentence * Corpus::sentence(const QUuid &l_key) const
-{
-    if (m_sntncLst.contains(l_key))
-        return m_sntncLst.value(l_key);
-    else
-        return 0;
+    return m_sntncLst;
 }
 
 /// @todo Add the Sentence to the XML document and then to the list.
 Sentence* Corpus::addSentence(Sentence *l_phrs)
 {
-    m_sntncLst.insert(l_phrs->uuid(),l_phrs);
+    m_sntncLst << l_phrs;
     return l_phrs;
 }
 
@@ -81,6 +76,7 @@ Corpus & Corpus::operator <<(SentenceList &l_lst)
 }
 
 /// @todo Build a dictionary from the said text.
+/// @todo Find a way to keep the text in an ordinal fashion.
 Corpus * Corpus::create(const QStringList& p_text)
 {
     QUuid l_uuid = QUuid::createUuid();
@@ -111,7 +107,7 @@ Corpus * Corpus::create(const QStringList& p_text)
 
     Corpus* l_corpus = Corpus::obtain(l_uuid);
     Q_FOREACH(const QString& l_str, p_text) {
-        Sentence* l_sent = l_corpus->addSentence(l_str.simplified(),0);
+        Sentence* l_sent = l_corpus->addSentence(l_str.simplified().trimmed(),0);
         l_corpus->m_dom->documentElement().namedItem("Sentences").appendChild(*l_sent->m_elem);
     }
 
@@ -213,6 +209,9 @@ Corpus::~Corpus()
 /// @todo Drop the addition of the element and have it request it from the base Corpus.
 Sentence::Sentence(Corpus* p_corpus, QDomElement *p_elem) : m_elem(p_elem), m_corpus(p_corpus)
 {
+    QDir l_dir;
+    l_dir.mkpath(audioPath().path());
+
     // Build phrases.
     QDomNodeList l_nodes = m_elem->childNodes();
     for (int i = 0; i < l_nodes.length(); i++)
@@ -247,10 +246,9 @@ const QString Sentence::text() const {
 
 Sentence* Sentence::create(Corpus *l_sess, const QString& l_txt)
 {
-    const QUuid l_uuid = QUuid::createUuid();
     QDomElement* l_elem = new QDomElement(l_sess->m_dom->createElement("Sentence"));
     l_elem->setAttribute("file",QUuid::createUuid());
-    l_elem->setAttribute("uuid",l_uuid);
+    l_elem->setAttribute("index",l_sess->sentences().count());
 
     // form phrases
     QStringList l_words = l_txt.split(" ",QString::SkipEmptyParts);
@@ -260,7 +258,8 @@ Sentence* Sentence::create(Corpus *l_sess, const QString& l_txt)
         if (j < 4)
             l_phrase += l_words.at(i) + " ";
 
-        if (j == 3 || i + 2 == l_words.count() || i + 1 == l_words.count()){ // build phrase
+        // The logic here in the second half is a bit off.
+        if (j == 3 || (i + 2 == l_words.count() || i + 1 == l_words.count())){ // build phrase
             l_phrase = l_phrase.trimmed();
 
             QDomElement* l_phrsElem = new QDomElement(l_sess->m_dom->createElement("Phrase"));
@@ -348,12 +347,14 @@ Dictionary& Dictionary::operator <<(DictionaryEntryList& p_lst)
     return *this;
 }
 
+/// @todo Implement the saving ability.
 void Dictionary::save()
 {
 }
 
 Dictionary::Dictionary(const QUuid &p_uuid)
 {
+    load(p_uuid);
 }
 
 Dictionary::~Dictionary() {
@@ -404,8 +405,9 @@ QDomElement* Sentence::getPhraseElement(const int &p_indx) const
     return new QDomElement(m_elem->elementsByTagName("Phrase").at(p_indx).toElement());
 }
 
-Phrase * Sentence::phrase(const int &) const
+Phrase * Sentence::phrase(const int &p_indx) const
 {
+    return m_phrsLst.at(p_indx);
 }
 
 const PhraseList Sentence::phrases() const
@@ -440,4 +442,14 @@ const bool Sentence::isPhraseCompleted(const int &p_indx) const
 const bool Phrase::isCompleted() const
 {
     return audio()->exists();
+}
+
+const int Sentence::index() const
+{
+    return m_elem->attribute("index").toInt();
+}
+
+SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt(const int &p_indx) const
+{
+    return m_sntncLst.at(p_indx);
 }

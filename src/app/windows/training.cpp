@@ -33,6 +33,7 @@
 #define ICON_SAVE "document-save"
 #define ICON_UNDO "edit-undo"
 #define ICON_CLEAR "view-clear"
+#define ICON_NEXT "go-next"
 
 using namespace SpeechControl;
 using SpeechControl::Windows::Training;
@@ -47,6 +48,7 @@ Training::Training(QWidget *parent) :
     m_ui->pushButtonSave->setIcon(QIcon::fromTheme(ICON_SAVE));
     m_ui->pushButtonReset->setIcon(QIcon::fromTheme(ICON_CLEAR));
     m_ui->pushButtonUndo->setIcon(QIcon::fromTheme(ICON_UNDO));
+    m_ui->pushButtonNext->setIcon(QIcon::fromTheme(ICON_NEXT));
 }
 
 Training::~Training()
@@ -54,7 +56,7 @@ Training::~Training()
     delete m_ui;
 }
 
-void Training::startTraining(Session *p_session)
+void Training::startTraining(Session* p_session)
 {
     if (!p_session->isCompleted()){
         Training* l_dialog = new Training;
@@ -68,6 +70,7 @@ void Training::startTraining(Session *p_session)
 void Training::startCollecting()
 {
     // Configure the button.
+    m_ui->pushButtonNext->setEnabled(true);
     m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PAUSE));
     m_ui->pushButtonProgress->setText(tr("Pause"));
     m_ui->labelText->setText(tr("<i>Rendering...</i>"));
@@ -200,10 +203,33 @@ void SpeechControl::Windows::Training::on_pushButtonReset_clicked()
 /// @todo This should undo progress at a decrementing interval until it hits the point of where the dialog opened.
 void SpeechControl::Windows::Training::on_pushButtonUndo_clicked()
 {
-   navigatePreviousPart();
+    // Wipe out the previous part (and this part).
+    m_curSntct->phrase(m_curPos)->audio()->remove();
+    int l_pos = 0;
+
+    if (m_curPos - 1 < 0){
+    } else {
+        m_curSntct->phrase(m_curPos - 1)->audio()->remove();
+        l_pos = m_curPos - 1;
+    }
+
+    // Rewind to that part.
+    navigateToPart(l_pos);
 }
 
-void SpeechControl::Windows::Training::on_pushButton_2_clicked()
+void SpeechControl::Windows::Training::on_pushButtonNext_clicked()
 {
+    // Finalize this part.
+    QFile* l_file = m_curSntct->phrase(m_curPos)->audio();
+    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    l_file->write(QDateTime::currentDateTimeUtc().toString().toLocal8Bit());
+    l_file->close();
+
+    if (m_curSntct->allPhrasesCompleted()){
+        m_curSntct = m_session->firstIncompleteSentence();
+        m_curPos = -1;
+    }
+
+    // Advance to that part.
     navigateNextPart();
 }

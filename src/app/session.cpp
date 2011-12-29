@@ -155,8 +155,8 @@ Session* Session::obtain(const QUuid &p_uuid)
 /// @todo Create a new @see Corpus with this @see Session.
 Session* Session::create(const Content* p_content)
 {
-    const QStringList l_lst = p_content->pages().join("\n").simplified().replace(".",".\n").split(QRegExp("\n"),QString::SkipEmptyParts);
-    qDebug () << "Session text: " << l_lst;
+    const QStringList l_lst = p_content->pages().join("\n").simplified().trimmed().replace(".",".\n").split("\n",QString::SkipEmptyParts);
+    qDebug () << "Session text:" << l_lst;
     const QUuid l_uuid = QUuid::createUuid();
     QDomElement l_sessElem = s_dom->createElement("Session");
     s_dom->documentElement().appendChild(l_sessElem);
@@ -250,7 +250,7 @@ QString Content::getPath(const QUuid &p_uuid)
 const QString Content::title() const
 {
     QDomElement l_domElem = m_dom->documentElement();
-    QDomElement l_bilboElem = l_domElem.namedItem("Bilbography").toElement();
+    QDomElement l_bilboElem = l_domElem.namedItem("Bibliography").toElement();
     return l_bilboElem.attribute("Title");
 }
 
@@ -258,7 +258,7 @@ const QString Content::title() const
 const QString Content::author() const
 {
     QDomElement l_domElem = m_dom->documentElement();
-    QDomElement l_bilboElem = l_domElem.namedItem("Bilbography").toElement();
+    QDomElement l_bilboElem = l_domElem.namedItem("Bibliography").toElement();
     return l_bilboElem.attribute("Author");
 }
 
@@ -307,12 +307,12 @@ Content * Content::create(const QString &p_author, const QString &p_title, const
     l_domElem.setAttribute("Uuid",l_uuid);
     l_dom->appendChild(l_domElem);
 
-    QDomElement l_bilboElem = l_dom->createElement("Bilbography");
+    QDomElement l_bilboElem = l_dom->createElement("Bibliography");
     l_bilboElem.setAttribute("Author",p_author);
     l_bilboElem.setAttribute("Title",p_title);
     l_domElem.appendChild(l_bilboElem);
 
-    QDomElement l_textElem = l_dom->createElement("Content");
+    QDomElement l_textElem = l_dom->createElement("Text");
     QDomText l_textNode = l_dom->createTextNode(p_content);
     l_textElem.appendChild(l_textNode);
     l_domElem.appendChild(l_textElem);
@@ -329,12 +329,11 @@ Content * Content::create(const QString &p_author, const QString &p_title, const
 Sentence* Session::firstIncompleteSentence() const
 {
     const SentenceList l_lst = m_corpus->sentences();
-    SentenceList::ConstIterator l_endItr = l_lst.end();
-    for (SentenceList::ConstIterator l_itr = l_lst.begin(); l_itr != l_endItr; l_itr++){
-        const Sentence* l_sent = (*l_itr);
+    for (int i = 0; i < l_lst.count(); i++){
+        Sentence* l_sent = l_lst.at(i);
 
         if (!l_sent->allPhrasesCompleted())
-            return *l_itr;
+            return l_sent;
         else
             continue;
     }

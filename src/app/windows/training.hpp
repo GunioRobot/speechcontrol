@@ -42,7 +42,7 @@ class Training : public QDialog
 public:
     explicit Training(QWidget *parent = 0);
     virtual ~Training();
-    static void startTraining(Session*);
+    static void startTraining(Session* );
     void setSession(Session* );
     Session* session() const;
 
@@ -55,12 +55,9 @@ private slots:
     void updateProgress(const double& );
     void on_pushButtonClose_clicked();
     void on_pushButtonProgress_toggled(const bool& );
-
     void on_pushButtonReset_clicked();
-
     void on_pushButtonUndo_clicked();
-
-    void on_pushButton_2_clicked();
+    void on_pushButtonNext_clicked();
 
 private:
     /// @todo Use these functions to segment the phrase into parts that the user can read.

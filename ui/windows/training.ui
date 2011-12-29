@@ -10,8 +10,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>438</width>
-    <height>214</height>
+    <width>448</width>
+    <height>174</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
     <rect>
      <x>4</x>
      <y>4</y>
-     <width>433</width>
+     <width>440</width>
      <height>165</height>
     </rect>
    </property>
@@ -58,7 +58,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="0" colspan="5">
+    <item row="2" column="0" colspan="6">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="sizeConstraint">
        <enum>QLayout::SetMinimumSize</enum>
@@ -177,7 +177,7 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="4">
+    <item row="1" column="5">
      <widget class="QPushButton" name="pushButtonProgress">
       <property name="maximumSize">
        <size>
@@ -199,7 +199,7 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="0" colspan="5">
+    <item row="0" column="0" colspan="6">
      <widget class="QLabel" name="labelText">
       <property name="minimumSize">
        <size>
@@ -217,7 +217,7 @@
       </property>
       <property name="styleSheet">
        <string notr="true">color: rgb(0, 0, 0);
-background-color: rgb(220, 220, 220);
+background-color: rgb(244, 244, 244);
 border-color: rgb(48, 48, 48);
 border-size: 5px;</string>
       </property>
@@ -241,20 +241,14 @@ border-size: 5px;</string>
       </property>
      </widget>
     </item>
+    <item row="1" column="4">
+     <widget class="QPushButton" name="pushButtonNext">
+      <property name="text">
+       <string>Next</string>
+      </property>
+     </widget>
+    </item>
    </layout>
-  </widget>
-  <widget class="QPushButton" name="pushButton_2">
-   <property name="geometry">
-    <rect>
-     <x>252</x>
-     <y>184</y>
-     <width>84</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
   </widget>
  </widget>
  <resources/>

@@ -48,7 +48,6 @@ namespace SpeechControl {
   typedef QList<Phrase*> PhraseList;
 
   typedef QMap<QUuid, Corpus*> CorpusMap;
-  typedef QMap<QUuid, Sentence*> SentenceMap;
   typedef QMap<QUuid, Dictionary*> DictionaryMap;
   typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
@@ -128,6 +127,7 @@ namespace SpeechControl {
       const PhraseList phrases() const;
       const bool allPhrasesCompleted() const;
       const bool isPhraseCompleted(const int& ) const;
+      const int index() const;
       Phrase* phrase(const int& ) const;
 
   private:
@@ -165,7 +165,7 @@ namespace SpeechControl {
       const QDateTime timeCompleted() const;
       Dictionary* dictionary() const;
       SentenceList sentences() const;
-      Sentence* sentence(const QUuid&) const;
+      Sentence* sentenceAt(const int&) const;
       const QUuid uuid() const;
 
   public slots:
@@ -178,7 +178,7 @@ namespace SpeechControl {
 
       QUrl audioPath() const;
       QDomDocument* m_dom;
-      SentenceMap m_sntncLst;
+      SentenceList m_sntncLst;
       Dictionary* m_dict;
   };
 
