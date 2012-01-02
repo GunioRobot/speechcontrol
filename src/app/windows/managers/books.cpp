@@ -29,10 +29,10 @@ using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
-BooksManager::BooksManager(QWidget *parent) :
+BooksManager::BooksManager(QWidget *parent) :    
+    ui(new Ui::BookManager),
     QDialog(parent),
-    m_book(0),
-    ui(new Ui::BookManager)
+    m_book(0)
 {
     ui->setupUi(this);
     updateList();

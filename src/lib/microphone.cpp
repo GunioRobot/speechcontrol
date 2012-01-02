@@ -44,6 +44,13 @@ Microphone::Microphone(QGlib::Value device ) :
     obtain();
 }
 
+Microphone::Microphone(const Microphone &p_mic) :
+    m_device(p_mic.m_device), m_uuid(p_mic.m_uuid)
+{
+    connect(this,SIGNAL(destroyed()),&p_mic,SIGNAL(destroyed()));
+    obtain();
+}
+
 /// @todo Have the system detect when new microphones are added + removed to the system.
 void Microphone::init() {
     findMicrophones();

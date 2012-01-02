@@ -67,14 +67,17 @@ void SpeechControl::AcousticModel::mergeParameters(const QVariantMap &)
 
 QVariant SpeechControl::AcousticModel::parameter(const QString &) const
 {
+    return QVariant();
 }
 
 QVariantMap SpeechControl::AcousticModel::paramters() const
 {
+    return QVariantMap();
 }
 
 quint16 SpeechControl::AcousticModel::sampleRate() const
 {
+    return 0;
 }
 
 void SpeechControl::AcousticModel::setSampleRate(const quint16 &)

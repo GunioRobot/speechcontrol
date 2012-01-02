@@ -214,7 +214,7 @@ Sentence::Sentence(Corpus* p_corpus, QDomElement *p_elem) : m_elem(p_elem), m_co
 
     // Build phrases.
     QDomNodeList l_nodes = m_elem->childNodes();
-    for (int i = 0; i < l_nodes.length(); i++)
+    for (uint i = 0; i < l_nodes.length(); i++)
         m_phrsLst << new Phrase(this,i);
 }
 
@@ -299,7 +299,7 @@ const QString Dictionary::getPath(const QUuid &l_uuid)
 }
 
 DictionaryEntry::DictionaryEntry(Dictionary *p_dict, const QString &p_word, const QString &p_phoneme) :
-        m_dict(p_dict), m_word(p_word), m_phnm(p_phoneme), QObject(p_dict)
+        QObject(p_dict), m_dict(p_dict), m_word(p_word), m_phnm(p_phoneme)
 {
 }
 
@@ -333,7 +333,7 @@ void Dictionary::addEntry(DictionaryEntry *l_entry)
 
 DictionaryEntry * Dictionary::removeEntry(const QString& p_word)
 {
-    m_words.remove(p_word);
+    return m_words.take(p_word);
 }
 
 Dictionary& Dictionary::operator <<(DictionaryEntry *p_entry)

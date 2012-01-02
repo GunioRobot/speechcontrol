@@ -143,6 +143,7 @@ void Settings::on_pushButtonDelete_clicked()
 {
     QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
     Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
+    l_cnt->deleteLater();
 }
 
 void Settings::on_listWidgetBooks_itemSelectionChanged()

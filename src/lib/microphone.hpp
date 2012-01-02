@@ -76,6 +76,7 @@ namespace SpeechControl {
         };
 
         Q_DECLARE_FLAGS(TestResults, TestResult)
+        Q_DISABLE_COPY(Microphone)
 
         explicit Microphone(QGlib::Value = 0);
         virtual ~Microphone();

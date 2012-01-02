@@ -80,6 +80,8 @@ int ContentWizard::nextId() const {
             return -1;
         break;
     }
+
+    return QWizard::nextId();
 }
 
 ContentWizard::~ContentWizard()

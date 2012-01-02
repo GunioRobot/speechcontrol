@@ -39,9 +39,10 @@ using namespace SpeechControl;
 using SpeechControl::Windows::Training;
 
 Training::Training(QWidget *parent) :
-    QDialog(parent), m_curPos(0), m_initPos(0), m_posMin(0), m_posMax(0),
-    m_session(0), m_curSntct(0), m_initSntct(0),
-    m_ui(new Ui::Training)
+    QDialog(parent),
+    m_curPos(0), m_initPos(0), m_posMin(0), m_posMax(0),
+    m_ui(new Ui::Training),
+    m_session(0), m_curSntct(0), m_initSntct(0)
 {
     m_ui->setupUi(this);
     m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_RECORD));
