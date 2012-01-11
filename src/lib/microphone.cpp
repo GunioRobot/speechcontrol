@@ -125,10 +125,11 @@ MicrophoneList Microphone::allMicrophones()
 }
 
 /// @todo In addition, you will NEED TO MAKE SURE THAT YOU RECORD AT A SAMPLING RATE OF 16 KHZ (or 8 kHz if you adapt a telephone model) IN MONO WITH SINGLE CHANNEL.
+/// @todo Use a buffer instead of using a file.
 void SpeechControl::Microphone::startRecording()
 {
     // Wipe any data already used for recording; their loss.
-    m_data.clear();
+     m_data.clear();
 
     if (!m_sinkAudio) {
         qCritical() << tr("One or more elements could not be created. "
@@ -136,7 +137,7 @@ void SpeechControl::Microphone::startRecording()
         return;
     }
 
-    m_sinkAudio->setProperty("location", "file.wav");
+    //m_sinkAudio->setProperty("location", "file.wav");
     m_sinkAudio->setProperty("buffer-size", 1024);
 
     // Build the pipeline.
@@ -157,7 +158,9 @@ void SpeechControl::Microphone::startRecording()
 
 void SpeechControl::Microphone::stopRecording()
 {
-    // Stop recording.
+    m_sinkAudio->setState(QGst::StateNull);
+    m_srcAudio->setState(QGst::StateNull);
+    m_pipeline->setState(QGst::StateNull);
 }
 
 const QByteArray* Microphone::data() const {
@@ -254,7 +257,7 @@ void Microphone::onPipelineBusmessage(const QGst::MessagePtr & message)
             //stop();
         }
         qCritical() << tr("Pipeline Error")
-        << message.staticCast<QGst::ErrorMessage>()->error().message();
+                    << message.staticCast<QGst::ErrorMessage>()->error().message();
         break;
 
     default:

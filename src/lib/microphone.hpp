@@ -64,6 +64,10 @@ namespace SpeechControl {
         Q_PROPERTY(const double Volume READ volume WRITE setVolume)
         Q_PROPERTY(const bool Muted READ isMuted WRITE mute)
 
+    signals:
+        void listening();
+        void stoppedListening();
+
     public:
         Q_DISABLE_COPY(Microphone)
         explicit Microphone(QGlib::Value = 0);
@@ -80,6 +84,7 @@ namespace SpeechControl {
         const double volume() const;
         const bool isMuted() const;
         const bool isValid() const;
+        QDataStream* stream() const;
 
         void setVolume(const double& );
         void mute(const bool& );
