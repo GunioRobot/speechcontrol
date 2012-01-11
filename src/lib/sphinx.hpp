@@ -26,6 +26,7 @@
 #include <QVariant>
 #include <QVariantMap>
 #include <pocketsphinx.h>
+#include "microphone.hpp"
 
 class QFile;
 
@@ -66,17 +67,18 @@ namespace SpeechControl {
         virtual ~Sphinx();
         void setAcousticModel(const AcousticModel* );
         AcousticModel* acousticModel() const;
-        static void startRecognizing(Microphone* = 0);
-        static void stopRecognizing(Microphone* = 0);
+        static void startRecognizing(Microphone* = Microphone::defaultMicrophone());
+        static void stopRecognizing(Microphone* = Microphone::defaultMicrophone());
         const bool isListening() const;
         const QString text() const;
 
     public slots:
         void recognizeFromFile(const QFile* );
-        void recognizeFromMicrophone(const Microphone* = 0);
+        void recognizeFromMicrophone(const Microphone* = Microphone::defaultMicrophone());
 
     private:
         void initialize();
+        QString m_hypothesis;
         Microphone* m_mic;
         AcousticModel* m_mdl;
         ps_decoder_t *m_decoder;

@@ -31,10 +31,9 @@ Sphinx::Sphinx(const AcousticModel* p_mdl) : m_mic(Microphone::defaultMicrophone
     m_mdl(const_cast<AcousticModel*>(p_mdl)), m_decoder(0), m_config(0)
 {
     m_config = cmd_ln_init(NULL, ps_args(), TRUE,
-                                 "-hmm", MODELDIR "/hmm/en_US/hub4wsj_sc_8k",
-                                 "-lm", MODELDIR "/lm/en/turtle.DMP",
-                                 "-dict", MODELDIR "/lm/en/turtle.dic",
+                                 "-hmm", MODELDIR "hmm/en_US/hub4wsj_sc_8k",
                                  NULL);
+    initialize();
 }
 
 Sphinx::~Sphinx() {
@@ -42,25 +41,19 @@ Sphinx::~Sphinx() {
 
 /// @todo Fine-tune this method to properly recognize text from file.
 void Sphinx::recognizeFromFile(const QFile *p_file)
-{
+{    
     int score;
     const char* uttid;
-    QString l_hypothesis;
     FILE* l_file = fdopen(p_file->handle(),"r");
     ps_decode_raw(m_decoder, l_file, NULL, -1);
-    l_hypothesis = ps_get_hyp(m_decoder, &score, &uttid);
-    emit textRecognized(l_hypothesis);
+    m_hypothesis = ps_get_hyp(m_decoder, &score, &uttid);
+    emit textRecognized(m_hypothesis);
 }
 
 /// @todo Fine-tune this method to continuously from the microphone.
 void Sphinx::recognizeFromMicrophone(const Microphone *p_mic)
 {
-    if (p_mic == NULL)
-        recognizeFromMicrophone(Microphone::defaultMicrophone());
-    else {
-        QString l_hypothesis;
-        emit textRecognized(l_hypothesis);
-    }
+   emit textRecognized(m_hypothesis);
 }
 
 /// @todo Should this return the Sphinx object for recognition?
@@ -116,10 +109,15 @@ void AcousticModel::setSampleRate(const quint16 &p_rate)
 
 const bool SpeechControl::Sphinx::isListening() const
 {
-    return false;
+    return (m_mic && m_mic->active());
 }
 
 void Sphinx::initialize()
 {
     m_decoder = ps_init(m_config);
+}
+
+const QString Sphinx::text() const
+{
+    return m_hypothesis;
 }
