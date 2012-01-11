@@ -58,19 +58,22 @@ namespace SpeechControl {
         Q_OBJECT
         Q_DISABLE_COPY(Sphinx)
 
+    signals:
+        void textRecognized(const QString&);
+
     public:
         explicit Sphinx(const AcousticModel* = 0);
         virtual ~Sphinx();
         void setAcousticModel(const AcousticModel* );
         AcousticModel* acousticModel() const;
         static void startRecognizing(Microphone* = 0);
-        static void stopRecording(Microphone* = 0);
+        static void stopRecognizing(Microphone* = 0);
         const bool isListening() const;
+        const QString text() const;
 
     public slots:
-        const QString recognizeFromFile(const QFile* );
-        const QString recognizeFromMicrophone(const Microphone* = 0);
-
+        void recognizeFromFile(const QFile* );
+        void recognizeFromMicrophone(const Microphone* = 0);
 
     private:
         void initialize();
