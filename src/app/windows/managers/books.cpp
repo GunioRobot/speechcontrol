@@ -30,8 +30,8 @@ using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
 BooksManager::BooksManager(QWidget *parent) :    
-    ui(new Ui::BookManager),
     QDialog(parent),
+    ui(new Ui::BookManager),
     m_book(0)
 {
     ui->setupUi(this);

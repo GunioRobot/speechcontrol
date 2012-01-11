@@ -24,6 +24,9 @@
 
 #include <QObject>
 
+class QPluginLoader;
+class QSettings;
+
 namespace SpeechControl {
     class Factory;
     class AbstractPlugin;
@@ -35,10 +38,9 @@ namespace SpeechControl {
     public:
         explicit AbstractPlugin(QObject *parent = 0);
 
-    signals:
-
-    public slots:
-
+    private:
+        QPluginLoader* m_loader;
+        QSettings* m_config;
     };
 
 }

@@ -24,62 +24,78 @@
 #include <QFile>
 #include <pocketsphinx.h>
 
-using SpeechControl::Sphinx;
+using namespace SpeechControl;
 
-Sphinx::Sphinx() {
+Sphinx::Sphinx(const AcousticModel* p_mdl) : m_mic(Microphone::defaultMicrophone()),
+    m_mdl(const_cast<AcousticModel*>(p_mdl))
+{
 }
 
 Sphinx::~Sphinx() {
+}
+
+const QString Sphinx::recognizeFromFile(const QFile *p_file)
+{
+    return QString();
+}
+
+const QString Sphinx::recognizeFromMicrophone(const Microphone *p_mic)
+{
+    return QString();
+}
+
+void Sphinx::startRecognizing(Microphone *p_mic)
+{
+    p_mic->startRecording();
+}
+
+void Sphinx::stopRecording(Microphone* p_mic)
+{
+    p_mic->stopRecording();
+}
+
+
+AcousticModel::AcousticModel(const AcousticModel &p_mdl) :
+    QObject(p_mdl.parent()) {
 
 }
 
-void Sphinx::recognizeFromFile(const QFile *p_file)
+AcousticModel::~AcousticModel()
 {
 }
 
-void Sphinx::recognizeFromMicrophone(const Microphone *p_mic)
+void AcousticModel::setParameter(const QString &p_str, const QVariant &p_val)
 {
 }
 
-void SpeechControl::Sphinx::startRecognizing(const SpeechControl::Microphone *)
+void AcousticModel::setParameters(const QVariantMap &p_vals)
 {
 }
 
-void SpeechControl::Sphinx::stopRecording()
+void AcousticModel::mergeParameters(const QVariantMap &p_vals)
 {
 }
 
-SpeechControl::AcousticModel::~AcousticModel()
-{
-}
-
-void SpeechControl::AcousticModel::setParamter(const QString &, const QVariant &)
-{
-}
-
-void SpeechControl::AcousticModel::setParamters(const QVariantMap &)
-{
-}
-
-void SpeechControl::AcousticModel::mergeParameters(const QVariantMap &)
-{
-}
-
-QVariant SpeechControl::AcousticModel::parameter(const QString &) const
+QVariant AcousticModel::parameter(const QString &p_str) const
 {
     return QVariant();
 }
 
-QVariantMap SpeechControl::AcousticModel::paramters() const
+const QVariantMap AcousticModel::parameters() const
 {
     return QVariantMap();
 }
 
-quint16 SpeechControl::AcousticModel::sampleRate() const
+const quint16 AcousticModel::sampleRate() const
 {
     return 0;
 }
 
-void SpeechControl::AcousticModel::setSampleRate(const quint16 &)
+void AcousticModel::setSampleRate(const quint16 &p_rate)
 {
+}
+
+const bool SpeechControl::Sphinx::isListening() const
+{
+    return false;
 }

@@ -65,19 +65,7 @@ namespace SpeechControl {
         Q_PROPERTY(const bool Muted READ isMuted WRITE mute)
 
     public:
-      /**
-       * @brief Represents the potential errors that arose from the Micrphone.
-       **/
-      enum TestResult {
-            Failure = 0,
-            CouldntOpen,
-            NothingHeard,
-            UnknownError = -1
-        };
-
-        Q_DECLARE_FLAGS(TestResults, TestResult)
         Q_DISABLE_COPY(Microphone)
-
         explicit Microphone(QGlib::Value = 0);
         virtual ~Microphone();
         static Microphone* getMicrophone(const QUuid& );
@@ -103,8 +91,8 @@ namespace SpeechControl {
     private slots:
       void release();
       void onPipelineBusmessage(const QGst::MessagePtr &);
-      void onSinkaudioEos(const QGlib::Value& );
-      void onSinkaudioNewbuffer(const QGlib::Value& );
+      void onSinkAudioEos(const QGlib::Value& );
+      void onSinkAudioNewbuffer(const QGlib::Value& );
 
     private:
         static void findMicrophones();
@@ -117,6 +105,7 @@ namespace SpeechControl {
         QGst::BinPtr m_binAudio;
         QGst::PadPtr m_padAudio;
         QGst::ElementPtr m_srcAudio;
+        QGst::ElementPtr m_srcVolume;
         QGst::ElementPtr m_sinkAudio;
         QGst::PipelinePtr m_pipeline;
         QGlib::Value m_device;

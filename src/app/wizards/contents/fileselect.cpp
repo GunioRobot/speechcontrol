@@ -24,6 +24,7 @@
 
 #include <QFileDialog>
 #include <QTextStream>
+#include <QDomDocument>
 
 using SpeechControl::Wizards::Pages::FileSelectionPage;
 
@@ -44,20 +45,20 @@ FileSelectionPage::~FileSelectionPage()
 
 void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
 {
-    const QString l_filePath = QFileDialog::getOpenFileName(this, tr("Open Text File"), QDir::homePath(), tr("Text Files (*.txt)"));
+    const QString l_filePath = QFileDialog::getOpenFileName(this, tr("Open Text File"), QDir::homePath(), tr("SpeechControl Books (*.spch)"));
 
     if (!l_filePath.isNull()){
         QFile* l_file = new QFile(l_filePath);
         l_file->open(QIODevice::ReadOnly);
-        QTextStream l_strm(l_file);
-        m_ui->lineEditAuthor->setText(l_strm.readLine());
-        m_ui->lineEditTitle->setText(l_strm.readLine());
-
-        while (!l_strm.atEnd()){
-            m_ui->plainTextEdit->setPlainText(m_ui->plainTextEdit->toPlainText().append(l_strm.readLine()));
-        }
-
+        QDomDocument l_dom("Book");
+        l_dom.setContent(l_file);
+        const QDomElement l_book = l_dom.documentElement().namedItem("Author").toElement();
+        const QString l_author = l_book.attribute("Author");
+        const QString l_title = l_book.attribute("Title");
+        const QString l_text = l_dom.documentElement().namedItem("Text").toElement().text();
+        m_ui->lineEditAuthor->setText(l_author);
+        m_ui->lineEditTitle->setText(l_title);
+        m_ui->plainTextEdit->setPlainText(l_text);
         m_ui->lineEdit->setText(l_filePath);
-        l_file->close();
     }
 }

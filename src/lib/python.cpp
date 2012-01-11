@@ -29,9 +29,18 @@
 BOOST_PYTHON_MODULE(libspchcntrl)
 {
     using namespace boost::python;
+    using SpeechControl::AcousticModel;
     using SpeechControl::Microphone;
 
-    class_<Microphone>("Microphone", no_init).
-            def("getUuid",&Microphone::getUuid)
+    class_<AcousticModel>("AcousticModel", no_init)
+            .add_property("samplerate" , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)
+            .add_property("parameters" , &AcousticModel::parameters, &AcousticModel::setParameters)
+    ;
+
+    class_<Microphone>("Microphone", no_init)
+            .add_property("uuid" , &Microphone::uuid)
+            .add_property("active" , &Microphone::active)
+            .add_property("friendlyName" , &Microphone::friendlyName)
+            //.def("defaultMicrophone", &Microphone::defaultMicrophone)
     ;
 }

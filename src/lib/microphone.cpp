@@ -179,17 +179,22 @@ const bool SpeechControl::Microphone::isMuted() const
 
 void SpeechControl::Microphone::setVolume(const double &p_volume)
 {
+    if (p_volume < 0.0 || p_volume > 10.0) return;
+
+    m_srcVolume->setProperty("volume", p_volume);
 }
 
 void SpeechControl::Microphone::mute(const bool &p_mute)
 {
+    m_srcVolume->setProperty("mute", p_mute);
 }
 
 void SpeechControl::Microphone::obtain()
 {
     try {
         m_binAudio = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-                                                "audioresample ! audiorate ! volume ! wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
+                                                "audioresample ! audiorate ! volume name=\"volume\" ! "
+                                                "wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
     } catch (const QGlib::Error & error) {
         qCritical() << "Failed to create audio source bin:" << error;
         m_binAudio.clear();
@@ -201,6 +206,7 @@ void SpeechControl::Microphone::obtain()
     // Obtain tools for recording like the encoder and the source.
     m_sinkAudio = m_binAudio->getElementByName("filesink");
     m_srcAudio = m_binAudio->getElementByName("audiosrc");
+    m_srcVolume = m_binAudio->getElementByName("volume");
 
     //autoaudiosrc creates the actual source in the READY state
     m_srcAudio->setState(QGst::StateReady);
@@ -256,12 +262,12 @@ void Microphone::onPipelineBusmessage(const QGst::MessagePtr & message)
     }
 }
 
-void Microphone::onSinkaudioEos(const QGlib::Value &p_eos)
+void Microphone::onSinkAudioEos(const QGlib::Value &p_eos)
 {
     qDebug() << "EOS:" << p_eos;
 }
 
-void Microphone::onSinkaudioNewbuffer(const QGlib::Value &p_strm)
+void Microphone::onSinkAudioNewbuffer(const QGlib::Value &p_strm)
 {
     qDebug() << "BUFFER:" << p_strm;
 }

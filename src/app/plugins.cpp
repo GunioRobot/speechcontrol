@@ -24,6 +24,6 @@
 using namespace SpeechControl;
 
 AbstractPlugin::AbstractPlugin(QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_loader(0), m_config(0)
 {
 }

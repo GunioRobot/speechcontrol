@@ -12,7 +12,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>SpeechControl - Settings</string>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -238,8 +238,8 @@
         <widget class="QLabel" name="labelPluginDescription">
          <property name="geometry">
           <rect>
-           <x>14</x>
-           <y>26</y>
+           <x>10</x>
+           <y>27</y>
            <width>224</width>
            <height>121</height>
           </rect>
@@ -386,7 +386,7 @@
        <x>3</x>
        <y>5</y>
        <width>428</width>
-       <height>280</height>
+       <height>276</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_4">
@@ -512,7 +512,7 @@
        <x>3</x>
        <y>5</y>
        <width>427</width>
-       <height>279</height>
+       <height>274</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout">

@@ -38,16 +38,18 @@ namespace SpeechControl {
 
     class AcousticModel : public QObject {
         Q_OBJECT
-        Q_DISABLE_COPY(AcousticModel)
+        Q_PROPERTY(const QVariantMap Parameters READ parameters WRITE setParameters)
+        Q_PROPERTY(const quint16 SampleRate READ sampleRate WRITE setSampleRate)
 
     public:
+        Q_DISABLE_COPY(AcousticModel)
         virtual ~AcousticModel();
-        void setParamter(const QString&, const QVariant& );
-        void setParamters(const QVariantMap&);
+        void setParameter(const QString&, const QVariant& );
+        void setParameters(const QVariantMap&);
         void mergeParameters(const QVariantMap&);
         QVariant parameter(const QString&) const;
-        QVariantMap paramters() const;
-        quint16 sampleRate() const;
+        const QVariantMap parameters() const;
+        const quint16 sampleRate() const;
         void setSampleRate(const quint16&);
     };
 
@@ -56,17 +58,22 @@ namespace SpeechControl {
         Q_DISABLE_COPY(Sphinx)
 
     public:
-        explicit Sphinx();
+        explicit Sphinx(const AcousticModel* = 0);
         virtual ~Sphinx();
         void setAcousticModel(const AcousticModel* );
         AcousticModel* acousticModel() const;
+        static void startRecognizing(Microphone* = 0);
+        static void stopRecording(Microphone* = 0);
+        const bool isListening() const;
 
     public slots:
-        void recognizeFromFile(const QFile* );
-        void recognizeFromMicrophone(const Microphone* );
-        void startRecognizing(const Microphone* );
-        void stopRecording();
+        const QString recognizeFromFile(const QFile* );
+        const QString recognizeFromMicrophone(const Microphone* = 0);
 
+
+    private:
+        Microphone* m_mic;
+        AcousticModel* m_mdl;
     };
 }
 
