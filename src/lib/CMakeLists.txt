@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.8)
 
 ## @todo Considering dropping QtGui support in this library.
 
+## @todo Obtain the directory of the models from pkg-config
+# PkgConfig to get model dir `pkg-config --variable=modeldir pocketsphinx`
+
 ## variables
 set(SPCHCNTRL_LIB_INCLUDE_DIRS "${SPCHNCTRL_INCLUDE_DIRS}")
 set(SPCHCNTRL_LIB_LIBRARIES "${SPCHCNTRL_LIBRARIES}")
