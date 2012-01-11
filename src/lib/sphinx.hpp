@@ -25,6 +25,7 @@
 #include <QObject>
 #include <QVariant>
 #include <QVariantMap>
+#include <pocketsphinx.h>
 
 class QFile;
 
@@ -72,8 +73,11 @@ namespace SpeechControl {
 
 
     private:
+        void initialize();
         Microphone* m_mic;
         AcousticModel* m_mdl;
+        ps_decoder_t *m_decoder;
+        cmd_ln_t *m_config;
     };
 }
 
