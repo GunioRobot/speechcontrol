@@ -44,6 +44,8 @@ namespace SpeechControl {
             void on_actionAbout_SpeechControl_triggered();
             void on_pushButtonStartTrain_clicked();
 
+            void on_btnDesktopControl_clicked();
+
         private:
             Ui::MainWindow* m_ui;
         };

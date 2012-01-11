@@ -44,13 +44,6 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="1" rowspan="5">
-      <widget class="QGroupBox" name="groupBoxUtilities">
-       <property name="title">
-        <string>Utilities</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0" rowspan="3">
       <widget class="QGroupBox" name="groupBoxTraining">
        <property name="sizePolicy">
@@ -170,6 +163,42 @@
        </property>
       </widget>
      </item>
+     <item row="0" column="1" rowspan="5">
+      <widget class="QGroupBox" name="groupBoxUtilities">
+       <property name="title">
+        <string>Utilities</string>
+       </property>
+       <widget class="QPushButton" name="btnDesktopControl">
+        <property name="geometry">
+         <rect>
+          <x>13</x>
+          <y>172</y>
+          <width>165</width>
+          <height>24</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>Start Desktop Control</string>
+        </property>
+       </widget>
+       <widget class="QLabel" name="lblDesktop">
+        <property name="geometry">
+         <rect>
+          <x>8</x>
+          <y>24</y>
+          <width>165</width>
+          <height>137</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+     </item>
     </layout>
    </widget>
   </widget>
@@ -196,7 +225,7 @@
      <x>0</x>
      <y>0</y>
      <width>396</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

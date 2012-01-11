@@ -27,6 +27,7 @@
 #include <QMessageBox>
 
 #include <training.hpp>
+#include <sphinx.hpp>
 
 #include "ui_main.h"
 #include "core.hpp"
@@ -80,4 +81,11 @@ void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()
     Session* l_session = SessionManager::doSelectSession();
     if (l_session)
         Training::startTraining(l_session);
+}
+
+void SpeechControl::Windows::Main::on_btnDesktopControl_clicked()
+{
+    Sphinx l_sphinx;
+    l_sphinx.startRecognizing();
+    m_ui->lblDesktop->setText(l_sphinx.text());
 }
