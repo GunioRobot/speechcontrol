@@ -23,7 +23,7 @@
 #include "microphone.hpp"
 #include "sphinx.hpp"
 #include "system.hpp"
-#include "training.hpp"
+#include "acousticmodel.hpp"
 #include "traceback.h"
 
 BOOST_PYTHON_MODULE(libspchcntrl)
@@ -31,6 +31,7 @@ BOOST_PYTHON_MODULE(libspchcntrl)
     using namespace boost::python;
     using SpeechControl::AcousticModel;
     using SpeechControl::Microphone;
+    using SpeechControl::Sphinx;
 
     class_<AcousticModel>("AcousticModel", no_init)
             .add_property("samplerate" , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)
@@ -42,5 +43,9 @@ BOOST_PYTHON_MODULE(libspchcntrl)
             .add_property("active" , &Microphone::active)
             .add_property("friendlyName" , &Microphone::friendlyName)
             //.def("defaultMicrophone", &Microphone::defaultMicrophone)
+    ;
+
+    class_<Sphinx>("Sphinx", init<const AcousticModel*>("AcousticModel"))
+            .add_property("text", &Sphinx::text)
     ;
 }

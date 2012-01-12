@@ -21,6 +21,7 @@
 
 #include "sphinx.hpp"
 #include "microphone.hpp"
+#include "acousticmodel.hpp"
 #include <QFile>
 #include <cstdio>
 #define MODELDIR "/usr/share/pocketsphinx/model"
@@ -30,14 +31,16 @@ using namespace SpeechControl;
 Sphinx::Sphinx(const AcousticModel* p_mdl) : m_mic(Microphone::defaultMicrophone()),
     m_mdl(const_cast<AcousticModel*>(p_mdl)), m_decoder(0), m_config(0)
 {
-    m_config = cmd_ln_init(NULL, ps_args(), TRUE,
-                                 "-hmm", MODELDIR "hmm/en_US/hub4wsj_sc_8k",
-                                 NULL);
     initialize();
 }
 
-Sphinx::~Sphinx() {
+Sphinx::Sphinx(const Sphinx &p_sphnx) : m_hypothesis(p_sphnx.m_hypothesis),
+    m_mic(p_sphnx.m_mic), m_mdl(p_sphnx.m_mdl), m_decoder(p_sphnx.m_decoder),
+    m_config(p_sphnx.m_config)
+{
+    initialize();
 }
+
 
 /// @todo Fine-tune this method to properly recognize text from file.
 void Sphinx::recognizeFromFile(const QFile *p_file)
@@ -67,45 +70,6 @@ void Sphinx::stopRecognizing(Microphone* p_mic)
     p_mic->stopRecording();
 }
 
-AcousticModel::AcousticModel(const AcousticModel &p_mdl) :
-    QObject(p_mdl.parent()) {
-
-}
-
-AcousticModel::~AcousticModel()
-{
-}
-
-void AcousticModel::setParameter(const QString &p_str, const QVariant &p_val)
-{
-}
-
-void AcousticModel::setParameters(const QVariantMap &p_vals)
-{
-}
-
-void AcousticModel::mergeParameters(const QVariantMap &p_vals)
-{
-}
-
-QVariant AcousticModel::parameter(const QString &p_str) const
-{
-    return QVariant();
-}
-
-const QVariantMap AcousticModel::parameters() const
-{
-    return QVariantMap();
-}
-
-const quint16 AcousticModel::sampleRate() const
-{
-    return 0;
-}
-
-void AcousticModel::setSampleRate(const quint16 &p_rate)
-{
-}
 
 const bool SpeechControl::Sphinx::isListening() const
 {
@@ -114,10 +78,14 @@ const bool SpeechControl::Sphinx::isListening() const
 
 void Sphinx::initialize()
 {
+    m_config = cmd_ln_init(NULL, ps_args(), TRUE, "-hmm", MODELDIR "hmm/en_US/hub4wsj_sc_8k", NULL);
     m_decoder = ps_init(m_config);
 }
 
 const QString Sphinx::text() const
 {
     return m_hypothesis;
+}
+
+Sphinx::~Sphinx() {
 }

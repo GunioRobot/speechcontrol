@@ -36,33 +36,14 @@ namespace SpeechControl {
     class Microphone;
     class AcousticModel;
 
-    typedef QList<AcousticModel*> AcousticModelList;
-
-    class AcousticModel : public QObject {
-        Q_OBJECT
-        Q_PROPERTY(const QVariantMap Parameters READ parameters WRITE setParameters)
-        Q_PROPERTY(const quint16 SampleRate READ sampleRate WRITE setSampleRate)
-
-    public:
-        Q_DISABLE_COPY(AcousticModel)
-        virtual ~AcousticModel();
-        void setParameter(const QString&, const QVariant& );
-        void setParameters(const QVariantMap&);
-        void mergeParameters(const QVariantMap&);
-        QVariant parameter(const QString&) const;
-        const QVariantMap parameters() const;
-        const quint16 sampleRate() const;
-        void setSampleRate(const quint16&);
-    };
-
     class Sphinx : public QObject {
         Q_OBJECT
-        Q_DISABLE_COPY(Sphinx)
 
     signals:
         void textRecognized(const QString&);
 
     public:
+        Q_DISABLE_COPY(Sphinx)
         explicit Sphinx(const AcousticModel* = 0);
         virtual ~Sphinx();
         void setAcousticModel(const AcousticModel* );
