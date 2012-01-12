@@ -20,12 +20,14 @@
  */
 
 #include <QDebug>
+#include <QDateTime>
 #include <QMessageBox>
-#include <training.hpp>
 
 #include "session.hpp"
 #include "ui_training.h"
 #include "windows/training.hpp"
+
+#include <sentence.hpp>
 
 #define ICON_RECORD "media-record"
 #define ICON_PAUSE "media-playback-pause"

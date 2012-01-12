@@ -26,7 +26,6 @@
 #include <QSettings>
 #include <QMessageBox>
 
-#include <training.hpp>
 #include <sphinx.hpp>
 
 #include "ui_main.h"

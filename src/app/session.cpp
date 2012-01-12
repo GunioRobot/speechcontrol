@@ -21,12 +21,13 @@
 
 #include <stdio.h>
 
-#include <training.hpp>
-#include "session.hpp"
-
 #include <QDir>
 #include <QDebug>
 #include <QTextStream>
+
+#include "session.hpp"
+#include <corpus.hpp>
+#include <sentence.hpp>
 
 using namespace SpeechControl;
 

@@ -28,7 +28,6 @@
 #include <QMessageBox>
 
 #include <system.hpp>
-#include <training.hpp>
 #include <microphone.hpp>
 
 #include "core.hpp"

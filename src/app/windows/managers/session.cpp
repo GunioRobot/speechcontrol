@@ -24,7 +24,7 @@
 #include "windows/managers/books.hpp"
 #include "ui_session.h"
 
-#include <training.hpp>
+#include <sentence.hpp>
 
 using namespace SpeechControl;
 using SpeechControl::Windows::Managers::SessionManager;
