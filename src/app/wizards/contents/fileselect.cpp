@@ -25,6 +25,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include <QDomDocument>
+#include <QMessageBox>
 
 using SpeechControl::Wizards::Pages::FileSelectionPage;
 
@@ -51,14 +52,19 @@ void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
         QFile* l_file = new QFile(l_filePath);
         l_file->open(QIODevice::ReadOnly);
         QDomDocument l_dom("Book");
-        l_dom.setContent(l_file);
-        const QDomElement l_book = l_dom.documentElement().namedItem("Author").toElement();
-        const QString l_author = l_book.attribute("Author");
-        const QString l_title = l_book.attribute("Title");
-        const QString l_text = l_dom.documentElement().namedItem("Text").toElement().text();
-        m_ui->lineEditAuthor->setText(l_author);
-        m_ui->lineEditTitle->setText(l_title);
-        m_ui->plainTextEdit->setPlainText(l_text);
-        m_ui->lineEdit->setText(l_filePath);
+        if (l_dom.setContent(l_file) && l_dom.documentElement().nodeName() == "Content"){
+            const QDomElement l_book = l_dom.documentElement().namedItem("Author").toElement();
+            const QString l_author = l_book.attribute("Author");
+            const QString l_title = l_book.attribute("Title");
+            const QString l_text = l_dom.documentElement().namedItem("Text").toElement().text();
+            m_ui->lineEditAuthor->setText(l_author);
+            m_ui->lineEditTitle->setText(l_title);
+            m_ui->plainTextEdit->setPlainText(l_text);
+            m_ui->lineEdit->setText(l_filePath);
+        } else {
+            if (QMessageBox::Accepted == QMessageBox::warning(this,"Invalid File Format","The file you've chosen is either in the wrong format or isn't valid.\nPlease try another file.",QMessageBox::Ok,QMessageBox::Cancel)){
+                on_toolButton_clicked();
+            }
+        }
     }
 }

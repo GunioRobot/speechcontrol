@@ -147,13 +147,15 @@ void SpeechControl::Microphone::startRecording()
     // Connect the bus to this Microphone to detect changes in the pipeline.
     m_pipeline->bus()->addSignalWatch();
     QGlib::connect(m_pipeline->bus(), "message", this, &Microphone::onPipelineBusmessage);
-    //QGlib::connect(m_sinkAudio, "eos", this, &Microphone::onSinkaudioEos);
-    //QGlib::connect(m_sinkAudio, "new-buffer", this, &Microphone::onSinkaudioNewbuffer);
+    QGlib::connect(m_sinkAudio, "eos", this, &Microphone::onSinkAudioEos);
+    QGlib::connect(m_sinkAudio, "new-buffer", this, &Microphone::onSinkAudioNewbuffer);
 
     // Get the party started :)
     m_sinkAudio->setState(QGst::StatePlaying);
     m_srcAudio->setState(QGst::StatePlaying);
     m_pipeline->setState(QGst::StatePlaying);
+
+    emit listening();
 }
 
 void SpeechControl::Microphone::stopRecording()
