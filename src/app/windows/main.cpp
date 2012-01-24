@@ -18,7 +18,7 @@
  * Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
- 
+
 #include <QFile>
 #include <QUuid>
 #include <QDebug>
@@ -32,10 +32,10 @@
 #include "core.hpp"
 #include "main.hpp"
 #include "training.hpp"
-#include "session.hpp"
 #include "settings.hpp"
 #include "managers/books.hpp"
 #include "managers/session.hpp"
+#include "sessions/session.hpp"
 #include "wizards/quickstart/wizard.hpp"
 
 using namespace SpeechControl;
@@ -72,7 +72,7 @@ void SpeechControl::Windows::Main::on_actionAboutQt_triggered()
 
 /// @todo Implement About dialog using QMessageBox.
 void SpeechControl::Windows::Main::on_actionAbout_SpeechControl_triggered()
-{    
+{
 }
 
 void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()

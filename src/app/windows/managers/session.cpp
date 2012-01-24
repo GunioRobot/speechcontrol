@@ -19,8 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "../../session.hpp"
 #include "session.hpp"
+#include "sessions/session.hpp"
 #include "windows/managers/books.hpp"
 #include "ui_session.h"
 

@@ -23,9 +23,10 @@
 #include <QDateTime>
 #include <QMessageBox>
 
-#include "session.hpp"
 #include "ui_training.h"
 #include "windows/training.hpp"
+#include "sessions/session.hpp"
+
 
 #include <sentence.hpp>
 

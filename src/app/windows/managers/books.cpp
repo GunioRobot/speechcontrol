@@ -22,14 +22,14 @@
 #include "books.hpp"
 #include "ui_book.h"
 #include "session.hpp"
-#include "../../session.hpp"
+#include "sessions/session.hpp"
 #include "wizards/contents/wizard.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
-BooksManager::BooksManager(QWidget *parent) :    
+BooksManager::BooksManager(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::BookManager),
     m_book(0)

@@ -25,7 +25,8 @@
 #include "wikipage.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
+
 
 #include <QIcon>
 #include <QVariant>

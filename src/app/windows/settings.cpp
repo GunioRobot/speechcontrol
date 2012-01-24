@@ -22,9 +22,9 @@
 #include <QMessageBox>
 
 #include "core.hpp"
-#include "session.hpp"
 #include "settings.hpp"
 #include "training.hpp"
+#include "sessions/session.hpp"
 #include "wizards/quickstart/wizard.hpp"
 #include "wizards/micsetup/wizard.hpp"
 #include "wizards/contents/wizard.hpp"

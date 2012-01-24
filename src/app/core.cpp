@@ -31,7 +31,7 @@
 #include <microphone.hpp>
 
 #include "core.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "windows/main.hpp"
 #include "wizards/quickstart/wizard.hpp"
 
@@ -48,7 +48,7 @@ Core* Core::s_inst = 0;
 Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     s_inst = this;
 
-    // start application.    
+    // start application.
     QApplication* l_app = qobject_cast<QApplication*>(QApplication::instance());
     l_app->setApplicationName("SpeechControl");
     l_app->setOrganizationDomain("thesii.org");

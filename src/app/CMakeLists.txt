@@ -1,14 +1,15 @@
 cmake_minimum_required(VERSION 2.8)
 
-file(GLOB SPCHCNTRL_APP_SCPP "*.cpp")
-file(GLOB SPCHCNTRL_APP_SHPP "*.hpp")
+file(GLOB SPCHCNTRL_APP_SCPP "*.cpp"
+			     "*/*.cpp"
+			     "*/*/*.cpp")
+file(GLOB SPCHCNTRL_APP_SHPP "*.hpp"
+			     "*/*.hpp"
+			     "*/*/*.hpp")
 
-QT4_WRAP_UI(SPCHCNTRL_APP_UICODE ${SPCHCNTRL_UIFORMS})
-QT4_ADD_RESOURCES(SPCHCNTRL_APP_RESCODE ${SPCHCNTRL_UIQRESC})
+QT4_WRAP_UI(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_UIFORMS})
+QT4_ADD_RESOURCES(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_UIQRESC})
 QT4_WRAP_CPP(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_APP_SHPP})
-
-add_subdirectory(plugins)
-add_subdirectory(sessions)
 
 include_directories("${PROJECT_SOURCE_DIR}/src/lib"
     "${PROJECT_SOURCE_DIR}/src/app"
