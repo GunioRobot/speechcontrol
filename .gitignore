@@ -1,0 +1,5 @@
+build
+debian
+*~
+*.kdev4
+.pc

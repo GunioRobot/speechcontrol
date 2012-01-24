@@ -39,7 +39,7 @@ set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/spchcntrl")
-ADD_DEFINITIONS("-Wall")
+add_definitions("-Wall")
 
 if(CMAKE_BUILD_TYPE EQUAL "Debug")
     set(Boost_USE_DEBUG_PYTHON ON)
