@@ -19,33 +19,45 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+// Boost includes
 #include <boost/python.hpp>
-#include "microphone.hpp"
-#include "sphinx.hpp"
-#include "system.hpp"
-#include "acousticmodel.hpp"
+#include <boost/noncopyable.hpp>
+
+// Python includes
 #include "traceback.h"
 
-BOOST_PYTHON_MODULE(libspchcntrl)
+// local includes
+#include "system.hpp"
+#include "sphinx.hpp"
+#include "microphone.hpp"
+#include "acousticmodel.hpp"
+
+/// @note issue 0000033
+BOOST_PYTHON_MODULE(spchcntrl)
 {
     using namespace boost::python;
-    using SpeechControl::AcousticModel;
-    using SpeechControl::Microphone;
     using SpeechControl::Sphinx;
+    using SpeechControl::System;
+    using SpeechControl::Microphone;
+    using SpeechControl::AcousticModel;
+
+    class_<System>("System", boost::noncopyable)
+      .def("stop" , &System::stop)
+    ;
 
     class_<AcousticModel>("AcousticModel", no_init)
-            .add_property("samplerate" , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)
-            .add_property("parameters" , &AcousticModel::parameters, &AcousticModel::setParameters)
+      .add_property("samplerate"   , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)
+      .add_property("parameters"   , &AcousticModel::parameters, &AcousticModel::setParameters)
     ;
 
     class_<Microphone>("Microphone", no_init)
-            .add_property("uuid" , &Microphone::uuid)
-            .add_property("active" , &Microphone::active)
-            .add_property("friendlyName" , &Microphone::friendlyName)
-            //.def("defaultMicrophone", &Microphone::defaultMicrophone)
+      .add_property("uuid" 	   , &Microphone::uuid)
+      .add_property("active" 	   , &Microphone::active)
+      .add_property("friendlyName" , &Microphone::friendlyName)
+      //.def("defaultMicrophone", &Microphone::defaultMicrophone)
     ;
 
     class_<Sphinx>("Sphinx", init<const AcousticModel*>("AcousticModel"))
-            .add_property("text", &Sphinx::text)
+      .add_property("text", &Sphinx::text)
     ;
 }
