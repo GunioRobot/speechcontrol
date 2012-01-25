@@ -3,9 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 
 ## required packages
 find_package(PkgConfig REQUIRED)
-find_package(Boost 1.46 COMPONENTS
-  system
-  program_options
+find_package(Boost 1.4.6 COMPONENTS
   python
   REQUIRED)
 find_package(PythonLibs 2.7 REQUIRED)
@@ -22,13 +20,13 @@ include("${QT_USE_FILE}")
 ## variables
 set(SPCHCNTRL_INCLUDE_DIRS "${QT_INCLUDE_DIR}"
     ${POCKETSPHINX_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDES})
 set(SPCHCNTRL_LIBRARIES "${QT_LIBRARIES}"
-    ${PHONON_LIBRARIES}
     ${Boost_LIBRARIES}
     ${PYTHON_LIBRARIES}
+    ${PHONON_LIBRARIES}
     ${QTGLIB_LIBRARIES}
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
