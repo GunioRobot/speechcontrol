@@ -4,3 +4,4 @@ build
 CMakeLists.txt.user
 *.kdev4
 *.pyc
+debian
