@@ -3,4 +3,4 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 add_subdirectory(lib)
 add_subdirectory(app)
-#add_subdirectory(python)
+add_subdirectory(python)
