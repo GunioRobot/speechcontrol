@@ -28,24 +28,23 @@ namespace SpeechControl {
     class System;
 
     class System : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(System)
+      Q_OBJECT
 
     public:
-        explicit System(int* argc, char**[]);
-        static System* instance();
+      explicit System(int* argc, char**[]);
+      static System* instance();
 
     signals:
-        void started();
-        void stopped();
+      void started();
+      void stopped();
 
     public slots:
-        static void start();
-        static void start(int*,char**[]);
-        static void stop();
+      static void start(int*,char**[]);
+      static void start();
+      static void stop();
 
     private:
-        static System* s_inst;
+      static System* s_inst;
 
     };
 
