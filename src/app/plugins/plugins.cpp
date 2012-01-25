@@ -23,6 +23,10 @@
 
 using namespace SpeechControl;
 
+/**
+ * @note issue #0000034
+ */
+
 AbstractPlugin::AbstractPlugin(QObject *parent) :
     QObject(parent), m_loader(0), m_config(0)
 {

@@ -32,19 +32,24 @@ namespace SpeechControl {
     class AbstractPlugin;
 
     class Factory : public QObject {
+      Q_OBJECT
 
+    public:
+      explicit Factory(QObject* = 0);
     };
 
     class AbstractPlugin : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(AbstractPlugin)
+      Q_OBJECT
 
     public:
-        explicit AbstractPlugin(QObject *parent = 0);
+      explicit AbstractPlugin(QObject* = 0);
+      const QString name() const;
+      const double version() const;
 
     private:
-        QPluginLoader* m_loader;
-        QSettings* m_config;
+      QPluginLoader* m_loader;
+      QSettings* m_cfg;
+      QSettings* m_sttgs;
     };
 
 }
