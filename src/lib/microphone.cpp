@@ -126,6 +126,7 @@ MicrophoneList Microphone::allMicrophones()
 
 /// @todo In addition, you will NEED TO MAKE SURE THAT YOU RECORD AT A SAMPLING RATE OF 16 KHZ (or 8 kHz if you adapt a telephone model) IN MONO WITH SINGLE CHANNEL.
 /// @todo Use a buffer instead of using a file.
+/// @note issue
 void SpeechControl::Microphone::startRecording()
 {
     // Wipe any data already used for recording; their loss.
@@ -142,7 +143,7 @@ void SpeechControl::Microphone::startRecording()
 
     // Build the pipeline.
     m_pipeline = QGst::Pipeline::create("pipeline");
-    m_pipeline->add(m_binAudio, m_sinkAudio);
+    //m_pipeline->add(m_binAudio, m_sinkAudio);
 
     // Connect the bus to this Microphone to detect changes in the pipeline.
     m_pipeline->bus()->addSignalWatch();
