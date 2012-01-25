@@ -1,7 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+ * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -124,8 +124,6 @@ MicrophoneList Microphone::allMicrophones()
     return s_lst.values();
 }
 
-/// @todo In addition, you will NEED TO MAKE SURE THAT YOU RECORD AT A SAMPLING RATE OF 16 KHZ (or 8 kHz if you adapt a telephone model) IN MONO WITH SINGLE CHANNEL.
-/// @todo Use a buffer instead of using a file.
 /// @note issue
 void SpeechControl::Microphone::startRecording()
 {

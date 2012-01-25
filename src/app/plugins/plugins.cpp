@@ -1,7 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+ * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -27,7 +27,7 @@ using namespace SpeechControl;
  * @note issue #0000034
  */
 
-AbstractPlugin::AbstractPlugin(QObject *parent) :
+AbstractPlugin::AbstractPlugin(QObject*) :
     QObject(parent), m_loader(0), m_config(0)
 {
 }

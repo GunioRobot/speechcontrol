@@ -1,7 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+ * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -20,26 +20,44 @@
  */
 
 #include "agent.hpp"
+#include "sphinx.hpp"
 
-using namespace SpeechControl::Desktop;
+using namespace SpeechControl;
+using namespace SpeechControl::DesktopControl;
 
-Agent::Agent(QObject* parent)
+/// @todo #issue 0000032
+Agent::Agent(QObject* p_prnt) : QObject(p_prnt)
+{
+  s_inst = this;
+  m_sphnx = new Sphinx;
+}
+
+Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
+    m_sphnx(p_other.m_sphnx)
 {
 
 }
 
-Agent::Agent()
+Agent* Agent::instance()
 {
+  if (!s_inst)
+    s_inst = new Agent;
 
+  return s_inst;
 }
 
-Agent::Agent(const Agent& other)
+void Agent::start()
 {
+    connect(s_inst , SIGNAL(started()) , s_inst->m_sphnx,SLOT(startRecognizing()));
+    emit s_inst->started();
+}
 
+void Agent::stop()
+{
+  emit s_inst->stopped();
 }
 
 Agent::~Agent()
 {
 
 }
-

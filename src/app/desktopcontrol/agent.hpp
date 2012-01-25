@@ -1,7 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+ * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -25,30 +25,31 @@
 #include <QObject>
 
 namespace SpeechControl {
-  namespace Desktop {
-    class Agent;
+    namespace DesktopControl {
+        class Agent;
 
-    class Agent : public QObject
-    {
-      Q_OBJECT
-      Q_DISABLE_COPY(Agent)
+        class Agent : public QObject
+        {
+            Q_OBJECT
+            Q_DISABLE_COPY(Agent)
 
-    signals:
-      void started();
-      void stopped();
+        signals:
+            void started();
+            void stopped();
 
-    public:
-      explicit Agent(QObject* = 0);
-      virtual ~Agent();
+        public:
+            explicit Agent(QObject* = 0);
+            virtual ~Agent();
 
-      static Agent* instance();
-      static void start();
-      static void stop();
+            static Agent* instance();
+            static void start();
+            static void stop();
 
-    private:
-      static Agent s_inst;
-    };
-  }
+        private:
+            static Agent* s_inst;
+            Sphinx* m_sphnx;
+        };
+    }
 }
 
 #endif // AGENT_H

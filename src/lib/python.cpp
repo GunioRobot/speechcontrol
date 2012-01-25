@@ -1,7 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+ * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -32,17 +32,28 @@
 #include "microphone.hpp"
 #include "acousticmodel.hpp"
 
+struct SystemStruct {
+public:
+  static void start() {
+    SpeechControl::System::start();
+  }
+
+  static void stop() {
+    SpeechControl::System::stop();
+  }
+};
+
 /// @note issue 0000033
 BOOST_PYTHON_MODULE(spchcntrl)
 {
     using namespace boost::python;
     using SpeechControl::Sphinx;
-    using SpeechControl::System;
     using SpeechControl::Microphone;
     using SpeechControl::AcousticModel;
 
-    class_<System>("System", boost::noncopyable)
-      .def("stop" , &System::stop)
+    class_<SystemStruct>("System", no_init)
+      .def("stop" , &SystemStruct::stop)
+      .def("start", &SystemStruct::start)
     ;
 
     class_<AcousticModel>("AcousticModel", no_init)

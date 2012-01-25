@@ -1,7 +1,7 @@
  /**
   * This file is part of SpeechControl
   *
-  * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+  * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
   *
   * SpeechControl is free software; you can redistribute it and/or modify
   * it under the terms of the GNU Library General Public License as
@@ -39,11 +39,10 @@ namespace SpeechControl {
             ~Main();
 
         private slots:
-            void on_actionOptions_triggered();
-            void on_actionAboutQt_triggered();
-            void on_actionAbout_SpeechControl_triggered();
-            void on_pushButtonStartTrain_clicked();
-
+            void showOptions();
+            void aboutQt();
+            void aboutSpeechControl();
+            void startTraining();
             void on_btnDesktopControl_clicked();
 
         private:

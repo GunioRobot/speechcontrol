@@ -19,34 +19,36 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef QS_WIZARD_HPP
-#define QS_WIZARD_HPP
+#ifndef DICTATION_AGENT_HPP
+#define DICTATION_AGENT_HPP
 
-#include "wizards/base.hpp"
+#include <QObject>
 
 namespace SpeechControl {
-namespace Wizards {
+    namespace Dictation {
+        class Agent;
 
-class QuickStart : public WizardBase
-{
-    Q_OBJECT
+        class Agent : public QObject
+        {
+            Q_OBJECT
 
-    enum Pages {
-        IntroductionPage = 0,
-        UserCreationPage,
-        MicrophoneCreationPage,
-        BookAdditionPage,
-        ConclusionPage
-    };
+        signals:
+            void started();
+            void stopped();
 
-public:
-    explicit QuickStart(QWidget *parent = 0);
-    ~QuickStart();
+        public:
+            explicit Agent(QObject* parent = 0);
+            virtual ~Agent();
 
-public slots:
-    virtual void accept();
-};
+            static Agent* instance();
+            static void start();
+            static void stop();
 
-}}
+        private:
+            static Agent* s_inst;
+            Sphinx* m_sphnx;
+        };
+    }
+}
 
-#endif // WIZARD_HPP
+#endif // AGENT_HPP

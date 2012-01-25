@@ -1,7 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+ * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -33,6 +33,7 @@
 #include "main.hpp"
 #include "training.hpp"
 #include "settings.hpp"
+#include "desktopcontrol/agent.hpp"
 #include "managers/books.hpp"
 #include "managers/session.hpp"
 #include "sessions/session.hpp"
@@ -59,23 +60,23 @@ Main::~Main() {
     delete m_ui;
 }
 
-void SpeechControl::Windows::Main::on_actionOptions_triggered()
+void SpeechControl::Windows::Main::showOptions()
 {
     Settings* l_settings = new Settings(this);
     l_settings->exec();
 }
 
-void SpeechControl::Windows::Main::on_actionAboutQt_triggered()
+void SpeechControl::Windows::Main::aboutQt()
 {
     QApplication::aboutQt();
 }
 
 /// @todo Implement About dialog using QMessageBox.
-void SpeechControl::Windows::Main::on_actionAbout_SpeechControl_triggered()
+void SpeechControl::Windows::Main::aboutSpeechControl()
 {
 }
 
-void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()
+void SpeechControl::Windows::Main::startTraining()
 {
     Session* l_session = SessionManager::doSelectSession();
     if (l_session)
@@ -84,7 +85,5 @@ void SpeechControl::Windows::Main::on_pushButtonStartTrain_clicked()
 
 void SpeechControl::Windows::Main::on_btnDesktopControl_clicked()
 {
-    Sphinx l_sphinx;
-    l_sphinx.startRecognizing();
-    m_ui->lblDesktop->setText(l_sphinx.text());
+    DesktopControl::Agent::start();
 }
