@@ -25,6 +25,8 @@
 using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
+Agent* Agent::s_inst = 0;
+
 /// @todo #issue 0000032
 Agent::Agent(QObject* p_prnt) : QObject(p_prnt)
 {

@@ -47,7 +47,7 @@ namespace SpeechControl {
       const double version() const;
 
     private:
-      QPluginLoader* m_loader;
+      QPluginLoader* m_ldr;
       QSettings* m_cfg;
       QSettings* m_sttgs;
     };

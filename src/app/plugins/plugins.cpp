@@ -27,7 +27,12 @@ using namespace SpeechControl;
  * @note issue #0000034
  */
 
-AbstractPlugin::AbstractPlugin(QObject*) :
-    QObject(parent), m_loader(0), m_config(0)
+AbstractPlugin::AbstractPlugin(QObject* p_prnt) :
+    QObject(p_prnt), m_ldr(0), m_cfg(0), m_sttgs(0)
 {
+}
+
+const QString AbstractPlugin::name() const
+{
+    return QString::null;
 }

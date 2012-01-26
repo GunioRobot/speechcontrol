@@ -23,8 +23,10 @@
 #define DICTATION_AGENT_HPP
 
 #include <QObject>
+#include <sphinx.hpp>
 
 namespace SpeechControl {
+
     namespace Dictation {
         class Agent;
 

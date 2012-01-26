@@ -23,15 +23,20 @@
 
 using namespace SpeechControl::Dictation;
 
+Agent* Agent::s_inst = 0;
+
 /// @note issue #0000036
 Agent::Agent(QObject* p_prnt) : QObject(p_prnt)
 {
+    s_inst = this;
 
 }
 
-Agent::Agent()
-{
+Agent* Agent::instance(){
+    if (!s_inst)
+        s_inst = new Agent;
 
+    return s_inst;
 }
 
 Agent::~Agent()

@@ -23,6 +23,7 @@
 #define AGENT_HPP
 
 #include <QObject>
+#include <sphinx.hpp>
 
 namespace SpeechControl {
     namespace DesktopControl {

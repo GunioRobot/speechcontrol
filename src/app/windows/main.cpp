@@ -85,5 +85,6 @@ void SpeechControl::Windows::Main::startTraining()
 
 void SpeechControl::Windows::Main::on_btnDesktopControl_clicked()
 {
+    statusBar()->showMessage("Starting desktop control...");
     DesktopControl::Agent::start();
 }
