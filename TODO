@@ -2,7 +2,6 @@
 * Get selected audio device's volume.
 * Get threshold of user's input for typical speaking volume.
 * Offset that result to determine background noise.
-* Construct the User class from specification.
-* Construct individual segmentation audio recording; the recording of audio files to chunks,
-  permitting undo and marginal training support.
+* Construct individual segmentation audio recording; the recording of audio files to chunks, permitting undo and marginal training support.
 * Permit serialization to tarballs of segmented audio recording.
+* Correct the CMake build system to use sub-directories for each layer of code and UI.

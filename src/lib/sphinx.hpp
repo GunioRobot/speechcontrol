@@ -22,10 +22,15 @@
 #ifndef SPHINX_HPP
 #define SPHINX_HPP
 
+// Qt includes
 #include <QObject>
 #include <QVariant>
 #include <QVariantMap>
+
+// PocketSphinx includes
 #include <pocketsphinx.h>
+
+// local includes
 #include "microphone.hpp"
 
 class QFile;

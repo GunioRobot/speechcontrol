@@ -19,20 +19,10 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QApplication>
+#ifndef SPCHCNTRL_CONFIG_HPP
+#define SPCHCNTRL_CONFIG_HPP
 
-#include "factory.hpp"
+#define SPCHCNTRL_PLUGINS_DIR "@SPCHCNTRL_PLUGINS_DIR@"
+#define SPCHCNTRL_PLUGINS_CONFIG_DIR "@SPCHCNTRL_PLUGINS_CONFIG_DIR@"
 
-using namespace SpeechControl::Plugins;
-
-Factory::Factory() : QObject(QApplication::instance())
-{
-    s_inst = this;
-    connect(QApplication::instance(),SIGNAL(aboutToQuit()),this,SLOT(stop()));
-}
-
-Factory::~Factory()
-{
-
-}
-
+#endif

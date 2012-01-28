@@ -27,8 +27,8 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 
-#include <system.hpp>
-#include <microphone.hpp>
+#include "lib/system.hpp"
+#include "lib/microphone.hpp"
 
 #include "core.hpp"
 #include "sessions/session.hpp"

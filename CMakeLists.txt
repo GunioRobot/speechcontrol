@@ -43,13 +43,6 @@ if(CMAKE_BUILD_TYPE EQUAL "Debug")
     set(Boost_USE_DEBUG_PYTHON ON)
 endif()
 
-## done here to pick up the files in Qt Creator.
-file(GLOB SPCHCNTRL_UIQRESC "ui/*.qrc")
-file(GLOB SPCHCNTRL_UIFORMS "ui/*/*.ui"
-                            "ui/*/*/*.ui"
-                            "ui/*/*/*/*.ui")
-
-
 ## includes
 include_directories(${SPCHCNTRL_INCLUDE_DIRS})
 

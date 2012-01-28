@@ -44,11 +44,10 @@ Sphinx::Sphinx(const Sphinx &p_sphnx) : m_hypothesis(p_sphnx.m_hypothesis),
 
 /// @todo Fine-tune this method to properly recognize text from file.
 void Sphinx::recognizeFromFile(const QFile *p_file)
-{    
+{
     int score;
     const char* uttid;
-    FILE* l_file = fdopen(p_file->handle(),"r");
-    ps_decode_raw(m_decoder, l_file, NULL, -1);
+    ps_decode_raw(m_decoder, fdopen(p_file->handle(),"r"), NULL, -1);
     m_hypothesis = ps_get_hyp(m_decoder, &score, &uttid);
     emit textRecognized(m_hypothesis);
 }
@@ -62,7 +61,7 @@ void Sphinx::recognizeFromMicrophone(const Microphone *p_mic)
 /// @todo Should this return the Sphinx object for recognition?
 void Sphinx::startRecognizing(Microphone *p_mic)
 {
-    p_mic->startRecording();    
+    p_mic->startRecording();
 }
 
 void Sphinx::stopRecognizing(Microphone* p_mic)

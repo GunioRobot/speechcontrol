@@ -22,36 +22,46 @@
 #ifndef PLUGINS_HPP
 #define PLUGINS_HPP
 
+#include <QUrl>
+#include <QUuid>
+#include <QList>
 #include <QObject>
 
 class QPluginLoader;
 class QSettings;
 
 namespace SpeechControl {
-    class Factory;
-    class AbstractPlugin;
+    namespace Plugins {
+        class Factory;
+        class AbstractPlugin;
 
-    class Factory : public QObject {
-      Q_OBJECT
+        typedef QList<AbstractPlugin*> PluginList;
 
-    public:
-      explicit Factory(QObject* = 0);
-    };
+        class AbstractPlugin : public QObject {
+            Q_OBJECT
+            Q_DISABLE_COPY(AbstractPlugin)
 
-    class AbstractPlugin : public QObject {
-      Q_OBJECT
+        signals:
+            void started();
+            void stopped();
 
-    public:
-      explicit AbstractPlugin(QObject* = 0);
-      const QString name() const;
-      const double version() const;
+        public:
+            explicit AbstractPlugin(QObject* = 0);
+            const double version() const;
+            const QString name() const;
+            const QUuid uuid() const;
 
-    private:
-      QPluginLoader* m_ldr;
-      QSettings* m_cfg;
-      QSettings* m_sttgs;
-    };
+        protected:
+            virtual void initialize() = 0;
+            virtual void deinitialize() = 0;
 
+        private:
+            const bool isSupported() const;
+            QPluginLoader* m_ldr;
+            QSettings* m_cfg;
+            QSettings* m_sttgs;
+        };
+    }
 }
 
 #endif // PLUGINS_HPP

@@ -1,3 +1,4 @@
+project(SpeechControlLibrary)
 cmake_minimum_required(VERSION 2.8)
 
 ## @todo Considering dropping QtGui support in this library.
@@ -6,6 +7,7 @@ cmake_minimum_required(VERSION 2.8)
 # PkgConfig to get model dir `pkg-config --variable=modeldir pocketsphinx`
 
 ## variables
+set(SPCHCNTRL_LIB_INCLUDE_DIR "${SPCHCNTRL_INCLUDE_DIR}/lib")
 set(SPCHCNTRL_LIB_INCLUDE_DIRS "${SPCHNCTRL_INCLUDE_DIRS}")
 set(SPCHCNTRL_LIB_LIBRARIES "${SPCHCNTRL_LIBRARIES}")
 
@@ -35,7 +37,7 @@ install(EXPORT SpeechControlLibraryDepends
     COMPONENT "dev")
 
 install(FILES ${SPCHCNTRL_LIB_HPP}
-    DESTINATION "${SPCHCNTRL_INCLUDE_DIR}/lib"
+    DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
     COMPONENT "dev")
 
 install(FILES "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfig.cmake"

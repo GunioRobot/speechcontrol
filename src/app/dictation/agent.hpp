@@ -37,14 +37,17 @@ namespace SpeechControl {
         signals:
             void started();
             void stopped();
+            void textRecieved(const QString&);
 
         public:
             explicit Agent(QObject* parent = 0);
             virtual ~Agent();
 
-            static Agent* instance();
             static void start();
             static void stop();
+
+            static Agent* instance();
+            static const bool isActive();
 
         private:
             static Agent* s_inst;

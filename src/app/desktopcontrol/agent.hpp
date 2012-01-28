@@ -42,9 +42,12 @@ namespace SpeechControl {
             explicit Agent(QObject* = 0);
             virtual ~Agent();
 
-            static Agent* instance();
             static void start();
             static void stop();
+            static void invokeCommand(const QString&);
+
+            static Agent* instance();
+            static const bool isActive();
 
         private:
             static Agent* s_inst;
